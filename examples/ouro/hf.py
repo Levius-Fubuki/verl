@@ -2,7 +2,7 @@
 """Local HF registration for verl; import this module through external_lib.
 
 Loads the standard Ouro physical weights without executing Hub Python code.
-The worker still needs to forward execution_depths (tracked in the next slice).
+The companion OuroFSDPEngine forwards execution_depths from rollout batches.
 """
 
 from dataclasses import asdict, fields
@@ -14,7 +14,7 @@ from vllm_rlt.layers import RotaryEmbedding
 from vllm_rlt.models.ouro import OuroConfig as NativeConfig
 from vllm_rlt.models.ouro import OuroForCausalLM as NativeModel
 
-from examples.ouro.model import OuroTrainingModel
+from examples.ouro.model import OuroTrainingModel, replay_backbone
 
 
 class OuroHFConfig(PretrainedConfig):
@@ -51,14 +51,12 @@ class OuroForCausalLM(PreTrainedModel):
     config_class = OuroHFConfig
     base_model_prefix = "model"
     supports_gradient_checkpointing = True
-    # This slice validates root FSDP only. Do not auto-wrap native decoder layers:
-    # replay uses their projections explicitly rather than their serving forward.
-    _no_split_modules = ["OuroForCausalLM"]
+    _no_split_modules = ["OuroReplayDecoderLayer"]
 
     def __init__(self, config):
         super().__init__(config)
         native = NativeModel(config.native_config())
-        self.model = native.model
+        self.model = replay_backbone(native.model)
         self.lm_head = native.lm_head
         self.gradient_checkpointing = False
         self.requires_grad_(True)
@@ -96,12 +94,61 @@ class OuroForCausalLM(PreTrainedModel):
         attention_mask=None,
         position_ids=None,
         execution_depths=None,
+        cu_seqlens=None,
+        cu_seqlens_cpu=None,
         use_cache=False,
         return_dict=True,
         **kwargs,
     ):
         if use_cache or kwargs:
             raise ValueError("Ouro training replay accepts full sequences, masks and execution_depths only")
+        if cu_seqlens_cpu is not None and (
+            cu_seqlens is None or not torch.equal(cu_seqlens.cpu(), cu_seqlens_cpu.cpu())
+        ):
+            raise ValueError("CPU and device cu_seqlens must match")
+        if cu_seqlens is not None:
+            if (
+                input_ids.ndim != 2
+                or input_ids.shape[0] != 1
+                or attention_mask is not None
+                or cu_seqlens.ndim != 1
+                or cu_seqlens.dtype not in (torch.int32, torch.int64)
+            ):
+                raise ValueError("packed replay requires one packed row and integer cu_seqlens")
+            boundaries = cu_seqlens.tolist()
+            if (
+                len(boundaries) < 2
+                or boundaries[0] != 0
+                or boundaries[-1] != input_ids.shape[1]
+                or any(b <= a for a, b in zip(boundaries, boundaries[1:], strict=False))
+            ):
+                raise ValueError("cu_seqlens must partition the complete packed row")
+            # Re-pad once so every rank invokes each shared FSDP layer the same
+            # number of times, even with different local sequence counts. This
+            # is a correctness bridge, not a fused variable-length kernel.
+            lengths = [b - a for a, b in zip(boundaries, boundaries[1:], strict=False)]
+
+            def padded(value, fill):
+                if value is None:
+                    return None
+                if value.shape != input_ids.shape:
+                    raise ValueError("packed metadata must match input_ids shape")
+                return torch.nn.utils.rnn.pad_sequence(value[0].split(lengths), batch_first=True, padding_value=fill)
+
+            dense_ids = padded(input_ids, 0)
+            mask = (
+                torch.arange(max(lengths), device=input_ids.device)[None]
+                < torch.tensor(lengths, device=input_ids.device)[:, None]
+            )
+            output = OuroTrainingModel.forward(
+                self,
+                dense_ids,
+                attention_mask=mask,
+                position_ids=padded(position_ids, 0),
+                execution_depths=padded(execution_depths, 1),
+            )
+            packed = output.logits[mask].unsqueeze(0)
+            return CausalLMOutput(logits=packed) if return_dict else (packed,)
         output = OuroTrainingModel.forward(
             self, input_ids, attention_mask=attention_mask, position_ids=position_ids, execution_depths=execution_depths
         )

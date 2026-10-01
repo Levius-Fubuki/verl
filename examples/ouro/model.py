@@ -68,10 +68,31 @@ def _replay_layer(layer, hidden, cos, sin, active, causal_mask, previous_k, prev
     return torch.where(active[:, :, None], updated, hidden), k, v
 
 
+class OuroReplayDecoderLayer(nn.Module):
+    """A physical shared layer with a training forward that FSDP can intercept."""
+
+    def __init__(self, native_layer):
+        super().__init__()
+        for name, module in native_layer.named_children():
+            self.add_module(name, module)
+
+    def forward(self, hidden, cos, sin, active, causal_mask, previous_k, previous_v):
+        return _replay_layer(self, hidden, cos, sin, active, causal_mask, previous_k, previous_v)
+
+
+def replay_backbone(native_model):
+    model = nn.Module()
+    for name, module in native_model.named_children():
+        model.add_module(
+            name, module if name != "layers" else nn.ModuleList(OuroReplayDecoderLayer(layer) for layer in module)
+        )
+    return model
+
+
 class OuroTrainingModel(nn.Module):
     """Trainable model component; takes ownership of the supplied native modules.
 
-    This is not yet the verl worker/AutoModel registration or rollout adapter.
+    The companion HF wrapper and worker provide AutoModel and rollout integration.
     Native state_dict names are unchanged, allowing strict checkpoint loading
     and FSDP wrapping without expanding physical weights for the four loops.
     """
@@ -79,7 +100,7 @@ class OuroTrainingModel(nn.Module):
     def __init__(self, native: OuroForCausalLM):
         super().__init__()
         self.config = native.config
-        self.model = native.model
+        self.model = replay_backbone(native.model)
         self.lm_head = native.lm_head
         self.requires_grad_(True)
         self.model.early_exit_gate.requires_grad_(False)
@@ -149,11 +170,11 @@ class OuroTrainingModel(nn.Module):
         for depth in range(self.config.total_ut_steps):
             active = valid & (execution_depths > depth)
             for index, layer in enumerate(self.model.layers):
-                args = (layer, hidden, cos, sin, active, causal_mask, *previous[index])
+                args = (hidden, cos, sin, active, causal_mask, *previous[index])
                 if self.gradient_checkpointing and self.training and torch.is_grad_enabled():
-                    hidden, k, v = checkpoint(_replay_layer, *args, use_reentrant=False)
+                    hidden, k, v = checkpoint(layer, *args, use_reentrant=False)
                 else:
-                    hidden, k, v = _replay_layer(*args)
+                    hidden, k, v = layer(*args)
                 previous[index] = (k, v)
             hidden = torch.where(active[:, :, None], self.model.norm(hidden), hidden)
         return OuroTrainingOutput(logits=self.lm_head(hidden))
