@@ -1,0 +1,52 @@
+
+*****************************************
+Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed.
+*****************************************
+........                                                                     [100%]
+=============================== warnings summary ===============================
+verl/verl/workers/engine/__init__.py:32
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:32: UserWarning: torchtitan engine is not available: ModuleNotFoundError("No module named 'torchtitan'")
+    warnings.warn(f"torchtitan engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:41
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:41: UserWarning: veomni engine is not available: ModuleNotFoundError("No module named 'veomni'")
+    warnings.warn(f"veomni engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:50
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:50: UserWarning: automodel engine is not available: ModuleNotFoundError("No module named 'nemo_automodel'")
+    warnings.warn(f"automodel engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:60
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:60: UserWarning: mindspeed engine is not available: ModuleNotFoundError("No module named 'megatron'")
+    warnings.warn(f"mindspeed engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:69
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:69: UserWarning: megatron engine is not available: ModuleNotFoundError("No module named 'megatron'")
+    warnings.warn(f"megatron engine is not available: {e!r}", stacklevel=1)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+4 passed, 5 warnings in 6.14s
+                                                                     [100%]
+=============================== warnings summary ===============================
+verl/verl/workers/engine/__init__.py:32
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:32: UserWarning: torchtitan engine is not available: ModuleNotFoundError("No module named 'torchtitan'")
+    warnings.warn(f"torchtitan engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:41
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:41: UserWarning: veomni engine is not available: ModuleNotFoundError("No module named 'veomni'")
+    warnings.warn(f"veomni engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:50
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:50: UserWarning: automodel engine is not available: ModuleNotFoundError("No module named 'nemo_automodel'")
+    warnings.warn(f"automodel engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:60
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:60: UserWarning: mindspeed engine is not available: ModuleNotFoundError("No module named 'megatron'")
+    warnings.warn(f"mindspeed engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:69
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:69: UserWarning: megatron engine is not available: ModuleNotFoundError("No module named 'megatron'")
+    warnings.warn(f"megatron engine is not available: {e!r}", stacklevel=1)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+4 passed, 5 warnings in 6.14s

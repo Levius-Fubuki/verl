@@ -1,0 +1,15 @@
+{
+  "checks": {
+    "token_ids": true,
+    "exit_depths": true,
+    "sampling_seeds": true,
+    "texts": true,
+    "rewards": true,
+    "losses_rank0": true,
+    "grad_norm": true,
+    "shard_state_sha256": true
+  },
+  "passed": true,
+  "uninterrupted_version": 3,
+  "resumed_version": 4
+}

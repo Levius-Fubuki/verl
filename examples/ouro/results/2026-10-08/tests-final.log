@@ -1,0 +1,35 @@
+.....................................................                    [100%]
+=============================== warnings summary ===============================
+verl/verl/workers/engine/__init__.py:32
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:32: UserWarning: torchtitan engine is not available: ModuleNotFoundError("No module named 'torchtitan'")
+    warnings.warn(f"torchtitan engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:41
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:41: UserWarning: veomni engine is not available: ModuleNotFoundError("No module named 'veomni'")
+    warnings.warn(f"veomni engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:50
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:50: UserWarning: automodel engine is not available: ModuleNotFoundError("No module named 'nemo_automodel'")
+    warnings.warn(f"automodel engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:60
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:60: UserWarning: mindspeed engine is not available: ModuleNotFoundError("No module named 'megatron'")
+    warnings.warn(f"mindspeed engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:69
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:69: UserWarning: megatron engine is not available: ModuleNotFoundError("No module named 'megatron'")
+    warnings.warn(f"megatron engine is not available: {e!r}", stacklevel=1)
+
+examples/ouro/tests/test_export.py::test_exports_owned_physical_checkpoint_weights_one_unit_at_a_time
+examples/ouro/tests/test_export.py::test_streaming_export_gpu_peak_is_bounded_by_largest_physical_unit
+examples/ouro/tests/test_export.py::test_fsdp_export_requires_original_parameters
+examples/ouro/tests/test_export.py::test_fsdp_export_rejects_manual_parameter_offload
+  /root/miniconda3/lib/python3.12/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:478: UserWarning: FSDP is switching to use `NO_SHARD` instead of ShardingStrategy.FULL_SHARD since the world size is 1.
+    _init_core_state(
+
+examples/ouro/tests/test_rollout.py::test_real_base_rollout_metadata_publication_and_restart
+  /root/autodl-tmp/ouro-v1/.venv-repro/lib/python3.12/site-packages/ray/util/state/util.py:55: DeprecationWarning: Ray state API is no longer experimental. Please import from `ray.util.state`. instead. Importing from `ray.experimental` will be deprecated in future releases.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+53 passed, 10 warnings in 6.80s

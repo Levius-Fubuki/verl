@@ -1,145 +1,204 @@
-# Ouro differentiable replay and verl worker (Phase 2A experiment)
+# Ouro BF16 verl/FSDP integration (Phase 2A experiment)
 
-This experiment adds the trainable model needed by ThinkFlowLab/vllm-rlt issue
-[#70](https://github.com/ThinkFlowLab/vllm-rlt/issues/70). It is not a complete
-production verl Ray-trainer integration. The single-GPU driver now exercises a
-real verl FSDPEngine, PPO loss, native rollout, full-weight publication and resume.
-Run from this fork's repository root with the sibling engine on `PYTHONPATH`.
+This contributor-fork implementation addresses the Ouro training integration in
+[vllm-rlt issue #70](https://github.com/ThinkFlowLab/vllm-rlt/issues/70).
+`train.py` runs synchronous generation → GRPO advantages → verl PPO/FSDP update →
+full-weight publication on one or two GPUs. It uses real verl `BaseRollout`,
+`DataProto`, `FSDPEngine`, loss and checkpoint APIs through a direct torchrun
+recipe. It does not implement the production Ray AgentLoop/RolloutReplica path.
 
-**Acceptance boundary:** BF16 kernels differ numerically. On 256 generated tokens,
-the largest selected log-probability discrepancy was 0.4344 and one probability
-ratio fell outside [0.8, 1.2]. This is measured, not hidden by changing tolerances.
-Optional verl token-level TIS is an experimental loss correction, not a parity
-fix or convergence claim. See [ROUND2.md](ROUND2.md) and the earlier [VALIDATION.md](VALIDATION.md).
+Two-GPU Ouro-1.4B acceptance covers full-depth and adaptive-exit training,
+checkpoint recovery, per-unit sharded export, and separate-device NIXL P/D
+publication. See [ROUND3.md](ROUND3.md) for measured results and raw evidence;
+[ROUND2.md](ROUND2.md) and [VALIDATION.md](VALIDATION.md) retain earlier evidence.
 
-## What is implemented
+## Modules
 
-- A single physical recurrent core, with standard Ouro checkpoint parameter
-  names and full-depth prefill semantics.
-- Differentiable SDPA and explicit per-input-token execution depths. Inactive
-  tokens carry their final executed layer K/V into all deeper loop planes,
-  preserving gradients through `last_exited` cache reuse.
-- Dense batches with independent traces and contiguous left/right padding.
-- Non-reentrant layer checkpointing; fixed loop/layer call counts.
-- Local HF `AutoConfig` / `AutoModelForCausalLM` registration and save/load,
-  using `trust_remote_code=False`. No Hugging Face Python code is downloaded.
-- CPU engine parity, finite-difference gradient checks, exact tiny-model Adam
-  save/resume, CUDA BF16/Triton parity, and a single-rank FSDP smoke driver.
-- `OuroFSDPEngine` forwards mandatory exit traces from jagged TensorDict inputs.
-  The adapter preserves response masks, actual seeds and weight versions.
-- Packed input is re-padded into independent rows and gathered back afterwards.
-  It is a correctness bridge, not a fused variable-length attention optimization.
-- Physical replay layers expose a training forward for per-layer FSDP wrapping,
-  with fixed invocation counts regardless of local traces or sequence count.
-- Real-model two-step PPO, full-weight update/fresh-engine comparison, and exact
-  next-step resume of weights, Adam and scheduler states on one GPU.
-
-The existing gate is frozen. Gradients condition on a supplied execution trace;
-this does not differentiate the discrete exit decision or train an N+2 head.
-The dense implementation still computes masked rows. Do not claim training
-speedups from early exit in this first correctness implementation.
-
-## Versions and environment
-
-| Component | Revision / validation version |
+| File | Responsibility |
 |---|---|
-| verl checkout | `fbb4b3a8bf636f290c9c59fc346f756849e9c241` |
-| vllm-rlt | `ecb1f8b505b7e831815b40aec3b4598619cca23a` |
-| Round 2 engine prototype, 0z5a/vllm-rlt PR #4 | `bdce2876e3f78ac7efaa6cbf5783c185da2e9d19` |
+| `model.py`, `hf.py` | Checkpoint-compatible differentiable recurrent replay; local HF registration |
+| `worker.py` | Trace-aware `OuroFSDPEngine`, response-only PPO batch conversion, per-unit FSDP1 export |
+| `rollout.py` | In-process verl `BaseRollout`, actual request seeds/depths/log probabilities/versions |
+| `publication.py` | Physical named-tensor buckets, monotonic transactions, retry/restart counters |
+| `recipe_utils.py`, `train.py` | Deterministic arithmetic task, rewards, probability gate, synchronous RL and resume |
+| `validate_distributed.py`, `validate_adapter.py` | Two-rank gradient oracle and serving-feature publication acceptance |
+
+The training model retains one physical 24-layer Ouro core reused across four
+loops. Inactive inputs carry their last executed layer K/V into deeper loop
+planes, including gradients through this reuse. Layer checkpointing is
+non-reentrant, and every rank executes the same layer/loop call count despite
+unequal local traces. The existing exit gate is frozen: replay conditions on the
+supplied discrete trace and does not train an N+2 predictor.
+
+The engine registers under model type `ouro` without replacing verl's global
+`language_model` backend. Packed inputs are padded into independent rows and
+flattened back after execution; this is a correctness bridge, not fused varlen
+attention. Sequence parallelism and fused loss kernels are rejected.
+
+FSDP1 export requires `use_orig_params=True`. Every rank gathers physical units
+in the same order; only rank 0 publishes. Export yields owned BF16 tensors from
+one unit at a time without a full-model `state_dict()` snapshot. The publisher
+uses a soft bucket cap: a single oversized parameter is sent alone, and the
+producer may hold the active gathered unit and one lookahead tensor. LoRA and
+manual parameter offload are unsupported; FSDP2 delegates to verl and is unverified.
+
+## Pinned contract and environment
+
+| Component | Validated revision/version |
+|---|---|
+| verl baseline | `fbb4b3a8bf636f290c9c59fc346f756849e9c241` |
+| Usable engine prototype, [0z5a/vllm-rlt PR #4](https://github.com/0z5a/vllm-rlt/pull/4) | `bdce2876e3f78ac7efaa6cbf5783c185da2e9d19` |
 | ByteDance/Ouro-1.4B | `574fa66cb8bf5abdc979642d01cf2b79b16bfab1` |
-| Model-level test environment | Python 3.12, torch 2.12.1+cu130, transformers 5.12.1 |
+| Model safetensors SHA256 | `58872a72616c736595b8b7662079c5b12c5a162ec16eae94f21c348dfa9885af` |
+| Image runtime | Python 3.12.3, torch 2.12.1+cu130, triton 3.7.1 |
+| Adapter dependencies | transformers 5.12.1, tensordict 0.10.0, NIXL and nixl-cu13 1.4.1 |
+| Acceptance hardware | 2 × RTX 4090, 49,140 MiB each; 24 CPU cores, 144 GiB RAM; PCIe PHB |
 
-Both rounds reuse the rental image's torch 2.12.1. The worker was tested with
-tensordict 0.10.0 and transformers 5.12.1; this is not validation of verl's full
-torch-2.13 lockfile environment. The physical model classes require vllm-rlt; they
-do not require installation of upstream vLLM or Megatron.
+The validated engine exposes `RequestOutput.log_probs`, request-level
+`logprobs_mode="raw"`, `start_weight_update(version=...)`, `update_weights(...)`,
+parameterless `finish_weight_update()` and `get_weight_version()`. Do not run this
+adapter against a different proposed contract without adapting and retesting it.
+As checked on 2026-10-08, [#83](https://github.com/ThinkFlowLab/vllm-rlt/pull/83)
+uses `logprobs` and engine-level `raw_logprobs`, while the shared weight-update
+work is still a design. This PR develops the framework integration against a
+working prototype; it does not duplicate the engine API PRs.
 
-```bash
-uv venv --python 3.12 --system-site-packages .venv-ouro
-uv pip install --python .venv-ouro/bin/python -r examples/ouro/requirements-validation.txt
-PYTHONPATH=.:../engine OMP_NUM_THREADS=4 .venv-ouro/bin/python -m pytest examples/ouro/tests/test_replay.py examples/ouro/tests/test_hf.py -q
-PYTHONPATH=.:../engine OMP_NUM_THREADS=4 .venv-ouro/bin/python -m examples.ouro.validate_gpu --output tiny-fsdp.json
-PYTHONPATH=.:../engine OMP_NUM_THREADS=4 .venv-ouro/bin/python -m examples.ouro.validate_gpu --model /path/to/pinned/Ouro-1.4B --output full-fsdp.json
-```
+A successful publication starts at version `global_steps + 1`. Retry/restore
+uses a strictly newer version when the previous attempt or backend already
+observed that number. Update failure keeps admission paused; a partial P/D
+commit is not rolled back. Recover/retry before resuming generation. `release()`
+pauses admission only; it does not free model/cache memory or implement sleep/wake.
 
-PyTorch/CUDA must already be available in the selected interpreter. Dependencies
-listed here cover this model slice, not the entire verl worker stack. The GPU
-smoke uses synthetic token IDs to validate gradients/updates, not reward quality.
-
-## Model API and trace alignment
-
-```python
-from examples.ouro.model import OuroTrainingModel, input_execution_depths
-import torch
-
-model = OuroTrainingModel.from_pretrained("/path/to/Ouro-1.4B", device="cuda")
-model.gradient_checkpointing_enable()
-depths = input_execution_depths(prompt_length=3, output_depths=[4, 1, 3], max_loops=4)
-# [4, 4, 4, 1, 3, 1], aligned to prompt + response inputs.
-ids = torch.tensor([[2, 3, 5, 7, 11, 13]], device="cuda")
-logits = model(ids, execution_depths=torch.tensor([depths], device="cuda")).logits
-```
-
-The first output token comes from the last full-depth prompt input. Subsequent
-output depths describe execution of the preceding response input. The final
-input has no response target and **must be masked out of the external loss**.
-Prompt targets must also be masked for a response-only RL loss. The helper
-rejects non-full-depth first outputs rather than silently shifting a wrong trace.
-
-`forward` returns unprocessed model logits. The initial worker experiment uses
-temperature=1, top_p=1, top_k=-1 and the prototype's `logprobs_mode="raw"`.
-Top-k/top-p and other temperatures require corresponding training-policy
-processing; the experimental adapter rejects them instead of silently mixing
-probability conventions. This does not restrict the shared serving engine.
-
-For the HF load path, import `examples.ouro.hf` before `AutoConfig` loading.
-The intended verl hook is `model.external_lib=examples.ouro.hf` with
-`trust_remote_code=False`; this is a registration hook, not a runnable RL recipe.
-
-## Remaining integration work
-
-1. **Needs multiple GPUs:** sharded FSDP gradients and collectives under unequal
-   local traces, cross-rank checkpoint recovery, and separate-device PD updates.
-   A torchrun gradient oracle is prepared in `validate_distributed.py`; its
-   world-size-1 run is only a harness check, not distributed acceptance.
-2. Integrate the forthcoming upstream Phase 1 schema. This prototype uses
-   `log_probs` and request-level `raw`; the proposed upstream API uses `logprobs`
-   and engine-level `raw_logprobs`. Do not conflate the two contracts.
-3. Register the worker/rollout in a full Ray trainer recipe, validate verl's
-   locked environment, and test meaningful rewards/convergence on a dataset.
-4. Continue BF16 numerical analysis and assess correction on broader samples.
-   Native packed kernels, sequence parallelism, filtered sampling and N+2-head
-   training remain later development; no N+2 speedup is claimed here.
-
-## Worker experiments
-
-Install the verl worker dependencies before running these commands. The raw
-round-2 environment inventory is stored with the experiment results; the small
-`requirements-validation.txt` alone does not install the worker stack. Keep the
-image's matching torch/torchvision pair; unconstrained dependency resolution can
-upgrade torch and break the inherited torchvision binary.
+The worker dependency snapshot is [requirements-worker.lock](requirements-worker.lock).
+It inherits the image's matching torch/CUDA/triton binaries and was installed in
+a fresh venv before the final tests and full-depth GPU run. This is an
+image-dependent reproducer, not validation of verl's torch-2.13 lockfile.
 
 ```bash
-PYTHONPATH=.:../engine-training python -m pytest examples/ouro/tests -q
-PYTHONPATH=.:../engine-training python -m examples.ouro.validate_worker \
-  --model /path/to/Ouro-1.4B --tokens 128 --layer-wrap --early-exit \
-  --checkpoint /path/to/checkpoint --output worker-resume.json
-PYTHONPATH=.:../engine-training python -m examples.ouro.validate_worker \
-  --model /path/to/Ouro-1.4B --tokens 128 --packed --layer-wrap --early-exit \
-  --rollout-correction --output worker-corrected.json
-PYTHONPATH=.:../engine-training python -m examples.ouro.validate_runtime \
-  --model /path/to/Ouro-1.4B --output runtime-matrix.json
-# Next machine: requires TWO real visible GPUs on one host.
-PYTHONPATH=.:../engine-training torchrun --standalone --nproc_per_node=2 \
-  -m examples.ouro.validate_distributed --min-world-size=2 --output distributed.json
+# From this fork's repository root; sibling engine checkout is intentional.
+git clone https://github.com/0z5a/vllm-rlt.git ../engine-training
+git -C ../engine-training checkout bdce2876e3f78ac7efaa6cbf5783c185da2e9d19
+uv venv --python /path/to/image/python --system-site-packages .venv-ouro
+uv pip install --python .venv-ouro/bin/python --no-deps \
+  -r examples/ouro/requirements-worker.lock
+export PYTHONPATH=.:../engine-training
+export OMP_NUM_THREADS=4
+PY="$PWD/.venv-ouro/bin/python"
+$PY -c 'import torch, transformers, tensordict, nixl; print(torch.__version__)'
 ```
 
-## Attribution
+Use the pinned model's `config.json`, `model.safetensors` and tokenizer files.
+No model-repository Python is loaded (`trust_remote_code=False`). Revision
+labels in the training JSON describe the required pins; independently verify
+checkout and model hashes, as in the checked-in source/model manifests.
+Allow roughly 55 GB of persistent storage for the environment, model and one
+full model/Adam checkpoint; retain more space if keeping multiple checkpoints.
+The observed run fits this 48 GB-per-card machine without NVLink or GPU peer access.
 
-The architecture and physical layers are reused from vllm-rlt (Apache-2.0),
-which attributes ByteDance/Ouro and the Qwen/Hugging Face implementations.
-The differentiable depth-replay approach was cross-checked against 0z5a's
-[VIME PR #5](https://github.com/0z5a/vime/pull/5), revision
-`0a88bf7c1c9a94a3a730f09e32d84476bc60aa77`. Our batched masked replay is checked
-against the engine's independent chronological KV implementation. This code was
-developed with AI assistance and must receive human review before submission.
+## Reproduce acceptance
+
+```bash
+mkdir -p results
+$PY -m pytest examples/ouro/tests -q
+$PY -m torch.distributed.run --standalone --nproc_per_node=2 \
+  -m examples.ouro.validate_distributed --min-world-size=2 --output results/distributed.json
+$PY -m torch.distributed.run --standalone --nproc_per_node=2 \
+  -m pytest examples/ouro/tests/test_export.py -q
+
+# Native engine regression against the same pinned prototype.
+(cd ../engine-training && CONTRACT_DEVICE=cuda OMP_NUM_THREADS=4 \
+  "$PY" -m pytest tests/test_training_contract.py -q)
+(cd ../engine-training && CUDA_VISIBLE_DEVICES="" OMP_NUM_THREADS=4 \
+  "$PY" -m pytest tests -q)
+
+# Full-depth BF16 baseline: three fresh RL iterations.
+$PY -m torch.distributed.run --standalone --nproc_per_node=2 \
+  -m examples.ouro.train --model /path/to/Ouro-1.4B --steps 3 \
+  --response-length 32 --prompts-per-step 4 --samples-per-prompt 2 \
+  --micro-batch 1 --exit-threshold 1 --output results/full-depth.json
+
+# Adaptive-exit run: save step 2, then continue to step 3.
+$PY -m torch.distributed.run --standalone --nproc_per_node=2 \
+  -m examples.ouro.train --model /path/to/Ouro-1.4B --steps 3 \
+  --response-length 32 --prompts-per-step 4 --samples-per-prompt 2 \
+  --micro-batch 1 --exit-threshold 0 --checkpoint-dir checkpoint \
+  --checkpoint-at 2 --output results/uninterrupted.json
+
+# New processes restore both shards, Adam, scheduler, RNG and sampler cursor.
+$PY -m torch.distributed.run --standalone --nproc_per_node=2 \
+  -m examples.ouro.train --model /path/to/Ouro-1.4B --steps 3 \
+  --response-length 32 --prompts-per-step 4 --samples-per-prompt 2 \
+  --micro-batch 1 --exit-threshold 0 --resume checkpoint --output results/resumed.json
+
+$PY - <<'PY'
+import json
+left = json.load(open("results/uninterrupted.json"))["iterations"][-1]
+right = json.load(open("results/resumed.json"))["iterations"][0]
+keys = ("token_ids", "exit_depths", "sampling_seeds", "texts", "rewards",
+        "losses_rank0", "grad_norm", "shard_state_sha256")
+for key in keys:
+    assert left[key] == right[key], key
+print("Exact next-iteration resume:", keys)
+# Policy version intentionally advances on republishing restored weights.
+PY
+
+# Run separately from training: these jobs own the GPUs.
+$PY -m examples.ouro.validate_adapter --model /path/to/Ouro-1.4B \
+  --output results/adapter-matrix.json
+$PY -m examples.ouro.validate_adapter --model /path/to/Ouro-1.4B \
+  --pd --output results/adapter-pd.json
+```
+
+Each iteration uses four scheduled addition prompts from the 64 pairs
+`a,b ∈ {1,...,8}`, with two independently seeded samples per prompt. Reward is
+`1 / (1 + abs(first_integer - answer))`, or zero when no integer is produced.
+This intentionally small integration task supports nonzero GRPO advantages;
+it does not establish arithmetic quality or convergence. The recipe rejects
+all-zero advantages, nonfinite/zero gradients and non-FP32 master/Adam state.
+
+The PPO fields are response-only. Model logits predict the next input token;
+the first response target comes from the last full-depth prompt input. The
+final input and prompt targets are masked out. `input_execution_depths()`
+performs this shift and rejects inconsistent first-output depth. Actual response
+lengths, including short EOS microbatches, determine padding and loss alignment.
+
+Raw selected rollout probabilities and recomputed old-policy probabilities
+remain distinct. Training currently requires temperature=1, top_p=1, top_k=-1;
+filtered/greedy behavior requires a matching policy processing implementation.
+Before correction, valid response tokens must be finite and satisfy max absolute
+log-probability difference ≤0.5 and likelihood ratio in [0.5,2]. This is an
+explicit BF16 smoke envelope, not 1e-3 parity. The recipe then applies verl token
+TIS capped at 2 using recomputed old-policy probabilities for PPO. Changing the
+bounds changes acceptance; raw discrepancies are recorded in every iteration.
+
+## Acceptance scope and follow-up
+
+The feature matrix compares a warmed, updated engine with a fresh engine in the
+same mode, with identical sampler state. It covers full depth, early exit,
+prefix cache, async scheduling, CUDA Graphs and speculation, plus supported
+P/D eager/graphs. It verifies actual post-publication replay of existing graph
+captures and real NIXL transfers, not just enabled flags. It does not establish
+independent eager-versus-feature semantic parity. P/D speculation is unsupported
+by the pinned engine and is not included.
+
+The checkpoint test restores the same world size and compatible configuration.
+World-size-changing resharding, fault-tolerant distributed retry, production Ray
+trainer orchestration, the upstream locked runtime, native packed attention and
+sequence parallelism are later work. Dense masked replay still computes inactive
+rows; no early-exit training speedup, held-out quality gain or N+2 speedup is claimed.
+
+Phase 3 is a separate follow-up: train/evaluate a loop-specific N+2 exit predictor
+and integrate its runtime policy. This PR supplies replay, training/publication
+and reproducible baseline modules for that work. Migration to the shared Phase 1
+API follows its final implementation.
+
+## Attribution and review
+
+The physical layers reuse vllm-rlt (Apache-2.0), which attributes ByteDance/Ouro
+and Qwen/Hugging Face. The differentiable replay was cross-checked against
+[0z5a/vime PR #5](https://github.com/0z5a/vime/pull/5), revision
+`0a88bf7c1c9a94a3a730f09e32d84476bc60aa77`. Batched replay is tested against the
+engine's independent chronological KV implementation. Development and experiment
+execution used OpenAI Codex assistance. The contributor-fork draft is for human
+review; the submitter must review every changed line and independently run the
+relevant tests before any upstream verl contribution under `AGENTS.md`.

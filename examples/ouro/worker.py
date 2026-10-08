@@ -9,9 +9,12 @@ import math
 
 import torch
 from tensordict import TensorDict
+from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
 
 from examples.ouro.model import input_execution_depths
 from verl.utils import tensordict_utils as tu
+from verl.utils.fsdp_utils import fsdp_version
+from verl.workers.engine.base import EngineRegistry
 from verl.workers.engine.fsdp.transformer_impl import FSDPEngineWithLMHead
 
 
@@ -60,8 +63,59 @@ def rollout_to_tensordict(outputs, *, expected_version, max_loops, packed=False,
     return batch
 
 
+@EngineRegistry.register(model_type="ouro", backend=["fsdp", "fsdp2"], device="cuda")
 class OuroFSDPEngine(FSDPEngineWithLMHead):
     """Use verl's loading, FSDP, optimizer and loss path, preserving exit traces."""
+
+    def get_per_tensor_param(self, layered_summon=False, base_sync_done=False, **kwargs):
+        """Stream physical Ouro weights without a full-model FSDP1 snapshot.
+
+        All ranks consume the units in the same module order. Each yielded
+        tensor owns its BF16 storage, so a publisher bucket can retain it after
+        the unit's temporary unsharded storage has been released.
+        """
+        if hasattr(getattr(self.module, "_fsdp_wrapped_module", self.module), "peft_config"):
+            raise NotImplementedError("Ouro weight export supports full weights only, without LoRA")
+        if fsdp_version(self.module) != 1:
+            return super().get_per_tensor_param(layered_summon=layered_summon, base_sync_done=base_sync_done, **kwargs)
+        if self._is_offload_param:
+            raise NotImplementedError("Ouro FSDP1 weight export does not support manual parameter offload")
+        units = list(self._export_fsdp_units(self.module))
+        if any(not unit._use_orig_params for _, unit in units):
+            raise ValueError("Ouro FSDP1 weight export requires use_orig_params=True on every unit")
+        return self._export_fsdp_weights(units), None
+
+    @staticmethod
+    def _export_fsdp_units(module, prefix=""):
+        if isinstance(module, FSDP):
+            yield prefix, module
+            module = module._fsdp_wrapped_module
+        for name, child in module.named_children():
+            child_prefix = f"{prefix}.{name}" if prefix else name
+            yield from OuroFSDPEngine._export_fsdp_units(child, child_prefix)
+
+    @staticmethod
+    def _export_unit_parameters(module, prefix):
+        # Nested FSDP units own their parameters and must be gathered separately.
+        if isinstance(module, FSDP):
+            return
+        for name, param in module.named_parameters(recurse=False):
+            if name != "_flat_param":
+                yield f"{prefix}.{name}" if prefix else name, param
+        for name, child in module.named_children():
+            child_prefix = f"{prefix}.{name}" if prefix else name
+            yield from OuroFSDPEngine._export_unit_parameters(child, child_prefix)
+
+    @staticmethod
+    def _export_fsdp_weights(units):
+        seen = set()
+        for prefix, unit in units:
+            with FSDP.summon_full_params(unit, recurse=False, writeback=False, rank0_only=False):
+                for name, param in OuroFSDPEngine._export_unit_parameters(unit._fsdp_wrapped_module, prefix):
+                    if id(param) in seen:
+                        continue
+                    seen.add(id(param))
+                    yield name, param.detach().to(dtype=torch.bfloat16, copy=True)
 
     def prepare_model_inputs(self, micro_batch):
         depths = micro_batch.get("execution_depths")
@@ -86,3 +140,60 @@ class OuroFSDPEngine(FSDPEngineWithLMHead):
                 depths, 1, output_size=tuple(inputs["input_ids"].shape)
             )
         return inputs, output_args
+
+
+def training_batch_from_rollout(
+    rollout,
+    *,
+    advantages,
+    expected_version,
+    world_size,
+    global_batch_size,
+    global_token_count,
+    device="cpu",
+    packed=False,
+):
+    """Convert native output to verl's RESPONSE-aligned standard PPO batch.
+
+    Full-sequence model log_probs are sliced and shifted exactly once by verl's
+    no_padding_2_padding utility. Preserve the older model-slice adapter above
+    for its standalone validation scripts, but do not use it directly in PPO.
+    """
+    outputs = list(rollout.non_tensor_batch["rlt_outputs"])
+    if any(output.finish_reason in ("abort", "error") for output in outputs):
+        raise ValueError("aborted/error outputs cannot enter ordinary PPO training")
+    batch = rollout_to_tensordict(outputs, expected_version=expected_version, max_loops=4, packed=packed, device=device)
+    response_lengths = [len(output.token_ids) for output in outputs]
+    offsets = torch.tensor([0] + response_lengths, device=device).cumsum(0)
+
+    def response_nested(rows):
+        return torch.nested.nested_tensor_from_jagged(torch.cat(rows), offsets)
+
+    batch["responses"] = response_nested([torch.tensor(out.token_ids, device=device) for out in outputs])
+    batch["response_mask"] = response_nested(
+        [torch.ones(size, dtype=torch.bool, device=device) for size in response_lengths]
+    )
+    batch["rollout_log_probs"] = response_nested(
+        [torch.tensor(out.log_probs, dtype=torch.float32, device=device) for out in outputs]
+    )
+    batch["old_log_probs"] = batch["rollout_log_probs"].detach().clone()
+    batch["advantages"] = response_nested(
+        [advantages[index, :size].to(device) for index, size in enumerate(response_lengths)]
+    )
+    prompt_lengths = [len(out.prompt_token_ids) for out in outputs]
+    prompt_offsets = torch.tensor([0] + prompt_lengths, device=device).cumsum(0)
+    batch["prompts"] = torch.nested.nested_tensor_from_jagged(
+        torch.tensor([token for out in outputs for token in out.prompt_token_ids], device=device), prompt_offsets
+    )
+    loss_rows = [
+        torch.tensor([False] * len(out.prompt_token_ids) + [True] * len(out.token_ids), device=device)
+        for out in outputs
+    ]
+    batch["loss_mask"] = torch.nested.nested_tensor_from_jagged(torch.cat(loss_rows), batch["input_ids"].offsets())
+    for key, value in (
+        ("dp_size", world_size),
+        ("batch_num_tokens", global_token_count),
+        ("global_batch_size", global_batch_size),
+    ):
+        tu.assign_non_tensor_data(batch, key, value)
+    return batch
