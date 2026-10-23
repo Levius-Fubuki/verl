@@ -1,3 +1,16 @@
+# Copyright 2026 Individual Contributor: Levius-Fubuki
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 # SPDX-License-Identifier: Apache-2.0
 """Explicit engine contracts and a token batch driver using public methods only.
 
@@ -78,11 +91,11 @@ class TokenBatchDriver:
         if self._closed:
             raise RuntimeError("token batch driver is closed")
         prompts = list(prompts)
-        all_params = params if isinstance(params, (list, tuple)) else [params] * len(prompts)
+        all_params = params if isinstance(params, list | tuple) else [params] * len(prompts)
         if len(all_params) != len(prompts):
             raise ValueError("provide one sampling parameter object per prompt")
         if trace_ids is not None:
-            if isinstance(trace_ids, (str, bytes)):
+            if isinstance(trace_ids, str | bytes):
                 raise ValueError("trace_ids must contain one nonempty string per prompt")
             try:
                 trace_ids = list(trace_ids)
