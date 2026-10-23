@@ -54,6 +54,9 @@ def main():
     parser.add_argument("--early-exit", action="store_true")
     parser.add_argument("--rollout-correction", action="store_true")
     args = parser.parse_args()
+    from examples.ouro.historical import require_historical_prototype
+
+    require_historical_prototype()
     torch.manual_seed(123)
     torch.cuda.set_device(0)
     torch.backends.cuda.matmul.allow_tf32 = False
@@ -87,7 +90,9 @@ def main():
     prompts = [[2, 3, 5, 7], [11, 13, 17]]
     outputs = llm.generate(prompts, params)
     report["rollouts_before"] = [asdict(output) for output in outputs]
-    batch = rollout_to_tensordict(outputs, expected_version=0, max_loops=4, packed=args.packed, device="cuda")
+    batch = rollout_to_tensordict(
+        outputs, expected_version=0, max_loops=4, contract="prototype", packed=args.packed, device="cuda"
+    )
     with tempfile.TemporaryDirectory() as temp:
         dist.init_process_group("nccl", init_method="file://" + temp + "/init", rank=0, world_size=1)
         try:

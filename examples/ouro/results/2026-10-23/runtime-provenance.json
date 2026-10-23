@@ -1,0 +1,17 @@
+{
+  "python": "3.12.13 (main, Apr 14 2026, 14:33:40) [Clang 22.1.3 ]",
+  "platform": "macOS-15.1-arm64-arm-64bit",
+  "packages": {
+    "torch": "2.12.1",
+    "transformers": "5.12.1",
+    "tensordict": "0.10.0",
+    "ray": "2.58.0",
+    "pytest": "9.1.1",
+    "ruff": "0.13.2"
+  },
+  "engine_pins": {
+    "engine-current": "45f0c6737dde1f5be858ffc05fcd35b866474459",
+    "engine-publication": "0fb16324ccf02d8bc5fb88fb0a922a4c08b0ca19",
+    "engine-training": "bdce2876e3f78ac7efaa6cbf5783c185da2e9d19"
+  }
+}

@@ -1,0 +1,30 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ test_recipe_preflights_publication_before_cuda_rank_or_model_setup ______
+
+tmp_path = PosixPath('/private/var/folders/b9/qjrgjm550z51t4dqq_1hw3zm0000gn/T/pytest-of-levius/pytest-5943/test_recipe_preflights_publica0')
+
+    def test_recipe_preflights_publication_before_cuda_rank_or_model_setup(tmp_path):
+        import os
+        import subprocess
+        import sys
+
+        from vllm_rlt import LLM
+
+        if hasattr(LLM, "start_weight_update"):
+            pytest.skip("rollout-only engine capability gate is tested against #83")
+        env = {key: value for key, value in os.environ.items() if key not in ("RANK", "WORLD_SIZE", "LOCAL_RANK")}
+        result = subprocess.run(
+            [sys.executable, "-m", "examples.ouro.train", "--model", "/nonexistent/ouro",
+             "--output", str(tmp_path / "no-run.json")],
+            env=env, capture_output=True, text=True, timeout=45,
+        )
+        assert result.returncode != 0
+>       assert "publication" in result.stderr
+E       assert 'publication' in 'WARNING:2026-10-23 15:49:50,642:No supported accelerator detected. Registered: (\'nvidia\', \'huawei\', \'amd\'). Fal...)\n                              ~~~~~~~~~~^^^^^\n  File "<frozen os>", line 714, in __getitem__\nKeyError: \'RANK\'\n'
+E        +  where 'WARNING:2026-10-23 15:49:50,642:No supported accelerator detected. Registered: (\'nvidia\', \'huawei\', \'amd\'). Fal...)\n                              ~~~~~~~~~~^^^^^\n  File "<frozen os>", line 714, in __getitem__\nKeyError: \'RANK\'\n' = CompletedProcess(args=['/Users/levius/Desktop/Idea/projects/vllm-rlt/.venv-migration/bin/python', '-m', 'examples.ouro...\n                              ~~~~~~~~~~^^^^^\n  File "<frozen os>", line 714, in __getitem__\nKeyError: \'RANK\'\n').stderr
+
+verl/examples/ouro/tests/test_migration.py:168: AssertionError
+=========================== short test summary info ============================
+FAILED verl/examples/ouro/tests/test_migration.py::test_recipe_preflights_publication_before_cuda_rank_or_model_setup
+1 failed, 5 deselected in 5.44s

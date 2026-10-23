@@ -1,0 +1,270 @@
+{
+  "device": "cpu",
+  "model": "native tiny Ouro (seed 123)",
+  "engine_source": {
+    "module": "/Users/levius/Desktop/Idea/projects/vllm-rlt/engine-current/vllm_rlt/__init__.py",
+    "git_head": "45f0c6737dde1f5be858ffc05fcd35b866474459",
+    "git_dirty": false
+  },
+  "logprobs_mode": "raw_logprobs",
+  "generation_validated": true,
+  "publication_validated": false,
+  "publication_limitation": "backend is missing public weight publication methods: start_weight_update, update_weights, finish_weight_update, get_weight_version. Engine #83 alone lacks the training publication contract; use a backend with the public publication extension. Synthetic versions, direct weight copies, and private RPC are not substitutes.",
+  "pd_validated": false,
+  "pd_limitation": "Actual CUDA P/D transfer remains unvalidated.",
+  "cases": {
+    "full_depth": {
+      "transport": "LLM/StageClient subprocess",
+      "seed_replay_validated": true,
+      "target_logprobs_validated": true,
+      "max_abs_target_logprob_error": 2.384185791015625e-07,
+      "outputs": [
+        {
+          "prompt_token_ids": [
+            2,
+            3
+          ],
+          "token_ids": [
+            29,
+            36,
+            29,
+            22,
+            29,
+            12,
+            18,
+            63
+          ],
+          "exit_depths": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "logprobs": [
+            -3.9851977825164795,
+            -3.9926655292510986,
+            -3.9787607192993164,
+            -3.992809772491455,
+            -3.991217851638794,
+            -3.949169158935547,
+            -3.9863743782043457,
+            -4.002772331237793
+          ],
+          "effective_seed": 6075336005084485767
+        },
+        {
+          "prompt_token_ids": [
+            7,
+            8,
+            9
+          ],
+          "token_ids": [
+            29,
+            19,
+            9,
+            20,
+            1,
+            11,
+            57,
+            24
+          ],
+          "exit_depths": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "logprobs": [
+            -3.997060775756836,
+            -4.027200222015381,
+            -4.009626388549805,
+            -4.024484634399414,
+            -4.023967266082764,
+            -4.011021137237549,
+            -4.011758804321289,
+            -3.982990264892578
+          ],
+          "effective_seed": 5489593087596157663
+        }
+      ]
+    },
+    "early_exit": {
+      "transport": "LLM/StageClient subprocess",
+      "seed_replay_validated": true,
+      "target_logprobs_validated": true,
+      "max_abs_target_logprob_error": 4.76837158203125e-07,
+      "outputs": [
+        {
+          "prompt_token_ids": [
+            2,
+            3
+          ],
+          "token_ids": [
+            63,
+            15,
+            29,
+            37,
+            63,
+            13,
+            13,
+            20
+          ],
+          "exit_depths": [
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "logprobs": [
+            -3.9697632789611816,
+            -3.954132318496704,
+            -3.9456405639648438,
+            -4.029609680175781,
+            -4.041430473327637,
+            -3.8993945121765137,
+            -3.8906400203704834,
+            -3.9344775676727295
+          ],
+          "effective_seed": 4683828711939997638
+        },
+        {
+          "prompt_token_ids": [
+            7,
+            8,
+            9
+          ],
+          "token_ids": [
+            25,
+            35,
+            39,
+            30,
+            15,
+            15,
+            56,
+            21
+          ],
+          "exit_depths": [
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "logprobs": [
+            -4.012151718139648,
+            -3.9823176860809326,
+            -3.917933940887451,
+            -3.962482213973999,
+            -3.9848227500915527,
+            -3.985645294189453,
+            -4.006690502166748,
+            -3.986715316772461
+          ],
+          "effective_seed": 1277646603612347520
+        }
+      ]
+    },
+    "speculative": {
+      "transport": "native StageEngine",
+      "seed_replay_validated": true,
+      "target_logprobs_validated": true,
+      "max_abs_target_logprob_error": 4.76837158203125e-07,
+      "outputs": [
+        {
+          "prompt_token_ids": [
+            2,
+            3
+          ],
+          "token_ids": [
+            15,
+            63,
+            29,
+            29,
+            63,
+            18,
+            22,
+            63
+          ],
+          "exit_depths": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "logprobs": [
+            -3.984851360321045,
+            -3.9559073448181152,
+            -3.9377262592315674,
+            -3.9449172019958496,
+            -3.963390350341797,
+            -3.975348949432373,
+            -3.9710633754730225,
+            -3.9753904342651367
+          ],
+          "effective_seed": 7634904603798027652
+        },
+        {
+          "prompt_token_ids": [
+            7,
+            8,
+            9
+          ],
+          "token_ids": [
+            25,
+            29,
+            18,
+            37,
+            57,
+            63,
+            0,
+            19
+          ],
+          "exit_depths": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "logprobs": [
+            -4.012151718139648,
+            -3.9109160900115967,
+            -4.041254043579102,
+            -4.022304058074951,
+            -4.027866840362549,
+            -4.023830890655518,
+            -4.038718223571777,
+            -4.03403377532959
+          ],
+          "effective_seed": 9142714465230723238
+        }
+      ]
+    }
+  },
+  "stop_validated": true,
+  "abort_validated": true,
+  "abort_reuse_seed_validated": true,
+  "drained_used_blocks": 0
+}

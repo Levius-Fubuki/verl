@@ -14,8 +14,13 @@ from verl.workers.config import HFModelConfig, RolloutConfig
 
 
 def make_rollout(tmp_path):
+    from vllm_rlt import CacheConfig
+    from vllm_rlt.engine.llm_engine import LLMEngine
+
     from examples.ouro.rollout import OuroRollout
 
+    if not hasattr(LLMEngine, "start_weight_update"):
+        pytest.skip("real versioned-rollout acceptance requires the public publication extension")
     native = native_model()
     (tmp_path / "config.json").write_text(json.dumps(native.config.to_dict()))
     save_file(native.state_dict(), tmp_path / "model.safetensors")
@@ -34,8 +39,17 @@ def make_rollout(tmp_path):
         top_k=-1,
         top_p=1.0,
         ignore_eos=True,
+        engine_kwargs={"vllm_rlt": {"contract": "prototype"}},
     )
-    return OuroRollout(config, model, None, device="cpu", attention_backend="torch")
+    return OuroRollout(
+        config,
+        model,
+        None,
+        device="cpu",
+        attention_backend="torch",
+        backend=LLMEngine(native, cache_config=CacheConfig(num_blocks=32, block_size=2)),
+        backend_logprobs_mode="raw_logprobs",
+    )
 
 
 def prompts():
@@ -54,7 +68,7 @@ def test_real_base_rollout_metadata_publication_and_restart(tmp_path):
     rollout = make_rollout(tmp_path)
     assert isinstance(rollout, BaseRollout)
     assert get_rollout_class("vllm_rlt", "async") is type(rollout)
-    native = rollout.backend.engine.model
+    native = rollout.backend.model
     asyncio.run(rollout.update_weights(native.named_parameters(), global_steps=0))
     output = rollout.generate_sequences(prompts())
     assert output.batch["responses"].shape == (2, 4)

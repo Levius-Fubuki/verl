@@ -19,7 +19,9 @@ import numpy as np
 import torch
 import torch.distributed as dist
 from transformers import AutoTokenizer
+from vllm_rlt import LLM
 
+from examples.ouro.backend import require_publication
 from examples.ouro.recipe_utils import (
     arithmetic_reward,
     check_probability_envelope,
@@ -39,7 +41,8 @@ from verl.workers.utils.losses import ppo_loss
 from verl.workers.utils.padding import no_padding_2_padding
 
 MODEL_REVISION = "574fa66cb8bf5abdc979642d01cf2b79b16bfab1"
-ENGINE_REVISION = "bdce2876e3f78ac7efaa6cbf5783c185da2e9d19"
+ENGINE_REVISION = "45f0c6737dde1f5be858ffc05fcd35b866474459"
+PROTOTYPE_REVISION = "bdce2876e3f78ac7efaa6cbf5783c185da2e9d19"
 
 
 def shard_fingerprint(engine):
@@ -115,7 +118,11 @@ def main():
     parser.add_argument("--checkpoint-dir")
     parser.add_argument("--checkpoint-at", type=int, default=2)
     parser.add_argument("--resume")
+    parser.add_argument("--engine-contract", choices=("rollout_outputs", "prototype"), default="rollout_outputs")
     args = parser.parse_args()
+    # No CUDA/distributed initialization or model/export work for an engine
+    # whose shared publication extension has not landed yet.
+    require_publication(LLM)
     rank, world, local = (int(os.environ[key]) for key in ("RANK", "WORLD_SIZE", "LOCAL_RANK"))
     total = args.prompts_per_step * args.samples_per_prompt
     if total % (world * args.micro_batch) or args.samples_per_prompt < 2:
@@ -126,7 +133,12 @@ def main():
     torch.backends.cuda.matmul.allow_tf32 = False
     dist.init_process_group("nccl", device_id=torch.device("cuda", local))
     rollout = None
-    config = {**vars(args), "world_size": world, "model_revision": MODEL_REVISION, "engine_revision": ENGINE_REVISION}
+    config = {
+        **vars(args),
+        "world_size": world,
+        "model_revision": MODEL_REVISION,
+        "engine_revision": PROTOTYPE_REVISION if args.engine_contract == "prototype" else ENGINE_REVISION,
+    }
     report = {
         "config": config,
         "torch": torch.__version__,
@@ -182,6 +194,7 @@ def main():
                 ignore_eos=False,
                 engine_kwargs={
                     "vllm_rlt": {
+                        "contract": args.engine_contract,
                         "cache": {"num_blocks": 128},
                         "scheduler": {"max_num_seqs": 2, "max_num_batched_tokens": 64},
                         "sampling": {"exit_threshold": args.exit_threshold},

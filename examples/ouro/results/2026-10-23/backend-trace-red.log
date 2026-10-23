@@ -1,0 +1,238 @@
+FFFFFFFFFF                                                               [100%]
+=================================== FAILURES ===================================
+_____ test_trace_ids_reuse_semantic_trace_across_cpu_batches[cpu_engine0] ______
+
+cpu_engine = <vllm_rlt.engine.stage_engine.StageEngine object at 0x10cf02c00>
+
+    @pytest.mark.parametrize("cpu_engine", [{"semantic-sample": [4, 1, 3]}], indirect=True)
+    def test_trace_ids_reuse_semantic_trace_across_cpu_batches(cpu_engine):
+        from vllm_rlt import SamplingParams
+
+        driver = TokenBatchDriver(cpu_engine)
+        params = SamplingParams(max_tokens=3, min_loops=1, logprobs=0, ignore_eos=True)
+>       first = driver.generate([[2, 3]], params, trace_ids=["semantic-sample"])[0]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: TokenBatchDriver.generate() got an unexpected keyword argument 'trace_ids'
+
+examples/ouro/tests/test_backend.py:271: TypeError
+_________ test_invalid_trace_ids_rejected_before_admission[trace_ids0] _________
+
+trace_ids = []
+
+    @pytest.mark.parametrize("trace_ids", [[], ["a", "b"], [""], [None], [3], "a"])
+    def test_invalid_trace_ids_rejected_before_admission(trace_ids):
+        endpoint = PublicEndpoint()
+        with pytest.raises(ValueError, match="trace_ids.*(count|string|prompt)"):
+>           TokenBatchDriver(endpoint).generate([[2]], object(), trace_ids=trace_ids)
+E           TypeError: TokenBatchDriver.generate() got an unexpected keyword argument 'trace_ids'
+
+examples/ouro/tests/test_backend.py:285: TypeError
+_________ test_invalid_trace_ids_rejected_before_admission[trace_ids1] _________
+
+trace_ids = ['a', 'b']
+
+    @pytest.mark.parametrize("trace_ids", [[], ["a", "b"], [""], [None], [3], "a"])
+    def test_invalid_trace_ids_rejected_before_admission(trace_ids):
+        endpoint = PublicEndpoint()
+        with pytest.raises(ValueError, match="trace_ids.*(count|string|prompt)"):
+>           TokenBatchDriver(endpoint).generate([[2]], object(), trace_ids=trace_ids)
+E           TypeError: TokenBatchDriver.generate() got an unexpected keyword argument 'trace_ids'
+
+examples/ouro/tests/test_backend.py:285: TypeError
+_________ test_invalid_trace_ids_rejected_before_admission[trace_ids2] _________
+
+trace_ids = ['']
+
+    @pytest.mark.parametrize("trace_ids", [[], ["a", "b"], [""], [None], [3], "a"])
+    def test_invalid_trace_ids_rejected_before_admission(trace_ids):
+        endpoint = PublicEndpoint()
+        with pytest.raises(ValueError, match="trace_ids.*(count|string|prompt)"):
+>           TokenBatchDriver(endpoint).generate([[2]], object(), trace_ids=trace_ids)
+E           TypeError: TokenBatchDriver.generate() got an unexpected keyword argument 'trace_ids'
+
+examples/ouro/tests/test_backend.py:285: TypeError
+_________ test_invalid_trace_ids_rejected_before_admission[trace_ids3] _________
+
+trace_ids = [None]
+
+    @pytest.mark.parametrize("trace_ids", [[], ["a", "b"], [""], [None], [3], "a"])
+    def test_invalid_trace_ids_rejected_before_admission(trace_ids):
+        endpoint = PublicEndpoint()
+        with pytest.raises(ValueError, match="trace_ids.*(count|string|prompt)"):
+>           TokenBatchDriver(endpoint).generate([[2]], object(), trace_ids=trace_ids)
+E           TypeError: TokenBatchDriver.generate() got an unexpected keyword argument 'trace_ids'
+
+examples/ouro/tests/test_backend.py:285: TypeError
+_________ test_invalid_trace_ids_rejected_before_admission[trace_ids4] _________
+
+trace_ids = [3]
+
+    @pytest.mark.parametrize("trace_ids", [[], ["a", "b"], [""], [None], [3], "a"])
+    def test_invalid_trace_ids_rejected_before_admission(trace_ids):
+        endpoint = PublicEndpoint()
+        with pytest.raises(ValueError, match="trace_ids.*(count|string|prompt)"):
+>           TokenBatchDriver(endpoint).generate([[2]], object(), trace_ids=trace_ids)
+E           TypeError: TokenBatchDriver.generate() got an unexpected keyword argument 'trace_ids'
+
+examples/ouro/tests/test_backend.py:285: TypeError
+_____________ test_invalid_trace_ids_rejected_before_admission[a] ______________
+
+trace_ids = 'a'
+
+    @pytest.mark.parametrize("trace_ids", [[], ["a", "b"], [""], [None], [3], "a"])
+    def test_invalid_trace_ids_rejected_before_admission(trace_ids):
+        endpoint = PublicEndpoint()
+        with pytest.raises(ValueError, match="trace_ids.*(count|string|prompt)"):
+>           TokenBatchDriver(endpoint).generate([[2]], object(), trace_ids=trace_ids)
+E           TypeError: TokenBatchDriver.generate() got an unexpected keyword argument 'trace_ids'
+
+examples/ouro/tests/test_backend.py:285: TypeError
+_ test_native_facade_rejects_trace_ids_before_any_backend_work[prompts0-trace_ids0] _
+
+prompts = [[2]], trace_ids = ['sample']
+
+    @pytest.mark.parametrize("prompts,trace_ids", [([[2]], ["sample"]), ([], [])])
+    def test_native_facade_rejects_trace_ids_before_any_backend_work(prompts, trace_ids):
+        calls = []
+        facade = SimpleNamespace(
+            generate=lambda *args: calls.append("generate"),
+            has_unfinished_requests=lambda: calls.append("has_unfinished_requests"),
+        )
+        with pytest.raises(NotImplementedError, match="trace_ids.*public.*request.*endpoint"):
+>           TokenBatchDriver(facade).generate(prompts, object(), trace_ids=trace_ids)
+E           TypeError: TokenBatchDriver.generate() got an unexpected keyword argument 'trace_ids'
+
+examples/ouro/tests/test_backend.py:297: TypeError
+_ test_native_facade_rejects_trace_ids_before_any_backend_work[prompts1-trace_ids1] _
+
+prompts = [], trace_ids = []
+
+    @pytest.mark.parametrize("prompts,trace_ids", [([[2]], ["sample"]), ([], [])])
+    def test_native_facade_rejects_trace_ids_before_any_backend_work(prompts, trace_ids):
+        calls = []
+        facade = SimpleNamespace(
+            generate=lambda *args: calls.append("generate"),
+            has_unfinished_requests=lambda: calls.append("has_unfinished_requests"),
+        )
+        with pytest.raises(NotImplementedError, match="trace_ids.*public.*request.*endpoint"):
+>           TokenBatchDriver(facade).generate(prompts, object(), trace_ids=trace_ids)
+E           TypeError: TokenBatchDriver.generate() got an unexpected keyword argument 'trace_ids'
+
+examples/ouro/tests/test_backend.py:297: TypeError
+____________ test_native_facade_receives_tuple_parameters_as_a_list ____________
+
+    def test_native_facade_receives_tuple_parameters_as_a_list():
+        params = (object(), object())
+        expected = [output("native-0", [2]), output("native-1", [3])]
+
+        class ListFacade:
+            def generate(self, prompts, received_params):
+                assert isinstance(received_params, list)
+                assert received_params[0] is params[0] and received_params[1] is params[1]
+                return expected
+
+>       assert TokenBatchDriver(ListFacade()).generate([[2], [3]], params) == expected
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/ouro/tests/test_backend.py:311:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+examples/ouro/backend.py:86: in generate
+    outputs = list(native_generate(prompts, params))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <test_backend.test_native_facade_receives_tuple_parameters_as_a_list.<locals>.ListFacade object at 0x10d093500>
+prompts = [[2], [3]]
+received_params = (<object object at 0x10cbe49d0>, <object object at 0x10cbe4a50>)
+
+    def generate(self, prompts, received_params):
+>       assert isinstance(received_params, list)
+E       assert False
+E        +  where False = isinstance((<object object at 0x10cbe49d0>, <object object at 0x10cbe4a50>), list)
+
+examples/ouro/tests/test_backend.py:307: AssertionError
+=========================== short test summary info ============================
+FAILED examples/ouro/tests/test_backend.py::test_trace_ids_reuse_semantic_trace_across_cpu_batches[cpu_engine0]
+FAILED examples/ouro/tests/test_backend.py::test_invalid_trace_ids_rejected_before_admission[trace_ids0]
+FAILED examples/ouro/tests/test_backend.py::test_invalid_trace_ids_rejected_before_admission[trace_ids1]
+FAILED examples/ouro/tests/test_backend.py::test_invalid_trace_ids_rejected_before_admission[trace_ids2]
+FAILED examples/ouro/tests/test_backend.py::test_invalid_trace_ids_rejected_before_admission[trace_ids3]
+FAILED examples/ouro/tests/test_backend.py::test_invalid_trace_ids_rejected_before_admission[trace_ids4]
+FAILED examples/ouro/tests/test_backend.py::test_invalid_trace_ids_rejected_before_admission[a]
+FAILED examples/ouro/tests/test_backend.py::test_native_facade_rejects_trace_ids_before_any_backend_work[prompts0-trace_ids0]
+FAILED examples/ouro/tests/test_backend.py::test_native_facade_rejects_trace_ids_before_any_backend_work[prompts1-trace_ids1]
+FAILED examples/ouro/tests/test_backend.py::test_native_facade_receives_tuple_parameters_as_a_list
+10 failed, 29 deselected in 0.82s
+
+Actual #83 CPU trace regression: historical driver omits semantic trace_id
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____ test_trace_ids_reuse_semantic_trace_across_cpu_batches[cpu_engine0] ______
+
+cpu_engine = <vllm_rlt.engine.stage_engine.StageEngine object at 0x11a621f70>
+
+    @pytest.mark.parametrize("cpu_engine", [{"semantic-sample": [4, 1, 3]}], indirect=True)
+    def test_trace_ids_reuse_semantic_trace_across_cpu_batches(cpu_engine):
+        from vllm_rlt import SamplingParams
+
+        driver = TokenBatchDriver(cpu_engine)
+        params = SamplingParams(max_tokens=3, min_loops=1, logprobs=0, ignore_eos=True)
+>       first = driver.generate([[2, 3]], params, trace_ids=["semantic-sample"])[0]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+examples/ouro/tests/test_backend.py:271:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<stdin>:7: in without_semantic_trace
+    ???
+examples/ouro/backend.py:110: in generate
+    self.backend.add_request(request_id, owned[request_id], request_params)
+../engine-current/vllm_rlt/engine/stage_engine.py:270: in add_request
+    self._add_request(request_id, prompt_token_ids, sampling_params, trace_id=trace_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <vllm_rlt.engine.stage_engine.StageEngine object at 0x11a621f70>
+request_id = 'ouro-5bb42681a3494bc28c485388acc106b9-0'
+prompt_token_ids = [2, 3]
+sampling_params = SamplingParams(max_tokens=3, temperature=0.0, top_p=1.0, top_k=-1, seed=0, min_loops=1, max_loops=None, exit_threshold=1.0, ignore_eos=True, priority=0, logprobs=0, stop_token_ids=())
+trace_id = None
+
+    def _add_request(self, request_id, prompt_token_ids, sampling_params, *, trace_id=None):
+        """Validate and register a stage-local request from either ingress path."""
+        if not isinstance(request_id, str) or not request_id:
+            raise ValueError("request_id must be a nonempty string")
+        # Every output, including an abort before the first sample, reports this seed.
+        params = resolve_seed(sampling_params or SamplingParams())
+        if self.async_speculative and params.temperature != 0:
+            raise ValueError("async speculative decoding currently requires greedy sampling")
+        if request_id in self._retiring_speculative:
+            self._retire_speculative(wait=True, request_id=request_id)
+        config = self.model.config
+        if not prompt_token_ids:
+            raise ValueError("prompt must contain at least one token")
+        if any(type(t) is not int or not 0 <= t < config.vocab_size for t in prompt_token_ids):
+            raise ValueError("prompt token IDs must be integers within the model vocabulary")
+        if any(t >= config.vocab_size for t in params.stop_token_ids):
+            raise ValueError("stop_token_ids must be within the model vocabulary")
+        max_loops = params.max_loops or config.total_ut_steps
+        if max_loops > config.total_ut_steps or params.min_loops > max_loops:
+            raise ValueError("requested loop bounds exceed the model's supported depth")
+        if self.speculative_config is not None and (
+            max_loops != self.speculative_config.target_loops or params.exit_threshold != 1.0
+        ):
+            raise ValueError("speculative requests require fixed target depth and exit_threshold=1")
+        if trace_id is not None:
+            if not isinstance(trace_id, str) or not trace_id:
+                raise ValueError("trace_id must be a nonempty string")
+            if self.exit_config.mode != "trace":
+                raise ValueError("trace_id requires trace exit mode")
+        trace = ()
+        if self.exit_config.mode == "trace":
+            key = request_id if trace_id is None else trace_id
+            if key not in self._exit_traces:
+>               raise ValueError(f"unknown exit trace: {key!r}; specify a configured trace_id")
+E               ValueError: unknown exit trace: 'ouro-5bb42681a3494bc28c485388acc106b9-0'; specify a configured trace_id
+
+../engine-current/vllm_rlt/engine/stage_engine.py:305: ValueError
+=========================== short test summary info ============================
+FAILED examples/ouro/tests/test_backend.py::test_trace_ids_reuse_semantic_trace_across_cpu_batches[cpu_engine0]
+1 failed, 38 deselected in 0.69s

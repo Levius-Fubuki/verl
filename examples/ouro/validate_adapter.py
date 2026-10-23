@@ -46,6 +46,9 @@ def main():
     parser.add_argument("--output", required=True)
     parser.add_argument("--pd", action="store_true")
     args = parser.parse_args()
+    from examples.ouro.historical import require_historical_prototype
+
+    require_historical_prototype()
     model_config = HFModelConfig(
         path=args.model,
         load_tokenizer=False,
@@ -72,6 +75,7 @@ def main():
         }
         exit_config = {"mode": "ouro_delayed" if asynchronous else "ouro"}
         options = {
+            "contract": "prototype",
             "cache": cache,
             "scheduler": scheduler,
             "execution": execution,
@@ -116,14 +120,28 @@ def main():
                 # warmup-only owner pair first, then require additional replay
                 # in the warmup+publication pair without adding a private API.
                 baseline_pd = make_pd()
-                baseline = OuroRollout(config, model_config, None, backend=LLM(baseline_pd), device="cuda:0")
+                baseline = OuroRollout(
+                    config,
+                    model_config,
+                    None,
+                    backend=LLM(baseline_pd),
+                    backend_logprobs_mode="raw_logprobs",
+                    device="cuda:0",
+                )
                 try:
                     baseline.generate_sequences(prompts())
                 finally:
                     baseline.close()
                 pd_baseline_metrics = baseline_pd.worker_metrics
             backend = LLM(make_pd())
-        rollout = OuroRollout(config, model_config, None, backend=backend, device="cuda:0")
+        rollout = OuroRollout(
+            config,
+            model_config,
+            None,
+            backend=backend,
+            backend_logprobs_mode="raw_logprobs" if backend is not None else None,
+            device="cuda:0",
+        )
         fresh = None
         try:
             # Warm real cache/graph state BEFORE publication, then compare a

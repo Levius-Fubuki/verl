@@ -1,0 +1,28 @@
+.......................                                                  [100%]
+=============================== warnings summary ===============================
+examples/ouro/tests/test_rollout.py::test_real_base_rollout_metadata_publication_and_restart
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/.venv-migration-repro/lib/python3.12/site-packages/ray/util/state/util.py:55: DeprecationWarning: Ray state API is no longer experimental. Please import from `ray.util.state`. instead. Importing from `ray.experimental` will be deprecated in future releases.
+    warnings.warn(
+
+examples/ouro/tests/test_rollout.py::test_standard_ppo_response_alignment_and_empty_rejection
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/verl/verl/workers/engine/__init__.py:32: UserWarning: torchtitan engine is not available: ModuleNotFoundError("No module named 'torchtitan'")
+    warnings.warn(f"torchtitan engine is not available: {e!r}", stacklevel=1)
+
+examples/ouro/tests/test_rollout.py::test_standard_ppo_response_alignment_and_empty_rejection
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/verl/verl/workers/engine/__init__.py:41: UserWarning: veomni engine is not available: ModuleNotFoundError("No module named 'veomni'")
+    warnings.warn(f"veomni engine is not available: {e!r}", stacklevel=1)
+
+examples/ouro/tests/test_rollout.py::test_standard_ppo_response_alignment_and_empty_rejection
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/verl/verl/workers/engine/__init__.py:50: UserWarning: automodel engine is not available: ModuleNotFoundError("No module named 'nemo_automodel'")
+    warnings.warn(f"automodel engine is not available: {e!r}", stacklevel=1)
+
+examples/ouro/tests/test_rollout.py::test_standard_ppo_response_alignment_and_empty_rejection
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/verl/verl/workers/engine/__init__.py:60: UserWarning: mindspeed engine is not available: ModuleNotFoundError("No module named 'megatron'")
+    warnings.warn(f"mindspeed engine is not available: {e!r}", stacklevel=1)
+
+examples/ouro/tests/test_rollout.py::test_standard_ppo_response_alignment_and_empty_rejection
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/verl/verl/workers/engine/__init__.py:69: UserWarning: megatron engine is not available: ModuleNotFoundError("No module named 'megatron'")
+    warnings.warn(f"megatron engine is not available: {e!r}", stacklevel=1)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+23 passed, 6 warnings in 2.89s

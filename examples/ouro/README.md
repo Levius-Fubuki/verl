@@ -12,6 +12,26 @@ checkpoint recovery, per-unit sharded export, and separate-device NIXL P/D
 publication. See [ROUND3.md](ROUND3.md) for measured results and raw evidence;
 [ROUND2.md](ROUND2.md) and [VALIDATION.md](VALIDATION.md) retain earlier evidence.
 
+## Current interface migration (2026-10-23)
+
+The adapter now defaults to the shared rollout-output contract: `logprobs`,
+engine-level `raw_logprobs`, and public request/step/abort generation for raw
+StageClient/PDEngine endpoints. See [MIGRATION.md](MIGRATION.md) for CPU evidence,
+exact pins and commands. The existing October 8 GPU results below are historical.
+
+**Current #83 has no public weight publication or committed policy version.**
+Versioned `OuroRollout` and `train.py` reject that missing capability before
+starting a worker or initializing CUDA/FSDP. `validate_current.py` separately
+qualifies actual generation, seeds, trace replay, stop/abort and speculative
+selected scores; it does not claim a training update or real P/D validation.
+The shared publication interface must be integrated before a new full training
+or CUDA/P/D acceptance run. No upstream PRs were combined locally.
+
+`contract="prototype"` (CLI `--engine-contract prototype`) is only for deliberate
+reproduction against the pinned old contract. It is never auto-selected as a
+fallback. Historical GPU drivers verify all engine Python sources against the
+original hash manifest before allocating CUDA; they reject newer checkouts.
+
 ## Modules
 
 | File | Responsibility |
@@ -42,7 +62,7 @@ uses a soft bucket cap: a single oversized parameter is sent alone, and the
 producer may hold the active gathered unit and one lookahead tensor. LoRA and
 manual parameter offload are unsupported; FSDP2 delegates to verl and is unverified.
 
-## Pinned contract and environment
+## Historical training contract and environment (2026-10-08)
 
 | Component | Validated revision/version |
 |---|---|
@@ -95,7 +115,7 @@ Allow roughly 55 GB of persistent storage for the environment, model and one
 full model/Adam checkpoint; retain more space if keeping multiple checkpoints.
 The observed run fits this 48 GB-per-card machine without NVLink or GPU peer access.
 
-## Reproduce acceptance
+## Reproduce historical training acceptance
 
 ```bash
 mkdir -p results
@@ -113,20 +133,20 @@ $PY -m torch.distributed.run --standalone --nproc_per_node=2 \
 
 # Full-depth BF16 baseline: three fresh RL iterations.
 $PY -m torch.distributed.run --standalone --nproc_per_node=2 \
-  -m examples.ouro.train --model /path/to/Ouro-1.4B --steps 3 \
+  -m examples.ouro.train --engine-contract prototype --model /path/to/Ouro-1.4B --steps 3 \
   --response-length 32 --prompts-per-step 4 --samples-per-prompt 2 \
   --micro-batch 1 --exit-threshold 1 --output results/full-depth.json
 
 # Adaptive-exit run: save step 2, then continue to step 3.
 $PY -m torch.distributed.run --standalone --nproc_per_node=2 \
-  -m examples.ouro.train --model /path/to/Ouro-1.4B --steps 3 \
+  -m examples.ouro.train --engine-contract prototype --model /path/to/Ouro-1.4B --steps 3 \
   --response-length 32 --prompts-per-step 4 --samples-per-prompt 2 \
   --micro-batch 1 --exit-threshold 0 --checkpoint-dir checkpoint \
   --checkpoint-at 2 --output results/uninterrupted.json
 
 # New processes restore both shards, Adam, scheduler, RNG and sampler cursor.
 $PY -m torch.distributed.run --standalone --nproc_per_node=2 \
-  -m examples.ouro.train --model /path/to/Ouro-1.4B --steps 3 \
+  -m examples.ouro.train --engine-contract prototype --model /path/to/Ouro-1.4B --steps 3 \
   --response-length 32 --prompts-per-step 4 --samples-per-prompt 2 \
   --micro-batch 1 --exit-threshold 0 --resume checkpoint --output results/resumed.json
 

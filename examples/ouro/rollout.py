@@ -13,65 +13,115 @@ import numpy as np
 import torch
 from vllm_rlt import LLM, CacheConfig, ExecutionConfig, ExitConfig, SamplingParams, SchedulerConfig, SpeculativeConfig
 
+from examples.ouro.backend import (
+    TokenBatchDriver,
+    engine_kwargs,
+    require_publication,
+    sampling_kwargs,
+    selected_logprobs,
+)
 from examples.ouro.model import input_execution_depths
 from verl import DataProto
 from verl.workers.rollout.base import _ROLLOUT_REGISTRY, BaseRollout
 
 
 class OuroRollout(BaseRollout):
-    def __init__(self, config, model_config, device_mesh, *, backend=None, device="cuda", attention_backend="triton"):
+    def __init__(
+        self,
+        config,
+        model_config,
+        device_mesh,
+        *,
+        backend=None,
+        backend_logprobs_mode=None,
+        device="cuda",
+        attention_backend="triton",
+    ):
         super().__init__(config, model_config, device_mesh)
         from examples.ouro.publication import OuroWeightPublisher
 
         options = dict(self.config.engine_kwargs.get("vllm_rlt", {}))
         self._released = False
         self._closed = False
+        self._updating = False
+        self._publication_failed = False
         self._request_counter = 0
-        self.backend = backend or LLM(
-            self.model_config.local_path,
-            device=device,
-            dtype=torch.bfloat16 if str(device).startswith("cuda") else torch.float32,
-            attention_backend=attention_backend,
-            cache_config=CacheConfig(**options.get("cache", {"num_blocks": 256})),
-            scheduler_config=SchedulerConfig(**options.get("scheduler", {"max_num_seqs": self.config.max_num_seqs})),
-            exit_config=ExitConfig(**options.get("exit", {})),
-            execution_config=ExecutionConfig(**options.get("execution", {})),
-            speculative_config=SpeculativeConfig(**options["speculative"]) if options.get("speculative") else None,
+        self.contract = options.get("contract", "rollout_outputs")
+        probability_options = engine_kwargs(self.contract)
+        # The current rollout-only PR has no public publication extension.
+        # Reject it BEFORE constructing a worker, model, or FSDP export stream.
+        require_publication(LLM if backend is None else backend)
+        if backend is not None and backend_logprobs_mode != "raw_logprobs":
+            raise ValueError("injected backend requires explicit backend_logprobs_mode='raw_logprobs'")
+        self.backend = (
+            backend
+            if backend is not None
+            else LLM(
+                self.model_config.local_path,
+                device=device,
+                dtype=torch.bfloat16 if str(device).startswith("cuda") else torch.float32,
+                attention_backend=attention_backend,
+                cache_config=CacheConfig(**options.get("cache", {"num_blocks": 256})),
+                scheduler_config=SchedulerConfig(
+                    **options.get("scheduler", {"max_num_seqs": self.config.max_num_seqs})
+                ),
+                exit_config=ExitConfig(**options.get("exit", {})),
+                execution_config=ExecutionConfig(**options.get("execution", {})),
+                speculative_config=SpeculativeConfig(**options["speculative"]) if options.get("speculative") else None,
+                **probability_options,
+            )
         )
-        self.publisher = OuroWeightPublisher(
-            self.backend, bucket_bytes=options.get("bucket_bytes", 64 << 20), use_bf16=str(device).startswith("cuda")
-        )
+        self.driver = TokenBatchDriver(self.backend)
+        try:
+            self.publisher = OuroWeightPublisher(
+                self.backend,
+                bucket_bytes=options.get("bucket_bytes", 64 << 20),
+                use_bf16=str(device).startswith("cuda"),
+            )
+        except BaseException:
+            if backend is None:
+                self.driver.close()
+            raise
 
     async def resume(self, tags):
         if self._closed:
             raise RuntimeError("rollout is closed")
         if any(tag not in ("weights", "kv_cache") for tag in tags):
             raise ValueError("unknown rollout resume tag")
-        if self._released:
-            self.backend.resume_generation()
+        if self._publication_failed or self._updating:
+            raise RuntimeError("publication must complete before rollout resumes")
         self._released = False
 
     async def release(self):
         # Native sleep/wake and memory switching are a separate engine extension.
         # Release here closes admission between synchronous phases.
-        if not self._released:
-            self.backend.pause_generation()
+        if self._closed:
+            raise RuntimeError("rollout is closed")
         self._released = True
 
     async def update_weights(self, weights, wire_format="named_tensors", **kwargs):
+        if self._closed:
+            raise RuntimeError("rollout is closed")
+        if self._updating:
+            raise RuntimeError("publication is already in progress")
         if wire_format != "named_tensors":
             raise ValueError("Ouro rollout supports wire_format='named_tensors' full updates only")
         if "global_steps" not in kwargs:
             raise ValueError("global_steps is required for versioned publication")
-        self.backend.pause_generation()
-        version = self.publisher.publish(weights, global_step=kwargs["global_steps"])
-        if not self._released:
-            self.backend.resume_generation()
-        return version
+        self._updating = True
+        self._publication_failed = True
+        try:
+            version = self.publisher.publish(weights, global_step=kwargs["global_steps"])
+            self._publication_failed = False
+            return version
+        finally:
+            self._updating = False
 
     def generate_sequences(self, prompts):
         if self._closed or self._released:
             raise RuntimeError("rollout is closed or released")
+        if self._publication_failed or self._updating:
+            raise RuntimeError("publication must complete before generation")
         ids, mask = prompts.batch["input_ids"], prompts.batch["attention_mask"]
         if ids.ndim != 2 or ids.shape != mask.shape or not bool(((mask == 0) | (mask == 1)).all()):
             raise ValueError("prompt IDs and binary mask must have matching two-dimensional shapes")
@@ -88,7 +138,7 @@ class OuroRollout(BaseRollout):
             top_p=self.config.top_p,
             top_k=self.config.top_k,
             logprobs=0,
-            logprobs_mode="raw",
+            **sampling_kwargs(self.contract),
             ignore_eos=self.config.ignore_eos,
             **options.get("sampling", {}),
         )
@@ -96,7 +146,7 @@ class OuroRollout(BaseRollout):
             SamplingParams(**common, seed=(self.config.seed + self._request_counter + i) % (2**63))
             for i in range(len(prompt_lists))
         ]
-        outputs = self.backend.generate(prompt_lists, samples)
+        outputs = self.driver.generate(prompt_lists, samples, trace_ids=prompts.non_tensor_batch.get("trace_id"))
         self._request_counter += len(prompt_lists)
         if len(outputs) != len(prompt_lists):
             raise RuntimeError("engine returned an incomplete rollout batch")
@@ -115,7 +165,8 @@ class OuroRollout(BaseRollout):
             if not output.finished or output.finish_reason in ("abort", "error") or output.weight_version != expected:
                 raise ValueError("uncommitted, aborted or failed rollout cannot enter the training batch")
             count = len(output.token_ids)
-            if count > response_width or output.log_probs is None or len(output.log_probs) != count:
+            selected = selected_logprobs(output, self.contract)
+            if count > response_width or selected is None or len(selected) != count:
                 raise ValueError("response and selected probabilities must match the configured length")
             if len(output.exit_depths) != count or output.prompt_token_ids != prompt_lists[index]:
                 raise ValueError("engine trace/prompt metadata is misaligned")
@@ -124,7 +175,7 @@ class OuroRollout(BaseRollout):
             )
             response[index, :count] = torch.tensor(output.token_ids, device=device)
             response_mask[index, :count] = True
-            scores[index, :count] = torch.tensor(output.log_probs, device=device)
+            scores[index, :count] = torch.tensor(selected, device=device)
             valid = mask[index].bool()
             depths[index, :width][valid] = torch.tensor(trace[: len(prompt_lists[index])], device=device)
             depths[index, width : width + count] = torch.tensor(trace[len(prompt_lists[index]) :], device=device)
@@ -155,22 +206,33 @@ class OuroRollout(BaseRollout):
             }
         )
         return DataProto.from_dict(
-            tensors=tensors, non_tensors=non_tensors, meta_info={**prompts.meta_info, "rlt_logprobs_mode": "raw"}
+            tensors=tensors,
+            non_tensors=non_tensors,
+            meta_info={**prompts.meta_info, "rlt_engine_contract": self.contract, "rlt_logprobs_mode": "raw_logprobs"},
         )
 
     def state_dict(self):
-        return {"request_counter": self._request_counter, "publisher": self.publisher.state_dict()}
+        return {
+            "request_counter": self._request_counter,
+            "publisher": self.publisher.state_dict(),
+            "engine_contract": self.contract,
+        }
 
     def load_state_dict(self, state):
+        if state.get("engine_contract", "prototype") != self.contract:
+            raise ValueError("restored engine contract differs from the configured contract")
         counter = state["request_counter"]
         if type(counter) is not int or counter < 0:
             raise ValueError("invalid rollout request counter")
-        self._request_counter = counter
         self.publisher.load_state_dict(copy.deepcopy(state["publisher"]))
+        self._request_counter = counter
+        # Counters do not restore weights. A fresh backend must receive the
+        # complete checkpoint before generating under the restored policy.
+        self._publication_failed = True
 
     def close(self):
         if not self._closed:
-            self.backend.close()
+            self.driver.close()
         self._closed = True
 
 

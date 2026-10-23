@@ -20,6 +20,9 @@ def main():
     parser.add_argument("--model", required=True)
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
+    from examples.ouro.historical import require_historical_prototype
+
+    require_historical_prototype()
     torch.backends.cuda.matmul.allow_tf32 = False
     prompts = [[2, 3, 5, 7], [11, 13, 17]]
     cases = ["full", "early_exit", "prefix", "async", "graphs", "graphs_async", "speculative", "graphs_speculative"]

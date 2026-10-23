@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Ouro trace-aware verl engine and pinned training-contract rollout adapter.
 
-The prototype uses RequestOutput.log_probs and raw/processed mode spellings.
-Keep this boundary explicit until the upstream Phase 1 contract is merged.
+The current contract reads RequestOutput.logprobs and engine-level raw mode.
+The historical prototype is available only through an explicit profile.
 """
 
 import math
@@ -11,6 +11,7 @@ import torch
 from tensordict import TensorDict
 from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
 
+from examples.ouro.backend import selected_logprobs
 from examples.ouro.model import input_execution_depths
 from verl.utils import tensordict_utils as tu
 from verl.utils.fsdp_utils import fsdp_version
@@ -18,26 +19,40 @@ from verl.workers.engine.base import EngineRegistry
 from verl.workers.engine.fsdp.transformer_impl import FSDPEngineWithLMHead
 
 
-def rollout_to_tensordict(outputs, *, expected_version, max_loops, packed=False, device="cpu"):
+def rollout_to_tensordict(
+    outputs,
+    *,
+    expected_version,
+    max_loops,
+    packed=False,
+    device="cpu",
+    contract="rollout_outputs",
+    logprobs_mode=None,
+):
     if not outputs:
         raise ValueError("rollout batch must be nonempty")
     rows = {key: [] for key in ("input_ids", "position_ids", "execution_depths", "response_mask", "rollout_log_probs")}
     for output in outputs:
-        if not output.finished or output.weight_version != expected_version:
+        version = getattr(output, "weight_version", None)
+        if type(version) is not int or version < 0 or not output.finished or version != expected_version:
             raise ValueError("rollout must be finished and match the requested weight version")
         params = output.sampling_params
         # Raw probabilities equal the behavior policy only for this sampler.
         # Refuse to silently train on greedy/top-p samples as on-policy PPO.
         if params is None or params.temperature != 1 or params.top_p != 1 or params.top_k != -1:
             raise ValueError("this on-policy adapter requires temperature=1, top_p=1, top_k=-1")
-        if params.logprobs_mode != "raw" or params.seed is None:
+        raw_mode = logprobs_mode == "raw_logprobs" or (contract == "prototype" and logprobs_mode is None)
+        if not raw_mode or params.seed is None:
             raise ValueError("raw logprobs and the actual rollout seed are required")
+        if contract == "prototype" and params.logprobs_mode != "raw":
+            raise ValueError("historical prototype requires raw logprobs")
         prompt, response = output.prompt_token_ids, output.token_ids
-        if not response or output.log_probs is None:
+        selected = selected_logprobs(output, contract)
+        if not response or selected is None:
             raise ValueError("nonempty responses with selected-token log_probs are required")
-        if len(response) != len(output.exit_depths) or len(response) != len(output.log_probs):
+        if len(response) != len(output.exit_depths) or len(response) != len(selected):
             raise ValueError("response, exit trace, and log_probs lengths must match")
-        if not all(math.isfinite(value) and value <= 0 for value in output.log_probs):
+        if not all(math.isfinite(value) and value <= 0 for value in selected):
             raise ValueError("rollout log_probs must be finite and nonpositive")
         depths = input_execution_depths(len(prompt), output.exit_depths, max_loops=max_loops)
         ids = prompt + response
@@ -49,7 +64,7 @@ def rollout_to_tensordict(outputs, *, expected_version, max_loops, packed=False,
             torch.tensor([False] * (len(prompt) - 1) + [True] * len(response) + [False], device=device)
         )
         rows["rollout_log_probs"].append(
-            torch.tensor([0.0] * (len(prompt) - 1) + output.log_probs + [0.0], dtype=torch.float32, device=device)
+            torch.tensor([0.0] * (len(prompt) - 1) + selected + [0.0], dtype=torch.float32, device=device)
         )
     offsets = torch.tensor([0] + [len(row) for row in rows["input_ids"]], device=device).cumsum(0)
     batch = TensorDict(
@@ -162,7 +177,16 @@ def training_batch_from_rollout(
     outputs = list(rollout.non_tensor_batch["rlt_outputs"])
     if any(output.finish_reason in ("abort", "error") for output in outputs):
         raise ValueError("aborted/error outputs cannot enter ordinary PPO training")
-    batch = rollout_to_tensordict(outputs, expected_version=expected_version, max_loops=4, packed=packed, device=device)
+    contract = rollout.meta_info.get("rlt_engine_contract", "rollout_outputs")
+    batch = rollout_to_tensordict(
+        outputs,
+        expected_version=expected_version,
+        max_loops=4,
+        packed=packed,
+        device=device,
+        contract=contract,
+        logprobs_mode=rollout.meta_info.get("rlt_logprobs_mode"),
+    )
     response_lengths = [len(output.token_ids) for output in outputs]
     offsets = torch.tensor([0] + response_lengths, device=device).cumsum(0)
 
@@ -174,7 +198,7 @@ def training_batch_from_rollout(
         [torch.ones(size, dtype=torch.bool, device=device) for size in response_lengths]
     )
     batch["rollout_log_probs"] = response_nested(
-        [torch.tensor(out.log_probs, dtype=torch.float32, device=device) for out in outputs]
+        [torch.tensor(selected_logprobs(out, contract), dtype=torch.float32, device=device) for out in outputs]
     )
     batch["old_log_probs"] = batch["rollout_log_probs"].detach().clone()
     batch["advantages"] = response_nested(

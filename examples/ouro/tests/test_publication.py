@@ -21,6 +21,8 @@ def publisher_api():
 
 @pytest.fixture
 def native_pair():
+    if not hasattr(LLMEngine, "start_weight_update"):
+        pytest.skip("#83 is rollout-only; native publication is checked separately against the pinned prototype")
     target = native_model()
     source = copy.deepcopy(target)
     with torch.no_grad():
