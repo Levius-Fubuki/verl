@@ -1,0 +1,323 @@
+{
+  "registry": "OuroReplica",
+  "scope": "standalone Ray replica + real framework LLMServerClient; no trainer or full AgentLoop manager",
+  "framework_client_outputs": [
+    {
+      "token_ids": [
+        216,
+        37,
+        1116,
+        34,
+        30,
+        1812,
+        314,
+        216,
+        33,
+        32,
+        731,
+        216,
+        36,
+        47,
+        198,
+        21350
+      ],
+      "log_probs": [
+        -0.17170467972755432,
+        -0.10370136797428131,
+        -0.887974202632904,
+        -1.4947848320007324,
+        -0.14977198839187622,
+        -0.3596954941749573,
+        -0.04571240022778511,
+        -0.1972733438014984,
+        -1.6723544597625732,
+        -1.1757668256759644,
+        -0.5479526519775391,
+        -0.004525657277554274,
+        -0.8199080228805542,
+        -0.008489944972097874,
+        -0.010410528630018234,
+        -0.004048485774546862
+      ],
+      "routed_experts": null,
+      "stop_reason": "completed",
+      "num_preempted": null,
+      "extra_fields": {
+        "exit_depths": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "sampling_params": {
+          "max_tokens": 16,
+          "temperature": 0.0,
+          "top_p": 1.0,
+          "top_k": -1,
+          "seed": 17,
+          "logprobs": 0,
+          "logprobs_mode": "raw",
+          "stop_token_ids": [],
+          "min_loops": 2,
+          "max_loops": 4,
+          "exit_threshold": 1.0,
+          "ignore_eos": true,
+          "priority": 0
+        },
+        "weight_version": 1,
+        "global_steps": 0,
+        "logprobs_mode": "raw_logprobs",
+        "engine_contract": "publication_outputs",
+        "request_generation": "0c2a4a805d7c422cb86ccfd20108dec5-b83f49ba85d94805a1a18abf40df8e37",
+        "server_epoch": "0c2a4a805d7c422cb86ccfd20108dec5",
+        "min_global_steps": 0,
+        "max_global_steps": 0
+      }
+    },
+    {
+      "token_ids": [
+        216,
+        33,
+        34,
+        1116,
+        33,
+        32,
+        30,
+        1812,
+        314,
+        216,
+        33,
+        32,
+        1672,
+        216,
+        33,
+        32
+      ],
+      "log_probs": [
+        -0.1390959918498993,
+        -0.0949295237660408,
+        -0.008731991983950138,
+        -0.9232704639434814,
+        -1.4078030586242676,
+        -1.300533652305603,
+        -0.3008800446987152,
+        -0.5164362192153931,
+        -0.09410589933395386,
+        -0.2873819172382355,
+        -1.8037126064300537,
+        -1.5033495426177979,
+        -0.9863517880439758,
+        -0.018522510305047035,
+        -1.273321509361267,
+        -0.4885650873184204
+      ],
+      "routed_experts": null,
+      "stop_reason": "completed",
+      "num_preempted": null,
+      "extra_fields": {
+        "exit_depths": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "sampling_params": {
+          "max_tokens": 16,
+          "temperature": 0.0,
+          "top_p": 1.0,
+          "top_k": -1,
+          "seed": 18,
+          "logprobs": 0,
+          "logprobs_mode": "raw",
+          "stop_token_ids": [],
+          "min_loops": 2,
+          "max_loops": 4,
+          "exit_threshold": 1.0,
+          "ignore_eos": true,
+          "priority": 0
+        },
+        "weight_version": 1,
+        "global_steps": 0,
+        "logprobs_mode": "raw_logprobs",
+        "engine_contract": "publication_outputs",
+        "request_generation": "0c2a4a805d7c422cb86ccfd20108dec5-7ee87e1db5974fdca9e79b7b5ab25c7a",
+        "server_epoch": "0c2a4a805d7c422cb86ccfd20108dec5",
+        "min_global_steps": 0,
+        "max_global_steps": 0
+      }
+    }
+  ],
+  "inflight_abort": true,
+  "before_restart": {
+    "token_ids": [
+      216,
+      37,
+      1116,
+      34,
+      30,
+      1812,
+      314,
+      216
+    ],
+    "log_probs": [
+      -0.17170467972755432,
+      -0.10399503260850906,
+      -0.894600510597229,
+      -1.4901185035705566,
+      -0.14949433505535126,
+      -0.36855408549308777,
+      -0.04635335132479668,
+      -0.1957455575466156
+    ],
+    "routed_experts": null,
+    "stop_reason": "completed",
+    "num_preempted": null,
+    "extra_fields": {
+      "exit_depths": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "sampling_params": {
+        "max_tokens": 8,
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "top_k": -1,
+        "seed": 37,
+        "logprobs": 0,
+        "logprobs_mode": "raw",
+        "stop_token_ids": [],
+        "min_loops": 2,
+        "max_loops": 4,
+        "exit_threshold": 1.0,
+        "ignore_eos": true,
+        "priority": 0
+      },
+      "weight_version": 3,
+      "global_steps": 1,
+      "logprobs_mode": "raw_logprobs",
+      "engine_contract": "publication_outputs",
+      "request_generation": "0c2a4a805d7c422cb86ccfd20108dec5-c68518f8e57540a3b0b379b23d78b559",
+      "server_epoch": "0c2a4a805d7c422cb86ccfd20108dec5"
+    }
+  },
+  "snapshot": {
+    "engine_contract": "publication_outputs",
+    "publisher": {
+      "last_attempted_version": 3,
+      "committed_version": 3,
+      "global_step": 1
+    }
+  },
+  "after_restart": {
+    "token_ids": [
+      216,
+      37,
+      1116,
+      34,
+      30,
+      1812,
+      314,
+      216
+    ],
+    "log_probs": [
+      -0.17170467972755432,
+      -0.10399503260850906,
+      -0.894600510597229,
+      -1.4901185035705566,
+      -0.14949433505535126,
+      -0.36855408549308777,
+      -0.04635335132479668,
+      -0.1957455575466156
+    ],
+    "routed_experts": null,
+    "stop_reason": "completed",
+    "num_preempted": null,
+    "extra_fields": {
+      "exit_depths": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "sampling_params": {
+        "max_tokens": 8,
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "top_k": -1,
+        "seed": 37,
+        "logprobs": 0,
+        "logprobs_mode": "raw",
+        "stop_token_ids": [],
+        "min_loops": 2,
+        "max_loops": 4,
+        "exit_threshold": 1.0,
+        "ignore_eos": true,
+        "priority": 0
+      },
+      "weight_version": 4,
+      "global_steps": 1,
+      "logprobs_mode": "raw_logprobs",
+      "engine_contract": "publication_outputs",
+      "request_generation": "2ff2f6446c2648e093d5318ae96d77e9-db4929336f2440e9a8e3d4c2ef31b7ed",
+      "server_epoch": "2ff2f6446c2648e093d5318ae96d77e9"
+    }
+  },
+  "exact_restart_tokens_depths_scores": true,
+  "real_versions": [
+    1,
+    3,
+    4
+  ],
+  "final_stats": {
+    "active": 0,
+    "generations": {},
+    "epoch": "2ff2f6446c2648e093d5318ae96d77e9",
+    "paused": false,
+    "failed": false,
+    "updating": false,
+    "publisher": {
+      "last_attempted_version": 4,
+      "committed_version": 4,
+      "global_step": 1
+    },
+    "engine": {
+      "requests": 0,
+      "used_blocks": 0
+    }
+  },
+  "full_agentloop_trainer_validated": false
+}

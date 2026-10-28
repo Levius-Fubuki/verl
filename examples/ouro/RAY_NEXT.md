@@ -1,4 +1,15 @@
-# Ray integration boundary — 2026-10-28
+# Ray integration boundary — 2026-10-29
+
+The [single-GPU follow-up](GPU_20261029.md) adds a registered standalone
+`OuroReplica` and `OuroTokenServer`. Import `examples.ouro.ray_server` explicitly.
+Real LLMServerClient and SingleTurnAgentLoop generation, in-flight abort,
+failure fencing/retry and fresh-actor restore/republication pass. The next step
+is connecting the actual distributed trainer and AgentLoopManager data path,
+including recurrent trace conversion and multi-replica publication barriers.
+That dedicated two-rank-plus-rollout validation needs three GPUs. Resource-pool
+placement and hybrid/colocated switching remain unverified/unsupported.
+
+The October 28 boundary assessment below records the state before this increment.
 
 The exercised Ouro recipe uses torchrun and real verl training/rollout APIs.
 It does not register a production Ray rollout replica. The current GPU report

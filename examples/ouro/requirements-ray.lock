@@ -1,0 +1,6 @@
+# Additive snapshot for the real verl LLMServerClient/router imports.
+# Install after requirements-worker.lock, inheriting its pinned torch/CUDA image.
+cachetools==6.2.4
+fastapi==0.116.1
+starlette==0.47.2
+uvicorn==0.35.0

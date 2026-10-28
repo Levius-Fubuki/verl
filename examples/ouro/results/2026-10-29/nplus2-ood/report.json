@@ -1,0 +1,573 @@
+{
+  "head_unchanged_from_initial_experiment": true,
+  "decision_threshold": 0.5,
+  "label_threshold": 0.5,
+  "scope": "second harder held-out arithmetic group; serial concurrency1 only",
+  "train_validation_overlap": false,
+  "prompts": [
+    {
+      "group": "17:13:+",
+      "prompt": "Question: Calculate 17 + 13.\nAnswer:",
+      "answer": 30,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        33,
+        39,
+        1232,
+        216,
+        33,
+        35,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "17:17:-",
+      "prompt": "Question: Calculate 17 - 17.\nAnswer:",
+      "answer": 0,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        33,
+        39,
+        731,
+        216,
+        33,
+        39,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "17:23:-",
+      "prompt": "Question: Calculate 17 - 23.\nAnswer:",
+      "answer": -6,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        33,
+        39,
+        731,
+        216,
+        34,
+        35,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "17:29:-",
+      "prompt": "Question: Calculate 17 - 29.\nAnswer:",
+      "answer": -12,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        33,
+        39,
+        731,
+        216,
+        34,
+        41,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "17:31:+",
+      "prompt": "Question: Calculate 17 + 31.\nAnswer:",
+      "answer": 48,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        33,
+        39,
+        1232,
+        216,
+        35,
+        33,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "17:37:+",
+      "prompt": "Question: Calculate 17 + 37.\nAnswer:",
+      "answer": 54,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        33,
+        39,
+        1232,
+        216,
+        35,
+        39,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "17:41:-",
+      "prompt": "Question: Calculate 17 - 41.\nAnswer:",
+      "answer": -24,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        33,
+        39,
+        731,
+        216,
+        36,
+        33,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "17:47:-",
+      "prompt": "Question: Calculate 17 - 47.\nAnswer:",
+      "answer": -30,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        33,
+        39,
+        731,
+        216,
+        36,
+        39,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "29:13:+",
+      "prompt": "Question: Calculate 29 + 13.\nAnswer:",
+      "answer": 42,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        34,
+        41,
+        1232,
+        216,
+        33,
+        35,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "29:17:-",
+      "prompt": "Question: Calculate 29 - 17.\nAnswer:",
+      "answer": 12,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        34,
+        41,
+        731,
+        216,
+        33,
+        39,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "29:23:-",
+      "prompt": "Question: Calculate 29 - 23.\nAnswer:",
+      "answer": 6,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        34,
+        41,
+        731,
+        216,
+        34,
+        35,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "29:29:-",
+      "prompt": "Question: Calculate 29 - 29.\nAnswer:",
+      "answer": 0,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        34,
+        41,
+        731,
+        216,
+        34,
+        41,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "29:31:+",
+      "prompt": "Question: Calculate 29 + 31.\nAnswer:",
+      "answer": 60,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        34,
+        41,
+        1232,
+        216,
+        35,
+        33,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "29:37:+",
+      "prompt": "Question: Calculate 29 + 37.\nAnswer:",
+      "answer": 66,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        34,
+        41,
+        1232,
+        216,
+        35,
+        39,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "29:41:-",
+      "prompt": "Question: Calculate 29 - 41.\nAnswer:",
+      "answer": -12,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        34,
+        41,
+        731,
+        216,
+        36,
+        33,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "29:47:-",
+      "prompt": "Question: Calculate 29 - 47.\nAnswer:",
+      "answer": -18,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        34,
+        41,
+        731,
+        216,
+        36,
+        39,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "53:13:+",
+      "prompt": "Question: Calculate 53 + 13.\nAnswer:",
+      "answer": 66,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        37,
+        35,
+        1232,
+        216,
+        33,
+        35,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "53:17:-",
+      "prompt": "Question: Calculate 53 - 17.\nAnswer:",
+      "answer": 36,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        37,
+        35,
+        731,
+        216,
+        33,
+        39,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "53:23:-",
+      "prompt": "Question: Calculate 53 - 23.\nAnswer:",
+      "answer": 30,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        37,
+        35,
+        731,
+        216,
+        34,
+        35,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "53:29:-",
+      "prompt": "Question: Calculate 53 - 29.\nAnswer:",
+      "answer": 24,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        37,
+        35,
+        731,
+        216,
+        34,
+        41,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "53:31:+",
+      "prompt": "Question: Calculate 53 + 31.\nAnswer:",
+      "answer": 84,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        37,
+        35,
+        1232,
+        216,
+        35,
+        33,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "53:37:+",
+      "prompt": "Question: Calculate 53 + 37.\nAnswer:",
+      "answer": 90,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        37,
+        35,
+        1232,
+        216,
+        35,
+        39,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "53:41:-",
+      "prompt": "Question: Calculate 53 - 41.\nAnswer:",
+      "answer": 12,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        37,
+        35,
+        731,
+        216,
+        36,
+        33,
+        30,
+        198,
+        21350,
+        42
+      ]
+    },
+    {
+      "group": "53:47:-",
+      "prompt": "Question: Calculate 53 - 47.\nAnswer:",
+      "answer": 6,
+      "ids": [
+        17872,
+        42,
+        21866,
+        216,
+        37,
+        35,
+        731,
+        216,
+        36,
+        39,
+        30,
+        198,
+        21350,
+        42
+      ]
+    }
+  ],
+  "summary": {
+    "full": {
+      "quality_correct": 23,
+      "quality_count": 24,
+      "mean_decode_input_depth": 4,
+      "seconds_by_repeat": [
+        17.11212068796158,
+        17.026134446263313
+      ],
+      "tokens_per_second": 22.4967561165729,
+      "same_sequences_as_full": 24,
+      "regressions_vs_full": 0,
+      "improvements_vs_full": 0
+    },
+    "fixed3": {
+      "quality_correct": 24,
+      "quality_count": 24,
+      "mean_decode_input_depth": 3,
+      "seconds_by_repeat": [
+        13.028623592108488,
+        13.228455159813166
+      ],
+      "tokens_per_second": 29.24925530582084,
+      "same_sequences_as_full": 0,
+      "regressions_vs_full": 0,
+      "improvements_vs_full": 1
+    },
+    "gate": {
+      "quality_correct": 24,
+      "quality_count": 24,
+      "mean_decode_input_depth": 3.1527777777777777,
+      "seconds_by_repeat": [
+        14.16566951945424,
+        13.790698252618313
+      ],
+      "tokens_per_second": 27.471379911062893,
+      "same_sequences_as_full": 5,
+      "regressions_vs_full": 0,
+      "improvements_vs_full": 1
+    },
+    "nplus2": {
+      "quality_correct": 23,
+      "quality_count": 24,
+      "mean_decode_input_depth": 3.308333333333333,
+      "seconds_by_repeat": [
+        14.960832010954618,
+        14.457589119672775
+      ],
+      "tokens_per_second": 26.106091710014937,
+      "same_sequences_as_full": 6,
+      "regressions_vs_full": 0,
+      "improvements_vs_full": 0
+    }
+  },
+  "forced_positive_matches_fixed3": true,
+  "forced_negative_matches_full": true,
+  "independent_stage_trace_score_error": 0.0,
+  "timing": "unprofiled complete serial fixed16-token requests, includes KV allocation and prefill",
+  "peak_allocated_gib": 2.884060859680176,
+  "peak_reserved_gib": 3.130859375
+}

@@ -1,0 +1,90 @@
+{
+  "scope": "serial native online reference; no batched scheduler or Ray trainer acceptance",
+  "model_revision": "574fa66cb8bf5abdc979642d01cf2b79b16bfab1",
+  "model_sha256": "58872a72616c736595b8b7662079c5b12c5a162ec16eae94f21c348dfa9885af",
+  "train_prompt_groups": 48,
+  "validation_prompt_groups": 16,
+  "test_prompt_groups": 24,
+  "test_operands_a": [
+    9,
+    10,
+    11
+  ],
+  "train_validation_operands_a": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "label_history": "full-depth teacher KV; online uses its actual exited trajectory",
+  "timing": "unprofiled complete serial requests, includes KV allocation/prefill/decode; forced16 tokens, concurrency1",
+  "fit": {
+    "train_tokens": 768,
+    "validation_tokens": 256,
+    "validation_positives": 235,
+    "accuracy": 0.9453125,
+    "majority_accuracy": 0.91796875,
+    "fp": 1,
+    "fn": 13,
+    "label_hazard_threshold": 0.5,
+    "decision_threshold": 0.5
+  },
+  "summary": {
+    "full": {
+      "quality_correct": 24,
+      "quality_count": 24,
+      "mean_decode_input_depth": 4,
+      "request_seconds_median": 0.6757282558828592,
+      "aggregate_output_tokens_per_second": 23.61213888018075,
+      "seconds_by_repeat": [
+        16.247078325599432,
+        16.27856468781829
+      ],
+      "same_sequences_as_full": 24
+    },
+    "fixed3": {
+      "quality_correct": 24,
+      "quality_count": 24,
+      "mean_decode_input_depth": 3,
+      "request_seconds_median": 0.5205157697200775,
+      "aggregate_output_tokens_per_second": 30.69969760001738,
+      "seconds_by_repeat": [
+        12.492312870919704,
+        12.524220190942287
+      ],
+      "same_sequences_as_full": 1
+    },
+    "gate": {
+      "quality_correct": 24,
+      "quality_count": 24,
+      "mean_decode_input_depth": 3.1055555555555556,
+      "request_seconds_median": 0.5375346504151821,
+      "aggregate_output_tokens_per_second": 29.530293532999004,
+      "seconds_by_repeat": [
+        12.932405654340982,
+        13.074785880744457
+      ],
+      "same_sequences_as_full": 3
+    },
+    "nplus2": {
+      "quality_correct": 24,
+      "quality_count": 24,
+      "mean_decode_input_depth": 3.1805555555555554,
+      "request_seconds_median": 0.5472153052687645,
+      "aggregate_output_tokens_per_second": 28.90886300637318,
+      "seconds_by_repeat": [
+        13.28783168271184,
+        13.278415486216545
+      ],
+      "same_sequences_as_full": 4
+    }
+  },
+  "head_sha256": "d6c8a02af9bc0fb1daf8498990d88c84e1301bd703f978cd0062afc5d962c8c5",
+  "runtime_integrated_in_reference": true,
+  "batched_scheduler_integrated": false,
+  "quality_scope": "small disjoint-operand arithmetic task, not GSM8K or broad model quality"
+}

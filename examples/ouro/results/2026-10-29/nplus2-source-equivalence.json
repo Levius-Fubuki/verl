@@ -1,0 +1,6 @@
+{
+  "tested_sha256": "77e2392fde3b01a8e8b46d93a08ea6655e1a0d8608955f76e93e296f43201ff1",
+  "final_sha256": "0161a68e687ae30fef0dd3568fc33d3737d13a900f7499e92f1dbc2e822f1e1e",
+  "ast_identical": true,
+  "note": "Only formatting changed after initial GPU run; harder holdout and trace proof use final formatted source."
+}

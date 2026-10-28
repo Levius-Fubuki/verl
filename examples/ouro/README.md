@@ -12,6 +12,15 @@ checkpoint recovery, per-unit sharded export, and separate-device NIXL P/D
 publication. See [ROUND3.md](ROUND3.md) for measured results and raw evidence;
 [ROUND2.md](ROUND2.md) and [VALIDATION.md](VALIDATION.md) retain earlier evidence.
 
+## Single-GPU follow-up (2026-10-29)
+
+[GPU_20261029.md](GPU_20261029.md) qualifies the new standalone Ray replica through
+real LLMServerClient/SingleTurnAgentLoop generation, abort, publication failure
+and actor recovery. It also introduces an opt-in online N+2 serial reference
+with trained-head loading, actual depth execution and last-exited KV checks.
+The head does not beat fixed-depth 3 or the original gate on the measured small
+arithmetic holdouts. Batched N+2 and the full Ray trainer loop remain open.
+
 ## Current interface qualification (2026-10-28)
 
 The default `rollout_outputs` profile uses #83's `logprobs` and engine-level
