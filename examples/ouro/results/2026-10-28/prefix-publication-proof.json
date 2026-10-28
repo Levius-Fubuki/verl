@@ -1,0 +1,20 @@
+{
+  "prompt_tokens": 32,
+  "block_size": 16,
+  "before_publication": {
+    "requests": 0,
+    "used_blocks": 0
+  },
+  "cached_pages_before": 1,
+  "scope": "native in-process StageEngine and public KV lookup",
+  "after_start_update": {
+    "stats": {
+      "requests": 0,
+      "used_blocks": 0
+    },
+    "cached_pages": 0
+  },
+  "selected_score_max_error": 0.0,
+  "output_version": 1,
+  "fresh_policy_token_and_depth_match": true
+}

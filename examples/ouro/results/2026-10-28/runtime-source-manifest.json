@@ -1,0 +1,1553 @@
+{
+  "python": "3.12.3 | packaged by Anaconda, Inc. | (main, May  6 2024, 19:46:43) [GCC 11.2.0]",
+  "executable": "/root/autodl-tmp/rlt-oct28/venv/bin/python",
+  "torch_runtime": {
+    "version": "2.12.1+cu130",
+    "compiled_cuda": "13.0",
+    "module": "/root/miniconda3/lib/python3.12/site-packages/torch/__init__.py",
+    "triton": "3.7.1"
+  },
+  "sources": {
+    "main": {
+      "revision_label": "6b164d3844d35ab8e753df1864f0c87dc180401a",
+      "files": {
+        "__init__.py": "6182fa7a786e92456887ee2b9ebd2bf51b46beef0a4c62ce9871c3c3e4f7f849",
+        "attention/__init__.py": "be826f33e112661b417c781e7b5589466814d6bf9cc5fec1a2b34b08cc041356",
+        "attention/backend.py": "eb94a2cc31bfb2a46242957647f3403951397955ab1b19882b8292d160f6706a",
+        "attention/metadata.py": "0083f6928386a6b071f58a1c28c73a79563fcb4aa4e63da3dcfe2b1fea52636a",
+        "config.py": "5715474987bfbbc8a770ee5e1fb03d1ee381a4b7960fc3444fbb2fd01e7f6b51",
+        "core/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "core/kv_cache_manager.py": "ad9af38f87d9de13b79a77604b2493a15f5dd6c4e907c6f676e10cac5b0279cd",
+        "core/memory.py": "e8eb068c92a115d5d7d411b8a4aabd6627b8488100a6e988c5ae84df0af2e1dc",
+        "core/scheduler.py": "36f3a7899a5ea82aa04da8d89dd60daf8e24308af162754fbdd133c9fceed6d9",
+        "core/scheduling_policy.py": "6022d2bf08c25ab60263953de78846071bb14c26a2cebb71ee136a67dc12eed2",
+        "engine/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "engine/connector.py": "1ca74044e2e6bf2606179f4dde447054016a08dda2fd4f66586ab28c22ad7a6f",
+        "engine/llm_engine.py": "44926b87586a4547bc718647673160bc36a240448927a3af64318401d8d97f66",
+        "engine/preemption.py": "ff629a4c3ef452e72bcf504e5f093c9d1102f82742206d895441f02c65fd019c",
+        "engine/stage_config.py": "4feb6ec692d43a4ac1713d5a10fa6653cf465f5d13cddceb1002af5eda17ec15",
+        "engine/stage_engine.py": "fc536e8cc71354cd9a3a1d54a1684553abd8b8262cc39332688c36a4c0f16d70",
+        "engine/worker.py": "bf91e6403cbe30e4e7f3f374b4c98788e494231ff3e68d402174e7dabf12c2e8",
+        "entrypoints/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entrypoints/chat_template.py": "2853dc4f165b5f75b24d92957282a9daeb39ad701480525486793cb7a7a627d0",
+        "entrypoints/cli.py": "723201d3eff02d6548e140fa61f01dd73c1561644248162939b138f94c49ada1",
+        "entrypoints/llm.py": "6593303d17095611e973607cbb460fe6528aaf3fb4cec9f4f69210f61bd7013e",
+        "entrypoints/pd_serve.py": "b9a72349ea86b46e8248a2cf78fb8aafa8771db2c91f61113c85ab067db458e7",
+        "entrypoints/runtime_args.py": "755889849cc83589fd2bfb78c032493fea297f74215f35626b821419587898b6",
+        "entrypoints/serve.py": "c0d83be5f89bea5bb22539039a4a380bb3eb2237694fc3d2b318b5912149e2d1",
+        "kernels/__init__.py": "3ce880bacb0d2565857d13c161ab0831e40d95c0ab9bd307694a08a9bc6478a5",
+        "kernels/flash_attention.py": "4d63c9f198b582a34c1e94b4e9b274a9829f4c98733ab1a88d3ea6b55f106bb1",
+        "kernels/graph_kv.py": "aecf0fe8f2839664c1d540f26ff7ff0c963fd86d0f73b7a2b70d7a23ef381429",
+        "kernels/metadata.py": "48f894d4abdbf0730676ddb0b379edf3cc9aea539c5c485b7af576334468fb43",
+        "kernels/paged_attention.py": "61cc701061945f4f0965d745c9c06c59ceb865ed3ae9e78679c6ae56dcc7b0a1",
+        "kernels/routing.py": "6e35992562a86240bae02fc951c489ceaedb7016f33bdb762445800e3afa3c13",
+        "kernels/tensor_transfer.py": "a8b8c4f338b57b376e36ff1624dd18f128005560589ac26f92efd5191bcd795f",
+        "kernels/triton_attention.py": "b4ce360fa0c7497950e17577919d37277ad4651faefcaaa7892e70366241e243",
+        "layers/__init__.py": "3cd59909bb787a93fb6ee1bfc91278a547c31fb26f8efd32bf7745cac33448e5",
+        "layers/normalization.py": "0d95a98a62ad6bc0069d1aa71593da1844ad9b61a948af41d9461fc139e427e4",
+        "layers/rotary_embedding.py": "6626e2b34f8fed807c8af9eb461dc0331f7f7b372e6cbd925b4350cfb262dd72",
+        "models/__init__.py": "bb72ea702a233dec4a180616517d3ba539f1d69c658901dca7bc76a04bd4557f",
+        "models/config.py": "7ca81e455e9fb00ce90c936b459edc02860b8ab3e9de55885825960282b04c94",
+        "models/huginn.py": "535203aecc2c1b315bdc52e6276c214170c4eb7808c01b5d50958f204fd76b15",
+        "models/nanbeige.py": "8aa1f4a0f25dc2b0999162a27ebccc5c063727ed975b247f449dd5e3de332bde",
+        "models/ouro.py": "03d32816d2f3fd72c16735c97d28658bd02ee2040121c4c3ffb2daa64aa68f4c",
+        "pd/__init__.py": "ce97d589536897d534c8424c797959991c51b9d6df963080ba4c33311be69f46",
+        "pd/config.py": "5097b5aa8630259ae32035720f65eb201b7f9c00e1c79649312a1ace4c479b15",
+        "pd/connector.py": "3e61d31521d610ec3b95b1d38008d6a07594bfee2288437fab10f1e1846b6855",
+        "pd/engine.py": "96452ae9198e5f9c85c183a3c9d029f5f02ff5cf21cfc572916a32afc4de2329",
+        "pd/transport.py": "c2c954081c4d2a3091bae0626b30fcd3e2c30656f12775ecaa8599009b3bcc58",
+        "profiling.py": "0744f3c46723dec3420bc4882a77f5c6f81a4aeff6e9f6587cfb3ae981d9f158",
+        "profiling_artifacts.py": "a03553c7d04e4f0c3b84664074aa4f9bb3ea708d6c1b68fa5dd4b91f16729851",
+        "request.py": "5dc63f1a2acfc781631d0458d1a616d8be1cbd982eda5b9d78fa53730ebb5e4d",
+        "sampling_params.py": "30669f09f15750f7965cb772b627e182418bf419b69c1bc19417bf5020a5a3f8",
+        "serving/__init__.py": "dc942abc8b751f574d25e917f8df0efab161ae910401b35522ee067b1ca20f49",
+        "serving/protocol.py": "54ecd4769d5487d806274c24b2b97b6ba6b65e35b1b24f0adbff5460d676449b",
+        "serving/server.py": "b082fefa19f6cd74f51293ebff4efab9942ef6b03055d331f3059df54d1b6d97",
+        "serving/worker.py": "f5769cf2d44e458a0aa905b7eeb77cccfd5a6e62e12d68c6f50494e5a63de13a",
+        "worker/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "worker/async_speculative.py": "a6403b41c060a354f797a6e2974dd4cf782ad66cf12e608e3ac1a4013a6b8c06",
+        "worker/async_state.py": "a8b84252cb3b1fb6cbf8c42aa13bdf98bdbe50711b5d0181e925893147e49bd9",
+        "worker/buffers.py": "b395077e8de1b3a5739f0324e1b28510fdd329a3cd4407f41547b737701b0393",
+        "worker/cuda_graph.py": "2983d7e4a040d4c750f4f43a6b948f32a90f0e9634e85126a82ddc7624fc5ec3",
+        "worker/executor.py": "f43a3e790e95ef5c3d52ee1a014668df63d9f6bd9f4d0b20ac8f21deb71ad798",
+        "worker/metadata.py": "ebd5faa9028735e5444f82b2a33861807cb655345265c4c2ff8d6570494cda36",
+        "worker/model_runner.py": "c47a33c1581137b483a7022d87e4195864266e0b0d8e61ea5fcf0000ab12b0fa",
+        "worker/output.py": "6f4ee0b3229c4d0c6a3fc005617291eb29e227b27542b12649ba3c1af364413c",
+        "worker/sampler.py": "a57b62e947fb08864ac31eb2b68d7f051a9ab30e0ee975f9813269860243963a",
+        "worker/speculative.py": "89d55ca842b31fe540be5ac1ae12d56c63db6309f7f234a73f2411c9650304dc",
+        "worker/submission_queue.py": "b4a5439df6cc48f50ec85df65f151e7ffba5acd1f8ae0f3b7f9a019b49b64c86",
+        "worker/tensors.py": "493d1b088592e304049b67065e5cac118e28cfdb9df4dc404fbf3169721a037b"
+      }
+    },
+    "pr78": {
+      "revision_label": "e6fae1e990f39b2738d65556ad585124f262a6b1",
+      "files": {
+        "__init__.py": "6182fa7a786e92456887ee2b9ebd2bf51b46beef0a4c62ce9871c3c3e4f7f849",
+        "attention/__init__.py": "be826f33e112661b417c781e7b5589466814d6bf9cc5fec1a2b34b08cc041356",
+        "attention/backend.py": "eb94a2cc31bfb2a46242957647f3403951397955ab1b19882b8292d160f6706a",
+        "attention/metadata.py": "0083f6928386a6b071f58a1c28c73a79563fcb4aa4e63da3dcfe2b1fea52636a",
+        "config.py": "fb038e75b82908d38ac67403cb47f8554134763fd6008929b8b667e40b1e4caa",
+        "core/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "core/kv_cache_manager.py": "db33fea6423c1144d4fcf9bd7195197f930df4255eef7b640ee4f46f1159b251",
+        "core/memory.py": "438eaf1b0d8fd7520bdea600ab5fb7f036476aa21e2ed55360b038ff605cf716",
+        "core/scheduler.py": "e5f0400bb3de8395c7e8d1c2256cec883f02162345c7091c6c4bd3abf148bc92",
+        "core/scheduling_policy.py": "6022d2bf08c25ab60263953de78846071bb14c26a2cebb71ee136a67dc12eed2",
+        "engine/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "engine/connector.py": "1ca74044e2e6bf2606179f4dde447054016a08dda2fd4f66586ab28c22ad7a6f",
+        "engine/llm_engine.py": "087252e37f4ccf274fb38db203d2a67d99c348343435d22898fccefb78c9d896",
+        "engine/preemption.py": "30f9cc3dac778d2d4af90fd634ae291e8bf632fd8f99603b0fb1401986d6ae3b",
+        "engine/stage_config.py": "4feb6ec692d43a4ac1713d5a10fa6653cf465f5d13cddceb1002af5eda17ec15",
+        "engine/stage_engine.py": "9e1b0e3b8f92e2e2b4d85d9c448421b6b702329711deeb701a06e8e3351c529e",
+        "engine/worker.py": "aa7060931b393ae4d0027bf7f8ca5f7f17f92d3dd87c67955783b59c1cd1bd34",
+        "entrypoints/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entrypoints/chat_template.py": "2853dc4f165b5f75b24d92957282a9daeb39ad701480525486793cb7a7a627d0",
+        "entrypoints/cli.py": "723201d3eff02d6548e140fa61f01dd73c1561644248162939b138f94c49ada1",
+        "entrypoints/llm.py": "10d4c98a76ffeab0f33f7df12872ee5b8fd1976fb1fd6a57d03cead6592d3e29",
+        "entrypoints/pd_serve.py": "b9a72349ea86b46e8248a2cf78fb8aafa8771db2c91f61113c85ab067db458e7",
+        "entrypoints/runtime_args.py": "4b196c67b0dc88f304119183ed4ce6a75189d38725f8d252bf3dbd273462c0d6",
+        "entrypoints/serve.py": "c0d83be5f89bea5bb22539039a4a380bb3eb2237694fc3d2b318b5912149e2d1",
+        "kernels/__init__.py": "3ce880bacb0d2565857d13c161ab0831e40d95c0ab9bd307694a08a9bc6478a5",
+        "kernels/flash_attention.py": "4d63c9f198b582a34c1e94b4e9b274a9829f4c98733ab1a88d3ea6b55f106bb1",
+        "kernels/metadata.py": "48f894d4abdbf0730676ddb0b379edf3cc9aea539c5c485b7af576334468fb43",
+        "kernels/paged_attention.py": "61cc701061945f4f0965d745c9c06c59ceb865ed3ae9e78679c6ae56dcc7b0a1",
+        "kernels/routing.py": "20e0ce4f772a85f47ff53d99a814bc66ca2cb6772e56034c3cf31e3d93a8f95e",
+        "kernels/tensor_transfer.py": "a8b8c4f338b57b376e36ff1624dd18f128005560589ac26f92efd5191bcd795f",
+        "kernels/triton_attention.py": "b4ce360fa0c7497950e17577919d37277ad4651faefcaaa7892e70366241e243",
+        "layers/__init__.py": "3cd59909bb787a93fb6ee1bfc91278a547c31fb26f8efd32bf7745cac33448e5",
+        "layers/normalization.py": "0d95a98a62ad6bc0069d1aa71593da1844ad9b61a948af41d9461fc139e427e4",
+        "layers/rotary_embedding.py": "6626e2b34f8fed807c8af9eb461dc0331f7f7b372e6cbd925b4350cfb262dd72",
+        "models/__init__.py": "bb72ea702a233dec4a180616517d3ba539f1d69c658901dca7bc76a04bd4557f",
+        "models/config.py": "7ca81e455e9fb00ce90c936b459edc02860b8ab3e9de55885825960282b04c94",
+        "models/huginn.py": "535203aecc2c1b315bdc52e6276c214170c4eb7808c01b5d50958f204fd76b15",
+        "models/nanbeige.py": "8aa1f4a0f25dc2b0999162a27ebccc5c063727ed975b247f449dd5e3de332bde",
+        "models/ouro.py": "03d32816d2f3fd72c16735c97d28658bd02ee2040121c4c3ffb2daa64aa68f4c",
+        "pd/__init__.py": "ce97d589536897d534c8424c797959991c51b9d6df963080ba4c33311be69f46",
+        "pd/config.py": "5097b5aa8630259ae32035720f65eb201b7f9c00e1c79649312a1ace4c479b15",
+        "pd/connector.py": "3e61d31521d610ec3b95b1d38008d6a07594bfee2288437fab10f1e1846b6855",
+        "pd/engine.py": "efbf71f8aa42d3d0be2a44b1eae6f4adb8acc70c987325b70fa5f67e47838f5f",
+        "pd/transport.py": "c2c954081c4d2a3091bae0626b30fcd3e2c30656f12775ecaa8599009b3bcc58",
+        "profiling.py": "0744f3c46723dec3420bc4882a77f5c6f81a4aeff6e9f6587cfb3ae981d9f158",
+        "profiling_artifacts.py": "a03553c7d04e4f0c3b84664074aa4f9bb3ea708d6c1b68fa5dd4b91f16729851",
+        "request.py": "f2252a0703fd9ae9b879f35a8947190965d186ef53c043ec2fb8f8532be10298",
+        "sampling_params.py": "a9d84b8b568a877051e308c36043a3a8c0353bbc9d14ede620dd9c83d34e3b5f",
+        "serving/__init__.py": "dc942abc8b751f574d25e917f8df0efab161ae910401b35522ee067b1ca20f49",
+        "serving/protocol.py": "54ecd4769d5487d806274c24b2b97b6ba6b65e35b1b24f0adbff5460d676449b",
+        "serving/server.py": "b082fefa19f6cd74f51293ebff4efab9942ef6b03055d331f3059df54d1b6d97",
+        "serving/worker.py": "f5769cf2d44e458a0aa905b7eeb77cccfd5a6e62e12d68c6f50494e5a63de13a",
+        "worker/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "worker/async_speculative.py": "9ef6844dd8b3dea953c06e3db0f5ce9df3a0d92d25116ff27c6caec407850bf4",
+        "worker/async_state.py": "a8b84252cb3b1fb6cbf8c42aa13bdf98bdbe50711b5d0181e925893147e49bd9",
+        "worker/buffers.py": "b395077e8de1b3a5739f0324e1b28510fdd329a3cd4407f41547b737701b0393",
+        "worker/cuda_graph.py": "c3ea513ab2129f2b3600b6c5cef61d7f179dde49f145ef5ecf0b94e30acbf3e1",
+        "worker/executor.py": "f43a3e790e95ef5c3d52ee1a014668df63d9f6bd9f4d0b20ac8f21deb71ad798",
+        "worker/metadata.py": "4f66c49cb2981d3b2b895937c41720dde35c7a48d3205e57bfb31821ecbc82a4",
+        "worker/model_runner.py": "4bdabef0830576608901f4971da71e31104e40f35b7b1dc0248e51eea2b3e977",
+        "worker/output.py": "d3453e7236960fbb554bad413b9da5f3b930abf8b1d38338662c307bf995c2d0",
+        "worker/sampler.py": "5d0ad9f209606ac0f77ad3f4bb265e03e0d079f22a1431f038379ab556ccfff8",
+        "worker/speculative.py": "5a7e30f9c3e273c7202f94b350f4664e08f5cad4a8b478f60956986d66d84c21",
+        "worker/submission_queue.py": "b4a5439df6cc48f50ec85df65f151e7ffba5acd1f8ae0f3b7f9a019b49b64c86",
+        "worker/tensors.py": "493d1b088592e304049b67065e5cac118e28cfdb9df4dc404fbf3169721a037b"
+      }
+    },
+    "pr83": {
+      "revision_label": "c7abc6d1d1ed31aade4f543e1503877d3bebc7bc",
+      "files": {
+        "__init__.py": "6182fa7a786e92456887ee2b9ebd2bf51b46beef0a4c62ce9871c3c3e4f7f849",
+        "attention/__init__.py": "be826f33e112661b417c781e7b5589466814d6bf9cc5fec1a2b34b08cc041356",
+        "attention/backend.py": "898cf352ae22f7b133653719eb0e442c888f1b3aa2ae5db60c1c6d713729ae30",
+        "attention/metadata.py": "0083f6928386a6b071f58a1c28c73a79563fcb4aa4e63da3dcfe2b1fea52636a",
+        "config.py": "90be05f4d3303dde526f9cbed14be8fb0cb41eabbc902caa4669a37cd6a134c5",
+        "core/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "core/kv_cache_manager.py": "38c97d7f087acd6d23ca4c2cfc9e2c035c48934b904b0012f74ebef228d0a515",
+        "core/memory.py": "6bf3d0a9decd92b5acb340566e8b41bc446eb666265dfa48d4fa553a53110268",
+        "core/scheduler.py": "b3d4ea8e36f0b7c49ca8c13bfefca13c6bb580b96784974cf08e27d562c9c7b6",
+        "core/scheduling_policy.py": "fa8692b38ddd71bcd7380b1d3005e3961abe035e31a3ad1f5b013368525d1848",
+        "engine/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "engine/connector.py": "1ca74044e2e6bf2606179f4dde447054016a08dda2fd4f66586ab28c22ad7a6f",
+        "engine/llm_engine.py": "456cf18e8fb2274ded0dc3190471b93e1aa44adef1afea27fdf48a5dba64fa11",
+        "engine/preemption.py": "1ef246377bde4edf902697dd5445f3bfc7a19a469cb7da55f91fa4de3347adab",
+        "engine/stage_config.py": "4feb6ec692d43a4ac1713d5a10fa6653cf465f5d13cddceb1002af5eda17ec15",
+        "engine/stage_engine.py": "4cbdccd1bca47f83c992f9a2de5c93568cb4d4dc5d2d6e3948f0e810cb3a0402",
+        "engine/worker.py": "4dccea19beb3340c30f3b639fe42a941d220be490595c11e28f8177d603afdb0",
+        "entrypoints/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entrypoints/chat_template.py": "2853dc4f165b5f75b24d92957282a9daeb39ad701480525486793cb7a7a627d0",
+        "entrypoints/cli.py": "49b91b6acdfd0b7a4346b3fcd3cdbb7a3757e2605fa13cc8bab7807e734292a1",
+        "entrypoints/llm.py": "2e71ce3f78eca10b92270fe8b3ba8ab4b9cb847e8a07da8a1280f262590c97f1",
+        "entrypoints/pd_serve.py": "8031942b48d1e8cee147553bf7fa482b05c296c833524c0df70881e2529d60fa",
+        "entrypoints/runtime_args.py": "7fde9cf5ba84c9f206599f226964b5cfdfeaf245611f058e960674644a25cbc4",
+        "entrypoints/serve.py": "3cc3a89c6379ae5a3c4c070a379c4d80a319dd37432465a8f77d0ee55b349a75",
+        "kernels/__init__.py": "3ce880bacb0d2565857d13c161ab0831e40d95c0ab9bd307694a08a9bc6478a5",
+        "kernels/flash_attention.py": "4d63c9f198b582a34c1e94b4e9b274a9829f4c98733ab1a88d3ea6b55f106bb1",
+        "kernels/metadata.py": "48f894d4abdbf0730676ddb0b379edf3cc9aea539c5c485b7af576334468fb43",
+        "kernels/paged_attention.py": "0b8426436c4e004fd748a5b3d2fbde09c3694688dec03a443884f0326cb9a6b1",
+        "kernels/routing.py": "20e0ce4f772a85f47ff53d99a814bc66ca2cb6772e56034c3cf31e3d93a8f95e",
+        "kernels/tensor_transfer.py": "a8b8c4f338b57b376e36ff1624dd18f128005560589ac26f92efd5191bcd795f",
+        "kernels/triton_attention.py": "5dca0c113ef07622ff61daa38f7d0d71ed2d27647dfd7cd43ed9208d746f73f8",
+        "layers/__init__.py": "3cd59909bb787a93fb6ee1bfc91278a547c31fb26f8efd32bf7745cac33448e5",
+        "layers/normalization.py": "0d95a98a62ad6bc0069d1aa71593da1844ad9b61a948af41d9461fc139e427e4",
+        "layers/rotary_embedding.py": "6626e2b34f8fed807c8af9eb461dc0331f7f7b372e6cbd925b4350cfb262dd72",
+        "models/__init__.py": "880fe8593c5f3fc709a738a54204eba0a9d2ad23389676a0679cb5115e741702",
+        "models/huginn.py": "4f21dcb622875f85dc5e33eecde749cc0515147e77734e2bdc72c93fe42d8f34",
+        "models/nanbeige.py": "e2b622e36e81480898d236cb9dbc348f0d2bc75f37b94fd3c971f1adf5dda48f",
+        "models/ouro.py": "40bf2a982cee75994af88ea4cbffa1ea7ccb1ab75e3db1bdd1af073273cc8996",
+        "pd/__init__.py": "ce97d589536897d534c8424c797959991c51b9d6df963080ba4c33311be69f46",
+        "pd/config.py": "5097b5aa8630259ae32035720f65eb201b7f9c00e1c79649312a1ace4c479b15",
+        "pd/connector.py": "b1b70260c19ccc9b663b47af2dad5e72bb38323a4ba4450adda8b1d88edbbbd1",
+        "pd/engine.py": "fb88fdda469332798ea1439b85392daa845e46d8931a72d64f024ac9fd7291b5",
+        "pd/transport.py": "c2c954081c4d2a3091bae0626b30fcd3e2c30656f12775ecaa8599009b3bcc58",
+        "profiling.py": "0744f3c46723dec3420bc4882a77f5c6f81a4aeff6e9f6587cfb3ae981d9f158",
+        "profiling_artifacts.py": "a03553c7d04e4f0c3b84664074aa4f9bb3ea708d6c1b68fa5dd4b91f16729851",
+        "request.py": "df74fc22af523dfbd1d962d0a7d491a8436031260ac63db255fac9589367f25e",
+        "sampling_params.py": "550482d185b07b514940f2c52ce58c9edf4f8f2ff2700ef30ce971af5f508999",
+        "serving/__init__.py": "dc942abc8b751f574d25e917f8df0efab161ae910401b35522ee067b1ca20f49",
+        "serving/protocol.py": "1831b7982c00a40d5451d1a6582e088204172074df26a1e7db8b31886099a39b",
+        "serving/server.py": "b082fefa19f6cd74f51293ebff4efab9942ef6b03055d331f3059df54d1b6d97",
+        "serving/worker.py": "f5769cf2d44e458a0aa905b7eeb77cccfd5a6e62e12d68c6f50494e5a63de13a",
+        "worker/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "worker/async_speculative.py": "059de68301554403301ece643b3a7886b5facbbdc54bf1fd7fcd7685f117f13a",
+        "worker/async_state.py": "a8b84252cb3b1fb6cbf8c42aa13bdf98bdbe50711b5d0181e925893147e49bd9",
+        "worker/buffers.py": "819d6b18f103bc3d906dc2ce309e95bfadb33756f5af4ed783e343a37b9ecaca",
+        "worker/cuda_graph.py": "58f38f6554e9cffd5ba37a48c24505a09444dd05aadbe13880da7e416a29b8da",
+        "worker/executor.py": "b5349da4f766d7bb9fd88993718b177640eee2d1eebf44212725539358324161",
+        "worker/logprobs.py": "b20330727768a074f4e0102d6e0c0baad8a7d888efcef385f13d1dc6ffee63cd",
+        "worker/metadata.py": "4f66c49cb2981d3b2b895937c41720dde35c7a48d3205e57bfb31821ecbc82a4",
+        "worker/model_runner.py": "f07caafc170cb4994ad3ed037b6b2b068a6b489cb46049448da31dd63e0309a4",
+        "worker/output.py": "71d886cf3db85286dad80d1945b5e6841fbca0e077b81c6febe2b1c6631c48eb",
+        "worker/sampler.py": "73e40012e5a05503f44d40999fba7c9b4fd974e9cde67a4494806c2ed0521f45",
+        "worker/speculative.py": "c7104d6b504d42d0720dcb808dd95332d5c96bbd5b20451bda079d2191f8bc4e",
+        "worker/submission_queue.py": "b4a5439df6cc48f50ec85df65f151e7ffba5acd1f8ae0f3b7f9a019b49b64c86",
+        "worker/tensors.py": "493d1b088592e304049b67065e5cac118e28cfdb9df4dc404fbf3169721a037b"
+      }
+    },
+    "pr130": {
+      "revision_label": "e4cb75f13b8307fe7a4c94086f450d6c2c0c3e4b",
+      "files": {
+        "__init__.py": "6182fa7a786e92456887ee2b9ebd2bf51b46beef0a4c62ce9871c3c3e4f7f849",
+        "attention/__init__.py": "be826f33e112661b417c781e7b5589466814d6bf9cc5fec1a2b34b08cc041356",
+        "attention/backend.py": "eb94a2cc31bfb2a46242957647f3403951397955ab1b19882b8292d160f6706a",
+        "attention/metadata.py": "0083f6928386a6b071f58a1c28c73a79563fcb4aa4e63da3dcfe2b1fea52636a",
+        "config.py": "334ec426645c1ffb3613fb04c3a7ec68585274566362fc851f7873d5ae325977",
+        "core/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "core/kv_cache_manager.py": "38c97d7f087acd6d23ca4c2cfc9e2c035c48934b904b0012f74ebef228d0a515",
+        "core/memory.py": "6bf3d0a9decd92b5acb340566e8b41bc446eb666265dfa48d4fa553a53110268",
+        "core/scheduler.py": "3910a918e5af01826495bed754dda6e60e873252ca6ef3272acf9f1c8acd37a0",
+        "core/scheduling_policy.py": "fa8692b38ddd71bcd7380b1d3005e3961abe035e31a3ad1f5b013368525d1848",
+        "engine/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "engine/connector.py": "1ca74044e2e6bf2606179f4dde447054016a08dda2fd4f66586ab28c22ad7a6f",
+        "engine/llm_engine.py": "ec9c75f8747f72651755a51e11b4eebdff7bd4ee2df4472997519bb45131aa75",
+        "engine/preemption.py": "30f9cc3dac778d2d4af90fd634ae291e8bf632fd8f99603b0fb1401986d6ae3b",
+        "engine/stage_config.py": "4feb6ec692d43a4ac1713d5a10fa6653cf465f5d13cddceb1002af5eda17ec15",
+        "engine/stage_engine.py": "43e193b652788ad0080ad4120782038d51781d227002350193d000c1cf8a0eaa",
+        "engine/worker.py": "4dccea19beb3340c30f3b639fe42a941d220be490595c11e28f8177d603afdb0",
+        "entrypoints/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entrypoints/chat_template.py": "2853dc4f165b5f75b24d92957282a9daeb39ad701480525486793cb7a7a627d0",
+        "entrypoints/cli.py": "49b91b6acdfd0b7a4346b3fcd3cdbb7a3757e2605fa13cc8bab7807e734292a1",
+        "entrypoints/llm.py": "c74484b3677f31311ee29504f8fab417a201e5e6f06a993f99492db17c8da013",
+        "entrypoints/pd_serve.py": "8031942b48d1e8cee147553bf7fa482b05c296c833524c0df70881e2529d60fa",
+        "entrypoints/runtime_args.py": "7fde9cf5ba84c9f206599f226964b5cfdfeaf245611f058e960674644a25cbc4",
+        "entrypoints/serve.py": "3cc3a89c6379ae5a3c4c070a379c4d80a319dd37432465a8f77d0ee55b349a75",
+        "kernels/__init__.py": "3ce880bacb0d2565857d13c161ab0831e40d95c0ab9bd307694a08a9bc6478a5",
+        "kernels/flash_attention.py": "4d63c9f198b582a34c1e94b4e9b274a9829f4c98733ab1a88d3ea6b55f106bb1",
+        "kernels/metadata.py": "48f894d4abdbf0730676ddb0b379edf3cc9aea539c5c485b7af576334468fb43",
+        "kernels/paged_attention.py": "61cc701061945f4f0965d745c9c06c59ceb865ed3ae9e78679c6ae56dcc7b0a1",
+        "kernels/routing.py": "20e0ce4f772a85f47ff53d99a814bc66ca2cb6772e56034c3cf31e3d93a8f95e",
+        "kernels/tensor_transfer.py": "a8b8c4f338b57b376e36ff1624dd18f128005560589ac26f92efd5191bcd795f",
+        "kernels/triton_attention.py": "46385ca60a90c4cc2e264616a212010d26d7354367e4998262a51f2af2a127bb",
+        "layers/__init__.py": "3cd59909bb787a93fb6ee1bfc91278a547c31fb26f8efd32bf7745cac33448e5",
+        "layers/normalization.py": "0d95a98a62ad6bc0069d1aa71593da1844ad9b61a948af41d9461fc139e427e4",
+        "layers/rotary_embedding.py": "6626e2b34f8fed807c8af9eb461dc0331f7f7b372e6cbd925b4350cfb262dd72",
+        "models/__init__.py": "880fe8593c5f3fc709a738a54204eba0a9d2ad23389676a0679cb5115e741702",
+        "models/huginn.py": "4f21dcb622875f85dc5e33eecde749cc0515147e77734e2bdc72c93fe42d8f34",
+        "models/nanbeige.py": "e2b622e36e81480898d236cb9dbc348f0d2bc75f37b94fd3c971f1adf5dda48f",
+        "models/ouro.py": "40bf2a982cee75994af88ea4cbffa1ea7ccb1ab75e3db1bdd1af073273cc8996",
+        "pd/__init__.py": "ce97d589536897d534c8424c797959991c51b9d6df963080ba4c33311be69f46",
+        "pd/config.py": "5097b5aa8630259ae32035720f65eb201b7f9c00e1c79649312a1ace4c479b15",
+        "pd/connector.py": "b1b70260c19ccc9b663b47af2dad5e72bb38323a4ba4450adda8b1d88edbbbd1",
+        "pd/engine.py": "5d4f9f3c60469a19ed3b6b86e3672916a00434548b140cf2e66e0c1003b050e9",
+        "pd/transport.py": "c2c954081c4d2a3091bae0626b30fcd3e2c30656f12775ecaa8599009b3bcc58",
+        "profiling.py": "0744f3c46723dec3420bc4882a77f5c6f81a4aeff6e9f6587cfb3ae981d9f158",
+        "profiling_artifacts.py": "a03553c7d04e4f0c3b84664074aa4f9bb3ea708d6c1b68fa5dd4b91f16729851",
+        "request.py": "59bbf1c00497806883ea649b27ebf37509b29389379dae084948d285545f465f",
+        "sampling_params.py": "30669f09f15750f7965cb772b627e182418bf419b69c1bc19417bf5020a5a3f8",
+        "serving/__init__.py": "dc942abc8b751f574d25e917f8df0efab161ae910401b35522ee067b1ca20f49",
+        "serving/protocol.py": "54ecd4769d5487d806274c24b2b97b6ba6b65e35b1b24f0adbff5460d676449b",
+        "serving/server.py": "b082fefa19f6cd74f51293ebff4efab9942ef6b03055d331f3059df54d1b6d97",
+        "serving/worker.py": "f5769cf2d44e458a0aa905b7eeb77cccfd5a6e62e12d68c6f50494e5a63de13a",
+        "worker/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "worker/async_speculative.py": "9ef6844dd8b3dea953c06e3db0f5ce9df3a0d92d25116ff27c6caec407850bf4",
+        "worker/async_state.py": "a8b84252cb3b1fb6cbf8c42aa13bdf98bdbe50711b5d0181e925893147e49bd9",
+        "worker/buffers.py": "819d6b18f103bc3d906dc2ce309e95bfadb33756f5af4ed783e343a37b9ecaca",
+        "worker/cuda_graph.py": "c3ea513ab2129f2b3600b6c5cef61d7f179dde49f145ef5ecf0b94e30acbf3e1",
+        "worker/executor.py": "b5349da4f766d7bb9fd88993718b177640eee2d1eebf44212725539358324161",
+        "worker/metadata.py": "4f66c49cb2981d3b2b895937c41720dde35c7a48d3205e57bfb31821ecbc82a4",
+        "worker/model_runner.py": "9bbd2a00a6d79d5a5e39d833e7aef4affc2b767bbf46e38925374d7175be138e",
+        "worker/output.py": "f69e6ae79084057f41b478b4a51ac8bf10a77523f56126e8af9c4cd4f4264560",
+        "worker/sampler.py": "a57b62e947fb08864ac31eb2b68d7f051a9ab30e0ee975f9813269860243963a",
+        "worker/speculative.py": "34b392419edcc0860bae7733202575809734f1b5541ecd7f6231391145902430",
+        "worker/submission_queue.py": "b4a5439df6cc48f50ec85df65f151e7ffba5acd1f8ae0f3b7f9a019b49b64c86",
+        "worker/tensors.py": "493d1b088592e304049b67065e5cac118e28cfdb9df4dc404fbf3169721a037b"
+      }
+    },
+    "base130": {
+      "revision_label": "c6730ccc3b9965aaaedc8f39650e4527f7d4564c",
+      "files": {
+        "__init__.py": "6182fa7a786e92456887ee2b9ebd2bf51b46beef0a4c62ce9871c3c3e4f7f849",
+        "attention/__init__.py": "be826f33e112661b417c781e7b5589466814d6bf9cc5fec1a2b34b08cc041356",
+        "attention/backend.py": "eb94a2cc31bfb2a46242957647f3403951397955ab1b19882b8292d160f6706a",
+        "attention/metadata.py": "0083f6928386a6b071f58a1c28c73a79563fcb4aa4e63da3dcfe2b1fea52636a",
+        "config.py": "334ec426645c1ffb3613fb04c3a7ec68585274566362fc851f7873d5ae325977",
+        "core/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "core/kv_cache_manager.py": "38c97d7f087acd6d23ca4c2cfc9e2c035c48934b904b0012f74ebef228d0a515",
+        "core/memory.py": "6bf3d0a9decd92b5acb340566e8b41bc446eb666265dfa48d4fa553a53110268",
+        "core/scheduler.py": "3910a918e5af01826495bed754dda6e60e873252ca6ef3272acf9f1c8acd37a0",
+        "core/scheduling_policy.py": "fa8692b38ddd71bcd7380b1d3005e3961abe035e31a3ad1f5b013368525d1848",
+        "engine/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "engine/connector.py": "1ca74044e2e6bf2606179f4dde447054016a08dda2fd4f66586ab28c22ad7a6f",
+        "engine/llm_engine.py": "ec9c75f8747f72651755a51e11b4eebdff7bd4ee2df4472997519bb45131aa75",
+        "engine/preemption.py": "30f9cc3dac778d2d4af90fd634ae291e8bf632fd8f99603b0fb1401986d6ae3b",
+        "engine/stage_config.py": "4feb6ec692d43a4ac1713d5a10fa6653cf465f5d13cddceb1002af5eda17ec15",
+        "engine/stage_engine.py": "43e193b652788ad0080ad4120782038d51781d227002350193d000c1cf8a0eaa",
+        "engine/worker.py": "4dccea19beb3340c30f3b639fe42a941d220be490595c11e28f8177d603afdb0",
+        "entrypoints/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "entrypoints/chat_template.py": "2853dc4f165b5f75b24d92957282a9daeb39ad701480525486793cb7a7a627d0",
+        "entrypoints/cli.py": "49b91b6acdfd0b7a4346b3fcd3cdbb7a3757e2605fa13cc8bab7807e734292a1",
+        "entrypoints/llm.py": "c74484b3677f31311ee29504f8fab417a201e5e6f06a993f99492db17c8da013",
+        "entrypoints/pd_serve.py": "8031942b48d1e8cee147553bf7fa482b05c296c833524c0df70881e2529d60fa",
+        "entrypoints/runtime_args.py": "7fde9cf5ba84c9f206599f226964b5cfdfeaf245611f058e960674644a25cbc4",
+        "entrypoints/serve.py": "3cc3a89c6379ae5a3c4c070a379c4d80a319dd37432465a8f77d0ee55b349a75",
+        "kernels/__init__.py": "3ce880bacb0d2565857d13c161ab0831e40d95c0ab9bd307694a08a9bc6478a5",
+        "kernels/flash_attention.py": "4d63c9f198b582a34c1e94b4e9b274a9829f4c98733ab1a88d3ea6b55f106bb1",
+        "kernels/metadata.py": "48f894d4abdbf0730676ddb0b379edf3cc9aea539c5c485b7af576334468fb43",
+        "kernels/paged_attention.py": "61cc701061945f4f0965d745c9c06c59ceb865ed3ae9e78679c6ae56dcc7b0a1",
+        "kernels/routing.py": "20e0ce4f772a85f47ff53d99a814bc66ca2cb6772e56034c3cf31e3d93a8f95e",
+        "kernels/tensor_transfer.py": "a8b8c4f338b57b376e36ff1624dd18f128005560589ac26f92efd5191bcd795f",
+        "kernels/triton_attention.py": "b4ce360fa0c7497950e17577919d37277ad4651faefcaaa7892e70366241e243",
+        "layers/__init__.py": "3cd59909bb787a93fb6ee1bfc91278a547c31fb26f8efd32bf7745cac33448e5",
+        "layers/normalization.py": "0d95a98a62ad6bc0069d1aa71593da1844ad9b61a948af41d9461fc139e427e4",
+        "layers/rotary_embedding.py": "6626e2b34f8fed807c8af9eb461dc0331f7f7b372e6cbd925b4350cfb262dd72",
+        "models/__init__.py": "880fe8593c5f3fc709a738a54204eba0a9d2ad23389676a0679cb5115e741702",
+        "models/huginn.py": "4f21dcb622875f85dc5e33eecde749cc0515147e77734e2bdc72c93fe42d8f34",
+        "models/nanbeige.py": "e2b622e36e81480898d236cb9dbc348f0d2bc75f37b94fd3c971f1adf5dda48f",
+        "models/ouro.py": "40bf2a982cee75994af88ea4cbffa1ea7ccb1ab75e3db1bdd1af073273cc8996",
+        "pd/__init__.py": "ce97d589536897d534c8424c797959991c51b9d6df963080ba4c33311be69f46",
+        "pd/config.py": "5097b5aa8630259ae32035720f65eb201b7f9c00e1c79649312a1ace4c479b15",
+        "pd/connector.py": "b1b70260c19ccc9b663b47af2dad5e72bb38323a4ba4450adda8b1d88edbbbd1",
+        "pd/engine.py": "5d4f9f3c60469a19ed3b6b86e3672916a00434548b140cf2e66e0c1003b050e9",
+        "pd/transport.py": "c2c954081c4d2a3091bae0626b30fcd3e2c30656f12775ecaa8599009b3bcc58",
+        "profiling.py": "0744f3c46723dec3420bc4882a77f5c6f81a4aeff6e9f6587cfb3ae981d9f158",
+        "profiling_artifacts.py": "a03553c7d04e4f0c3b84664074aa4f9bb3ea708d6c1b68fa5dd4b91f16729851",
+        "request.py": "59bbf1c00497806883ea649b27ebf37509b29389379dae084948d285545f465f",
+        "sampling_params.py": "30669f09f15750f7965cb772b627e182418bf419b69c1bc19417bf5020a5a3f8",
+        "serving/__init__.py": "dc942abc8b751f574d25e917f8df0efab161ae910401b35522ee067b1ca20f49",
+        "serving/protocol.py": "54ecd4769d5487d806274c24b2b97b6ba6b65e35b1b24f0adbff5460d676449b",
+        "serving/server.py": "b082fefa19f6cd74f51293ebff4efab9942ef6b03055d331f3059df54d1b6d97",
+        "serving/worker.py": "f5769cf2d44e458a0aa905b7eeb77cccfd5a6e62e12d68c6f50494e5a63de13a",
+        "worker/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "worker/async_speculative.py": "9ef6844dd8b3dea953c06e3db0f5ce9df3a0d92d25116ff27c6caec407850bf4",
+        "worker/async_state.py": "a8b84252cb3b1fb6cbf8c42aa13bdf98bdbe50711b5d0181e925893147e49bd9",
+        "worker/buffers.py": "819d6b18f103bc3d906dc2ce309e95bfadb33756f5af4ed783e343a37b9ecaca",
+        "worker/cuda_graph.py": "c3ea513ab2129f2b3600b6c5cef61d7f179dde49f145ef5ecf0b94e30acbf3e1",
+        "worker/executor.py": "b5349da4f766d7bb9fd88993718b177640eee2d1eebf44212725539358324161",
+        "worker/metadata.py": "4f66c49cb2981d3b2b895937c41720dde35c7a48d3205e57bfb31821ecbc82a4",
+        "worker/model_runner.py": "9bbd2a00a6d79d5a5e39d833e7aef4affc2b767bbf46e38925374d7175be138e",
+        "worker/output.py": "f69e6ae79084057f41b478b4a51ac8bf10a77523f56126e8af9c4cd4f4264560",
+        "worker/sampler.py": "a57b62e947fb08864ac31eb2b68d7f051a9ab30e0ee975f9813269860243963a",
+        "worker/speculative.py": "34b392419edcc0860bae7733202575809734f1b5541ecd7f6231391145902430",
+        "worker/submission_queue.py": "b4a5439df6cc48f50ec85df65f151e7ffba5acd1f8ae0f3b7f9a019b49b64c86",
+        "worker/tensors.py": "493d1b088592e304049b67065e5cac118e28cfdb9df4dc404fbf3169721a037b"
+      }
+    }
+  },
+  "adapter": {
+    "backend.py": "2478935748cb03137d0af95a94ab6fd0601faa855b29e17f35230b002bb30b82",
+    "diagnose_parity.py": "8651d0bdc8a39338c1bab467279d416b7046ff194033eaba4b93556e57965f65",
+    "hf.py": "e542209b4b5d059879b031f5625497f8eefa938afd21f07477ceaf75ab8217fa",
+    "historical.py": "a41c3edb871da033836c5c21752e7f6217ee72fdf0622750ce8a7349c61f44fd",
+    "model.py": "81cea5f929e698acf57e5cf21b5067be781f36d23966f1072d9cd3a770dce73d",
+    "publication.py": "55fea7ff21bc6c5634556c960a1d6ca12d8512766897a68245612e198cfc90ed",
+    "recipe_utils.py": "716b2f82bab4f89b5f5356e57aed512927ee1590c130dbf6be44a000d08d4afa",
+    "rollout.py": "2a5071f10401bd99dcf2b4da89bc200bf5a082272049dca58ea87e7b3b6582cb",
+    "tests/test_backend.py": "9c21686ff66360536874bcdd6bc53f0e56782652346d1acb8c08d1fddd827941",
+    "tests/test_current_engine.py": "2dd16650e3e81f41357d32e5c6a69115ab8b12017a4297dae6e1dddd8af644b2",
+    "tests/test_export.py": "e90553047df4f44488d37af4cfaef1a10763357ee9b5b16bdc7cccdb4bf865b1",
+    "tests/test_hf.py": "083bc4a8a053fe3d6767c3914285653247046b369d78ed3898d85e204807dcf6",
+    "tests/test_historical.py": "e2935388bf34c20cb49ae6385edd9b20294c1a44533c9e0a670b88dc90e2d472",
+    "tests/test_migration.py": "2ab3e064e9d575fea001f9b5634495b4b4903b4cf17f204cd62db2d7194b7004",
+    "tests/test_publication.py": "fb95e18b857e07ee4cd40697d66ce890fbdb3b5ea50d328944e1b22410807444",
+    "tests/test_publication_profile.py": "6be7287fcd30b1b980d360a23b2939cba858265939a187c534add00142621b43",
+    "tests/test_recipe.py": "98cda53d2c6e14c99f67864ae38d95e5820e56eb8cd67ee08ac72a9be6dc4822",
+    "tests/test_replay.py": "f16891967b977b0d91e0953443d9d1ee660de70e22782fd8a98196297f7492b9",
+    "tests/test_rollout.py": "2580bc10593d8448e65cd090d301055aed51d818e2b072527a4bc7a0aa233eca",
+    "tests/test_worker.py": "ad8089b29df1d0d44aa1b93d4fd5ca32502606b3264738a20156db104246df83",
+    "trace_numerics.py": "31eba552405e54cece4c7a2288a6c1cddc258ed5703a94749bdfc2407b789e16",
+    "train.py": "70aa419d831fa503576be041e10b5d0cf9a93016387a41ea19072dc27d406717",
+    "validate_adapter.py": "e33f38c543fcf849d01be4201b6c187de9f4d4c107a6edb93686fcfd8b4a9f73",
+    "validate_current.py": "4cbdcda49e2096672d9677847e9ac77c10df5ccc6345ecf1bb4adf484250a13a",
+    "validate_distributed.py": "25326dd7aa1de9747840ff3996433a66b08d1d30c691788d31e1c6c023a657ce",
+    "validate_gpu.py": "05647d2f53aaa61c9ea2fab66eb7e9be5eb703d66d1d9ffd64474d63778e89bb",
+    "validate_publication.py": "4e92743236bb81a641e9eaf57374522ea34e7cb85955d56290c1b5d5f07914b0",
+    "validate_runtime.py": "0478e3ac861ffcfb84fed5aa9ef0937428e19ff56c172f3eb2df870dd223ce83",
+    "validate_worker.py": "58c5068e12d26c7d616ccd0f522138eacb75e2929c35305caa6f857eabc9657e",
+    "worker.py": "9358f32fc5a6a290dccbef43dbda61b83035596595d05598c47762eb98112101"
+  },
+  "scripts": {
+    "attention_bench.py": "a1ec31b4eb543ee0046b2c288a22b09a9cf6b5d74be38699f4383c55c4dd62f2",
+    "compare_resume.py": "5820ae6c1e4d2046919a6ddf130962b4ff5ac9c121f980b88c3da647112d6612",
+    "graph_proof.py": "3be8ef24b637093fb2beaea384d44961dccee67b62458f86d708b48edac71e86",
+    "nplus2_pilot.py": "dbe2c7ebb75db56f5eca7386331c5b9e1b53c5ee60d41998548849275aced984",
+    "prefix_publication_probe.py": "c1341b8d220a9c37d21bc34e16b92b4cf243e524783305c2ebbc88d21503223c",
+    "provenance.py": "c9c399b915c2b49776995ce0a7a11e49e54f94854b6d9ef63c8e4bac16027518",
+    "ray_boundary.py": "4d21f91d345a889cec443f575c1d7158082a59a55d0bcd7fc6260c0806751f15",
+    "run_attention.py": "fcad4a8acf377be9e024b80bd35b903a40d2ed24246e6f71b84766ac83e6ea56",
+    "run_final_probes.py": "74b069feca2fd4874e79f56c74d9436cbd73c36fa09a6dce6bbb61cc6a99af88",
+    "run_training.py": "56c7a6f4c7580091d6a64dff80b674139175da41ad9e95a3238d564bb7d12d22",
+    "summarize_results.py": "af261d8ce4d0e1e6953d1d016d1ea66e05395d304a12ecbf3a9132a821dd0586",
+    "trace_attention_inputs.py": "adb003df69160cd6573137f197eb364af62d263953ecd1c5a9c8abfb540478cf"
+  },
+  "packages": [
+    [
+      "Brotli",
+      "1.0.9"
+    ],
+    [
+      "Jinja2",
+      "3.1.6"
+    ],
+    [
+      "Jinja2",
+      "3.1.6"
+    ],
+    [
+      "Markdown",
+      "3.10.2"
+    ],
+    [
+      "Markdown",
+      "3.11"
+    ],
+    [
+      "MarkupSafe",
+      "3.0.3"
+    ],
+    [
+      "MarkupSafe",
+      "3.0.3"
+    ],
+    [
+      "PySocks",
+      "1.7.1"
+    ],
+    [
+      "PyYAML",
+      "6.0.3"
+    ],
+    [
+      "PyYAML",
+      "6.0.3"
+    ],
+    [
+      "Pygments",
+      "2.20.0"
+    ],
+    [
+      "Pygments",
+      "2.21.0"
+    ],
+    [
+      "Send2Trash",
+      "2.1.0"
+    ],
+    [
+      "Werkzeug",
+      "3.1.8"
+    ],
+    [
+      "Werkzeug",
+      "3.1.9"
+    ],
+    [
+      "absl-py",
+      "2.4.0"
+    ],
+    [
+      "absl-py",
+      "2.5.0"
+    ],
+    [
+      "accelerate",
+      "1.15.0"
+    ],
+    [
+      "aiohappyeyeballs",
+      "2.7.1"
+    ],
+    [
+      "aiohttp",
+      "3.14.3"
+    ],
+    [
+      "aiohttp-cors",
+      "0.8.1"
+    ],
+    [
+      "aiosignal",
+      "1.4.0"
+    ],
+    [
+      "anaconda-anon-usage",
+      "0.4.4"
+    ],
+    [
+      "annotated-doc",
+      "0.0.5"
+    ],
+    [
+      "annotated-types",
+      "0.8.0"
+    ],
+    [
+      "antlr4-python3-runtime",
+      "4.9.3"
+    ],
+    [
+      "anyio",
+      "4.14.0"
+    ],
+    [
+      "anyio",
+      "4.15.1"
+    ],
+    [
+      "archspec",
+      "0.2.3"
+    ],
+    [
+      "argon2-cffi",
+      "25.1.0"
+    ],
+    [
+      "argon2-cffi-bindings",
+      "25.1.0"
+    ],
+    [
+      "arrow",
+      "1.4.0"
+    ],
+    [
+      "asttokens",
+      "3.0.1"
+    ],
+    [
+      "async-lru",
+      "2.3.0"
+    ],
+    [
+      "attrs",
+      "26.1.0"
+    ],
+    [
+      "attrs",
+      "26.1.0"
+    ],
+    [
+      "babel",
+      "2.18.0"
+    ],
+    [
+      "beautifulsoup4",
+      "4.15.0"
+    ],
+    [
+      "bleach",
+      "6.4.0"
+    ],
+    [
+      "boltons",
+      "23.0.0"
+    ],
+    [
+      "certifi",
+      "2024.2.2"
+    ],
+    [
+      "certifi",
+      "2026.7.22"
+    ],
+    [
+      "cffi",
+      "1.16.0"
+    ],
+    [
+      "cffi",
+      "2.1.1"
+    ],
+    [
+      "charset-normalizer",
+      "2.0.4"
+    ],
+    [
+      "charset-normalizer",
+      "3.5.2"
+    ],
+    [
+      "click",
+      "8.5.0"
+    ],
+    [
+      "cloudpickle",
+      "3.1.2"
+    ],
+    [
+      "codetiming",
+      "1.4.0"
+    ],
+    [
+      "colorful",
+      "0.5.8"
+    ],
+    [
+      "comm",
+      "0.2.3"
+    ],
+    [
+      "conda",
+      "24.4.0"
+    ],
+    [
+      "conda-content-trust",
+      "0.2.0"
+    ],
+    [
+      "conda-libmamba-solver",
+      "24.1.0"
+    ],
+    [
+      "conda-package-handling",
+      "2.2.0"
+    ],
+    [
+      "conda_package_streaming",
+      "0.9.0"
+    ],
+    [
+      "contourpy",
+      "1.3.3"
+    ],
+    [
+      "cryptography",
+      "42.0.5"
+    ],
+    [
+      "cryptography",
+      "50.0.2"
+    ],
+    [
+      "cuda-bindings",
+      "13.3.1"
+    ],
+    [
+      "cuda-pathfinder",
+      "1.5.5"
+    ],
+    [
+      "cuda-toolkit",
+      "13.0.2"
+    ],
+    [
+      "cycler",
+      "0.12.1"
+    ],
+    [
+      "datasets",
+      "5.0.1"
+    ],
+    [
+      "debugpy",
+      "1.8.21"
+    ],
+    [
+      "decorator",
+      "5.3.1"
+    ],
+    [
+      "defusedxml",
+      "0.7.1"
+    ],
+    [
+      "dill",
+      "0.4.1"
+    ],
+    [
+      "distlib",
+      "0.4.3"
+    ],
+    [
+      "distro",
+      "1.9.0"
+    ],
+    [
+      "executing",
+      "2.2.1"
+    ],
+    [
+      "fastjsonschema",
+      "2.21.2"
+    ],
+    [
+      "filelock",
+      "3.29.4"
+    ],
+    [
+      "filelock",
+      "4.0.8"
+    ],
+    [
+      "fonttools",
+      "4.63.0"
+    ],
+    [
+      "fqdn",
+      "1.5.1"
+    ],
+    [
+      "frozenlist",
+      "1.8.0"
+    ],
+    [
+      "fsspec",
+      "2026.6.0"
+    ],
+    [
+      "fsspec",
+      "2026.6.0"
+    ],
+    [
+      "google-api-core",
+      "2.40.0"
+    ],
+    [
+      "google-auth",
+      "2.59.1"
+    ],
+    [
+      "googleapis-common-protos",
+      "1.75.5"
+    ],
+    [
+      "grpcio",
+      "1.81.1"
+    ],
+    [
+      "grpcio",
+      "1.84.0"
+    ],
+    [
+      "h11",
+      "0.16.0"
+    ],
+    [
+      "h11",
+      "0.16.0"
+    ],
+    [
+      "hf-xet",
+      "1.6.0"
+    ],
+    [
+      "httpcore",
+      "1.0.9"
+    ],
+    [
+      "httpcore",
+      "1.0.9"
+    ],
+    [
+      "httpx",
+      "0.28.1"
+    ],
+    [
+      "httpx",
+      "0.28.1"
+    ],
+    [
+      "huggingface_hub",
+      "1.33.0"
+    ],
+    [
+      "hydra-core",
+      "1.3.7"
+    ],
+    [
+      "idna",
+      "3.20"
+    ],
+    [
+      "idna",
+      "3.7"
+    ],
+    [
+      "importlib_metadata",
+      "9.0.1"
+    ],
+    [
+      "iniconfig",
+      "2.3.0"
+    ],
+    [
+      "ipykernel",
+      "7.3.0"
+    ],
+    [
+      "ipython",
+      "9.14.1"
+    ],
+    [
+      "ipython_pygments_lexers",
+      "1.1.1"
+    ],
+    [
+      "ipywidgets",
+      "8.1.8"
+    ],
+    [
+      "isoduration",
+      "20.11.0"
+    ],
+    [
+      "jedi",
+      "0.20.0"
+    ],
+    [
+      "json5",
+      "0.14.0"
+    ],
+    [
+      "jsonpatch",
+      "1.33"
+    ],
+    [
+      "jsonpointer",
+      "2.1"
+    ],
+    [
+      "jsonschema",
+      "4.26.0"
+    ],
+    [
+      "jsonschema",
+      "4.26.0"
+    ],
+    [
+      "jsonschema-specifications",
+      "2025.9.1"
+    ],
+    [
+      "jsonschema-specifications",
+      "2025.9.1"
+    ],
+    [
+      "jupyter-events",
+      "0.12.1"
+    ],
+    [
+      "jupyter-lsp",
+      "2.3.1"
+    ],
+    [
+      "jupyter_client",
+      "8.9.1"
+    ],
+    [
+      "jupyter_core",
+      "5.9.1"
+    ],
+    [
+      "jupyter_server",
+      "2.20.0"
+    ],
+    [
+      "jupyter_server_terminals",
+      "0.5.4"
+    ],
+    [
+      "jupyterlab",
+      "4.5.9"
+    ],
+    [
+      "jupyterlab-language-pack-zh-CN",
+      "4.5.post3"
+    ],
+    [
+      "jupyterlab_pygments",
+      "0.3.0"
+    ],
+    [
+      "jupyterlab_server",
+      "2.28.0"
+    ],
+    [
+      "jupyterlab_widgets",
+      "3.0.16"
+    ],
+    [
+      "kiwisolver",
+      "1.5.0"
+    ],
+    [
+      "lark",
+      "1.3.1"
+    ],
+    [
+      "libmambapy",
+      "1.5.8"
+    ],
+    [
+      "markdown-it-py",
+      "4.2.0"
+    ],
+    [
+      "matplotlib",
+      "3.11.0"
+    ],
+    [
+      "matplotlib-inline",
+      "0.2.2"
+    ],
+    [
+      "mdurl",
+      "0.1.2"
+    ],
+    [
+      "menuinst",
+      "2.0.2"
+    ],
+    [
+      "mistune",
+      "3.2.1"
+    ],
+    [
+      "mpmath",
+      "1.3.0"
+    ],
+    [
+      "mpmath",
+      "1.3.0"
+    ],
+    [
+      "msgpack",
+      "1.2.3"
+    ],
+    [
+      "multidict",
+      "6.9.1"
+    ],
+    [
+      "multiprocess",
+      "0.70.19"
+    ],
+    [
+      "nbclient",
+      "0.11.0"
+    ],
+    [
+      "nbconvert",
+      "7.17.1"
+    ],
+    [
+      "nbformat",
+      "5.10.4"
+    ],
+    [
+      "nest-asyncio2",
+      "1.7.2"
+    ],
+    [
+      "networkx",
+      "3.6.1"
+    ],
+    [
+      "networkx",
+      "3.7"
+    ],
+    [
+      "nixl",
+      "1.4.1"
+    ],
+    [
+      "nixl-cu13",
+      "1.4.1"
+    ],
+    [
+      "notebook_shim",
+      "0.2.4"
+    ],
+    [
+      "numpy",
+      "2.4.6"
+    ],
+    [
+      "numpy",
+      "2.5.3"
+    ],
+    [
+      "nvidia-cublas",
+      "13.1.1.3"
+    ],
+    [
+      "nvidia-cuda-cupti",
+      "13.0.85"
+    ],
+    [
+      "nvidia-cuda-nvrtc",
+      "13.0.88"
+    ],
+    [
+      "nvidia-cuda-runtime",
+      "13.0.96"
+    ],
+    [
+      "nvidia-cudnn-cu13",
+      "9.20.0.48"
+    ],
+    [
+      "nvidia-cufft",
+      "12.0.0.61"
+    ],
+    [
+      "nvidia-cufile",
+      "1.15.1.6"
+    ],
+    [
+      "nvidia-curand",
+      "10.4.0.35"
+    ],
+    [
+      "nvidia-cusolver",
+      "12.0.4.66"
+    ],
+    [
+      "nvidia-cusparse",
+      "12.6.3.3"
+    ],
+    [
+      "nvidia-cusparselt-cu13",
+      "0.8.1"
+    ],
+    [
+      "nvidia-nccl-cu13",
+      "2.29.7"
+    ],
+    [
+      "nvidia-nvjitlink",
+      "13.0.88"
+    ],
+    [
+      "nvidia-nvshmem-cu13",
+      "3.4.5"
+    ],
+    [
+      "nvidia-nvtx",
+      "13.0.85"
+    ],
+    [
+      "omegaconf",
+      "2.3.1"
+    ],
+    [
+      "opencensus",
+      "0.11.4"
+    ],
+    [
+      "opencensus-context",
+      "0.1.3"
+    ],
+    [
+      "opentelemetry-api",
+      "1.45.0"
+    ],
+    [
+      "opentelemetry-exporter-http-transport",
+      "0.66b0"
+    ],
+    [
+      "opentelemetry-exporter-otlp-common",
+      "0.66b0"
+    ],
+    [
+      "opentelemetry-exporter-otlp-proto-common",
+      "1.45.0"
+    ],
+    [
+      "opentelemetry-exporter-otlp-proto-http",
+      "1.45.0"
+    ],
+    [
+      "opentelemetry-exporter-prometheus",
+      "0.66b0"
+    ],
+    [
+      "opentelemetry-proto",
+      "1.45.0"
+    ],
+    [
+      "opentelemetry-sdk",
+      "1.45.0"
+    ],
+    [
+      "opentelemetry-semantic-conventions",
+      "0.66b0"
+    ],
+    [
+      "orjson",
+      "3.12.0"
+    ],
+    [
+      "packaging",
+      "23.2"
+    ],
+    [
+      "packaging",
+      "25.0"
+    ],
+    [
+      "pandas",
+      "3.0.6"
+    ],
+    [
+      "pandocfilters",
+      "1.5.1"
+    ],
+    [
+      "parso",
+      "0.8.7"
+    ],
+    [
+      "peft",
+      "0.21.2"
+    ],
+    [
+      "pexpect",
+      "4.9.0"
+    ],
+    [
+      "pillow",
+      "12.2.0"
+    ],
+    [
+      "pillow",
+      "12.3.0"
+    ],
+    [
+      "pip",
+      "24.0"
+    ],
+    [
+      "platformdirs",
+      "3.10.0"
+    ],
+    [
+      "platformdirs",
+      "4.12.2"
+    ],
+    [
+      "pluggy",
+      "1.0.0"
+    ],
+    [
+      "pluggy",
+      "1.6.0"
+    ],
+    [
+      "prometheus_client",
+      "0.25.0"
+    ],
+    [
+      "prometheus_client",
+      "0.26.0"
+    ],
+    [
+      "prompt_toolkit",
+      "3.0.52"
+    ],
+    [
+      "propcache",
+      "0.5.4"
+    ],
+    [
+      "proto-plus",
+      "1.29.0"
+    ],
+    [
+      "protobuf",
+      "7.35.1"
+    ],
+    [
+      "protobuf",
+      "7.36.2"
+    ],
+    [
+      "psutil",
+      "7.2.2"
+    ],
+    [
+      "psutil",
+      "7.2.2"
+    ],
+    [
+      "ptyprocess",
+      "0.7.0"
+    ],
+    [
+      "pure_eval",
+      "0.2.3"
+    ],
+    [
+      "py-spy",
+      "0.4.2"
+    ],
+    [
+      "pyarrow",
+      "25.0.1"
+    ],
+    [
+      "pyasn1",
+      "0.6.4"
+    ],
+    [
+      "pyasn1_modules",
+      "0.4.2"
+    ],
+    [
+      "pybind11",
+      "3.1.0"
+    ],
+    [
+      "pycosat",
+      "0.6.6"
+    ],
+    [
+      "pycparser",
+      "2.21"
+    ],
+    [
+      "pycparser",
+      "3.0"
+    ],
+    [
+      "pydantic",
+      "2.13.5"
+    ],
+    [
+      "pydantic_core",
+      "2.46.5"
+    ],
+    [
+      "pylatexenc",
+      "2.11"
+    ],
+    [
+      "pyparsing",
+      "3.3.2"
+    ],
+    [
+      "pytest",
+      "8.4.2"
+    ],
+    [
+      "python-dateutil",
+      "2.9.0.post0"
+    ],
+    [
+      "python-dateutil",
+      "2.9.0.post0"
+    ],
+    [
+      "python-discovery",
+      "1.6.1"
+    ],
+    [
+      "python-json-logger",
+      "4.1.0"
+    ],
+    [
+      "pyvers",
+      "0.1.0"
+    ],
+    [
+      "pyzmq",
+      "27.1.0"
+    ],
+    [
+      "ray",
+      "2.58.0"
+    ],
+    [
+      "referencing",
+      "0.37.0"
+    ],
+    [
+      "referencing",
+      "0.37.0"
+    ],
+    [
+      "regex",
+      "2026.9.29"
+    ],
+    [
+      "requests",
+      "2.31.0"
+    ],
+    [
+      "requests",
+      "2.34.2"
+    ],
+    [
+      "rfc3339-validator",
+      "0.1.4"
+    ],
+    [
+      "rfc3986-validator",
+      "0.1.1"
+    ],
+    [
+      "rfc3987-syntax",
+      "1.1.0"
+    ],
+    [
+      "rich",
+      "15.0.0"
+    ],
+    [
+      "rpds-py",
+      "2026.5.1"
+    ],
+    [
+      "rpds-py",
+      "2026.6.3"
+    ],
+    [
+      "ruamel.yaml",
+      "0.17.21"
+    ],
+    [
+      "ruff",
+      "0.13.2"
+    ],
+    [
+      "safetensors",
+      "0.6.2"
+    ],
+    [
+      "setuptools",
+      "69.5.1"
+    ],
+    [
+      "setuptools",
+      "84.0.0"
+    ],
+    [
+      "shellingham",
+      "1.5.4"
+    ],
+    [
+      "six",
+      "1.17.0"
+    ],
+    [
+      "six",
+      "1.17.0"
+    ],
+    [
+      "smart_open",
+      "8.0.2"
+    ],
+    [
+      "soupsieve",
+      "2.8.4"
+    ],
+    [
+      "stack-data",
+      "0.6.3"
+    ],
+    [
+      "supervisor",
+      "4.3.0"
+    ],
+    [
+      "sympy",
+      "1.14.0"
+    ],
+    [
+      "sympy",
+      "1.14.0"
+    ],
+    [
+      "tensorboard",
+      "2.20.0"
+    ],
+    [
+      "tensorboard",
+      "2.21.0"
+    ],
+    [
+      "tensorboard-data-server",
+      "0.7.2"
+    ],
+    [
+      "tensorboard-data-server",
+      "0.7.2"
+    ],
+    [
+      "tensordict",
+      "0.10.0"
+    ],
+    [
+      "terminado",
+      "0.18.1"
+    ],
+    [
+      "tinycss2",
+      "1.5.1"
+    ],
+    [
+      "tokenizers",
+      "0.22.2"
+    ],
+    [
+      "torch",
+      "2.12.1+cu130"
+    ],
+    [
+      "torchdata",
+      "0.11.0"
+    ],
+    [
+      "torchvision",
+      "0.27.1+cu130"
+    ],
+    [
+      "tornado",
+      "6.5.7"
+    ],
+    [
+      "tqdm",
+      "4.66.2"
+    ],
+    [
+      "tqdm",
+      "4.70.1"
+    ],
+    [
+      "traitlets",
+      "5.15.1"
+    ],
+    [
+      "transformers",
+      "5.12.1"
+    ],
+    [
+      "triton",
+      "3.7.1"
+    ],
+    [
+      "truststore",
+      "0.8.0"
+    ],
+    [
+      "typer",
+      "0.27.2"
+    ],
+    [
+      "typing-inspection",
+      "0.4.4"
+    ],
+    [
+      "typing_extensions",
+      "4.15.0"
+    ],
+    [
+      "typing_extensions",
+      "4.16.0"
+    ],
+    [
+      "tzdata",
+      "2026.2"
+    ],
+    [
+      "uri-template",
+      "1.3.0"
+    ],
+    [
+      "urllib3",
+      "2.1.0"
+    ],
+    [
+      "urllib3",
+      "2.8.0"
+    ],
+    [
+      "verl",
+      "0.10.0.dev0"
+    ],
+    [
+      "verl",
+      "0.10.0.dev0"
+    ],
+    [
+      "virtualenv",
+      "21.14.2"
+    ],
+    [
+      "wandb",
+      "0.30.0"
+    ],
+    [
+      "wcwidth",
+      "0.8.1"
+    ],
+    [
+      "webcolors",
+      "25.10.0"
+    ],
+    [
+      "webencodings",
+      "0.5.1"
+    ],
+    [
+      "websocket-client",
+      "1.9.0"
+    ],
+    [
+      "wheel",
+      "0.43.0"
+    ],
+    [
+      "widgetsnbextension",
+      "4.0.15"
+    ],
+    [
+      "wrapt",
+      "2.5.0"
+    ],
+    [
+      "xxhash",
+      "4.0.1"
+    ],
+    [
+      "yarl",
+      "1.25.1"
+    ],
+    [
+      "zipp",
+      "4.1.0"
+    ],
+    [
+      "zstandard",
+      "0.22.0"
+    ]
+  ],
+  "gpu": "name, uuid, memory.total [MiB], driver_version, pci.bus_id, compute_cap\nNVIDIA GeForce RTX 4090, GPU-5ff070f2-853b-f05e-bfa5-ee74ebb08f73, 49140 MiB, 595.71.05, 00000000:49:00.0, 8.9\nNVIDIA GeForce RTX 4090, GPU-b75ffc11-5f4c-1fea-977d-684fcd4d0aa2, 49140 MiB, 595.71.05, 00000000:5A:00.0, 8.9\n",
+  "topology": "\t\u001b[4mGPU0\tGPU1\tCPU Affinity\tNUMA Affinity\tGPU NUMA ID\u001b[0m\nGPU0\t X \tNODE\t0-43,88-131\t0\t\tN/A\nGPU1\tNODE\t X \t0-43,88-131\t0\t\tN/A\n\nLegend:\n\n  X    = Self\n  SYS  = Connection traversing PCIe as well as the SMP interconnect between NUMA nodes (e.g., QPI/UPI)\n  NODE = Connection traversing PCIe as well as the interconnect between PCIe Host Bridges within a NUMA node\n  PHB  = Connection traversing PCIe as well as a PCIe Host Bridge (typically the CPU)\n  PXB  = Connection traversing multiple PCIe bridges (without traversing the PCIe Host Bridge)\n  PIX  = Connection traversing at most a single PCIe bridge\n  NV#  = Connection traversing a bonded set of # NVLinks\n",
+  "cpu_limit": "3400000 100000\n",
+  "memory_limit": "154618822656\n"
+}

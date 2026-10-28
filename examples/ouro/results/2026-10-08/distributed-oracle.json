@@ -1,0 +1,7 @@
+{
+  "world_size": 2,
+  "multi_gpu_validated": true,
+  "max_parameter_error_vs_averaged_gradient_oracle": 0.0,
+  "shared_layer_wrapping": true,
+  "activation_checkpointing": true
+}

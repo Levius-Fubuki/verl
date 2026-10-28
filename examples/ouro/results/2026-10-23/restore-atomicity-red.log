@@ -1,0 +1,29 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ test_rejected_restore_keeps_sampler_cursor_and_publisher_unchanged ______
+
+tmp_path = PosixPath('/private/var/folders/b9/qjrgjm550z51t4dqq_1hw3zm0000gn/T/pytest-of-levius/pytest-5964/test_rejected_restore_keeps_sa0')
+
+    def test_rejected_restore_keeps_sampler_cursor_and_publisher_unchanged(tmp_path):
+        rollout = make_rollout(tmp_path)
+        before = rollout.state_dict()
+        with pytest.raises(ValueError):
+            rollout.load_state_dict({**before, "request_counter": 123, "publisher": {}})
+>       assert rollout.state_dict() == before
+E       AssertionError: assert {'request_cou...lout_outputs'} == {'request_cou...lout_outputs'}
+E
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {'request_counter': 123} != {'request_counter': 0}
+E         Use -v to get more diff
+
+verl/examples/ouro/tests/test_migration.py:260: AssertionError
+=============================== warnings summary ===============================
+examples/ouro/tests/test_migration.py::test_rejected_restore_keeps_sampler_cursor_and_publisher_unchanged
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/.venv-migration/lib/python3.12/site-packages/ray/util/state/util.py:55: DeprecationWarning: Ray state API is no longer experimental. Please import from `ray.util.state`. instead. Importing from `ray.experimental` will be deprecated in future releases.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED verl/examples/ouro/tests/test_migration.py::test_rejected_restore_keeps_sampler_cursor_and_publisher_unchanged
+1 failed, 10 deselected, 1 warning in 2.83s

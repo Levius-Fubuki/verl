@@ -1,0 +1,42 @@
+[
+  {
+    "script": "graph_proof.py",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/venv/bin/python",
+      "/root/autodl-tmp/rlt-oct28/scripts/graph_proof.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/graph-proof"
+    ],
+    "exit_code": 0
+  },
+  {
+    "script": "trace_attention_inputs.py",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/venv/bin/python",
+      "/root/autodl-tmp/rlt-oct28/scripts/trace_attention_inputs.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-input-attribution.json"
+    ],
+    "exit_code": 0
+  },
+  {
+    "script": "prefix_publication_probe.py",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/venv/bin/python",
+      "/root/autodl-tmp/rlt-oct28/scripts/prefix_publication_probe.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/prefix-publication-proof.json"
+    ],
+    "exit_code": 0,
+    "initial_exit_code": 1,
+    "retry_log": "prefix_publication_probe.retry.log",
+    "initial_failure": "num_used_blocks excludes evictable prefix entries; corrected validation uses the KV owners public lookup_prefix",
+    "scope": "in-process native StageEngine public KV API"
+  }
+]

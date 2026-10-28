@@ -1,0 +1,67 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ test_streaming_export_gpu_peak_is_bounded_by_largest_physical_unit ______
+
+cuda_group = 0
+
+    def test_streaming_export_gpu_peak_is_bounded_by_largest_physical_unit(cuda_group):
+        engine, expected = wrapped_engine(cuda_group, layers=8, hidden_size=256, include_probe=False)
+        # The CPU reference does not inflate the CUDA peak. A consumer immediately
+        # copies out each payload, as a bounded publisher bucket does in production.
+        unit_bytes = [sum(tensor.numel() * tensor.element_size() for name, tensor in expected.items()
+                          if name.startswith(f"model.layers.{index}.")) for index in range(8)]
+        largest_unit_bytes = max(unit_bytes)
+        largest_tensor_bytes = max(tensor.numel() * tensor.element_size() for tensor in expected.values())
+        gc.collect()
+        torch.cuda.synchronize()
+        baseline = torch.cuda.memory_allocated()
+        torch.cuda.reset_peak_memory_stats()
+        iterator, _ = engine.get_per_tensor_param()
+        seen = set()
+        for name, tensor in iterator:
+            torch.testing.assert_close(tensor.cpu(), expected[name], atol=0, rtol=0)
+            seen.add(name)
+            del tensor
+        torch.cuda.synchronize()
+        extra_peak = torch.cuda.max_memory_allocated() - baseline
+        # Allow two unit-sized workspaces, one owned tensor, and allocator overhead.
+        # An eager full-model export exceeds this budget even with world_size=1.
+        budget = 2 * largest_unit_bytes + 2 * largest_tensor_bytes + 1024 * 1024
+>       assert extra_peak <= budget, f"export staged {extra_peak} bytes, unit budget is {budget}"
+E       AssertionError: export staged 7920128 bytes, unit budget is 3411968
+E       assert 7920128 <= 3411968
+
+verl/examples/ouro/tests/test_export.py:139: AssertionError
+=============================== warnings summary ===============================
+verl/verl/workers/engine/__init__.py:32
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:32: UserWarning: torchtitan engine is not available: ModuleNotFoundError("No module named 'torchtitan'")
+    warnings.warn(f"torchtitan engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:41
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:41: UserWarning: veomni engine is not available: ModuleNotFoundError("No module named 'veomni'")
+    warnings.warn(f"veomni engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:50
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:50: UserWarning: automodel engine is not available: ModuleNotFoundError("No module named 'nemo_automodel'")
+    warnings.warn(f"automodel engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:60
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:60: UserWarning: mindspeed engine is not available: ModuleNotFoundError("No module named 'megatron'")
+    warnings.warn(f"mindspeed engine is not available: {e!r}", stacklevel=1)
+
+verl/verl/workers/engine/__init__.py:69
+  /root/autodl-tmp/ouro-v1/verl/verl/workers/engine/__init__.py:69: UserWarning: megatron engine is not available: ModuleNotFoundError("No module named 'megatron'")
+    warnings.warn(f"megatron engine is not available: {e!r}", stacklevel=1)
+
+examples/ouro/tests/test_export.py::test_streaming_export_gpu_peak_is_bounded_by_largest_physical_unit
+  /root/miniconda3/lib/python3.12/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:478: UserWarning: FSDP is switching to use `NO_SHARD` instead of ShardingStrategy.FULL_SHARD since the world size is 1.
+    _init_core_state(
+
+examples/ouro/tests/test_export.py::test_streaming_export_gpu_peak_is_bounded_by_largest_physical_unit
+  /root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py:124: UserWarning: When using ``NO_SHARD`` for ``ShardingStrategy``, full_state_dict will be returned.
+    return func(*args, **kwargs)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED verl/examples/ouro/tests/test_export.py::test_streaming_export_gpu_peak_is_bounded_by_largest_physical_unit
+1 failed, 7 warnings in 5.33s

@@ -1,0 +1,308 @@
+[
+  {
+    "name": "publication-full",
+    "arguments": [
+      "-m",
+      "examples.ouro.validate_publication",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--mode",
+      "full",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/publication-full.json"
+    ],
+    "exit_code": 0,
+    "seconds": 27.109832525253296
+  },
+  {
+    "name": "distributed-oracle",
+    "arguments": [
+      "-m",
+      "torch.distributed.run",
+      "--standalone",
+      "--nproc_per_node=2",
+      "-m",
+      "examples.ouro.validate_distributed",
+      "--min-world-size=2",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/distributed-oracle.json"
+    ],
+    "exit_code": 0,
+    "seconds": 7.224930286407471
+  },
+  {
+    "name": "distributed-export",
+    "arguments": [
+      "-m",
+      "torch.distributed.run",
+      "--standalone",
+      "--nproc_per_node=2",
+      "-m",
+      "pytest",
+      "examples/ouro/tests/test_export.py",
+      "-q"
+    ],
+    "exit_code": 0,
+    "seconds": 13.234612941741943
+  },
+  {
+    "name": "train-full",
+    "arguments": [
+      "-m",
+      "torch.distributed.run",
+      "--standalone",
+      "--nproc_per_node=2",
+      "-m",
+      "examples.ouro.train",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--engine-contract",
+      "publication_outputs",
+      "--steps",
+      "3",
+      "--response-length",
+      "32",
+      "--prompts-per-step",
+      "4",
+      "--samples-per-prompt",
+      "2",
+      "--micro-batch",
+      "1",
+      "--exit-threshold",
+      "1",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/train-full.json"
+    ],
+    "exit_code": 0,
+    "seconds": 132.05385565757751
+  },
+  {
+    "name": "train-adaptive",
+    "arguments": [
+      "-m",
+      "torch.distributed.run",
+      "--standalone",
+      "--nproc_per_node=2",
+      "-m",
+      "examples.ouro.train",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--engine-contract",
+      "publication_outputs",
+      "--steps",
+      "3",
+      "--response-length",
+      "32",
+      "--prompts-per-step",
+      "4",
+      "--samples-per-prompt",
+      "2",
+      "--micro-batch",
+      "1",
+      "--exit-threshold",
+      "0",
+      "--checkpoint-dir",
+      "/root/autodl-tmp/rlt-oct28/checkpoint",
+      "--checkpoint-at",
+      "2",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/train-adaptive.json"
+    ],
+    "exit_code": 0,
+    "seconds": 135.90852665901184
+  },
+  {
+    "name": "train-resumed",
+    "arguments": [
+      "-m",
+      "torch.distributed.run",
+      "--standalone",
+      "--nproc_per_node=2",
+      "-m",
+      "examples.ouro.train",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--engine-contract",
+      "publication_outputs",
+      "--steps",
+      "3",
+      "--response-length",
+      "32",
+      "--prompts-per-step",
+      "4",
+      "--samples-per-prompt",
+      "2",
+      "--micro-batch",
+      "1",
+      "--exit-threshold",
+      "0",
+      "--resume",
+      "/root/autodl-tmp/rlt-oct28/checkpoint",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/train-resumed.json"
+    ],
+    "exit_code": 0,
+    "seconds": 57.74566960334778
+  },
+  {
+    "name": "publication-early_exit",
+    "arguments": [
+      "-m",
+      "examples.ouro.validate_publication",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--mode",
+      "early_exit",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/publication-early_exit.json"
+    ],
+    "exit_code": 0,
+    "seconds": 27.354134798049927
+  },
+  {
+    "name": "publication-prefix",
+    "arguments": [
+      "-m",
+      "examples.ouro.validate_publication",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--mode",
+      "prefix",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/publication-prefix.json"
+    ],
+    "exit_code": 0,
+    "seconds": 27.353562593460083
+  },
+  {
+    "name": "publication-async",
+    "arguments": [
+      "-m",
+      "examples.ouro.validate_publication",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--mode",
+      "async",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/publication-async.json"
+    ],
+    "exit_code": 0,
+    "seconds": 27.551390886306763
+  },
+  {
+    "name": "publication-graphs",
+    "arguments": [
+      "-m",
+      "examples.ouro.validate_publication",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--mode",
+      "graphs",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/publication-graphs.json"
+    ],
+    "exit_code": 0,
+    "seconds": 27.802409648895264
+  },
+  {
+    "name": "publication-graphs_async",
+    "arguments": [
+      "-m",
+      "examples.ouro.validate_publication",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--mode",
+      "graphs_async",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/publication-graphs_async.json"
+    ],
+    "exit_code": 0,
+    "seconds": 27.505845546722412
+  },
+  {
+    "name": "publication-speculative",
+    "arguments": [
+      "-m",
+      "examples.ouro.validate_publication",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--mode",
+      "speculative",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/publication-speculative.json"
+    ],
+    "exit_code": 0,
+    "seconds": 28.504626035690308
+  },
+  {
+    "name": "publication-graphs_speculative",
+    "arguments": [
+      "-m",
+      "examples.ouro.validate_publication",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--mode",
+      "graphs_speculative",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/publication-graphs_speculative.json"
+    ],
+    "exit_code": 0,
+    "seconds": 29.505202293395996
+  },
+  {
+    "name": "publication-pd_eager",
+    "arguments": [
+      "-m",
+      "examples.ouro.validate_publication",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--mode",
+      "pd_eager",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/publication-pd_eager.json"
+    ],
+    "exit_code": 0,
+    "seconds": 40.3728609085083
+  },
+  {
+    "name": "publication-pd_graphs",
+    "arguments": [
+      "-m",
+      "examples.ouro.validate_publication",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--mode",
+      "pd_graphs",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/publication-pd_graphs.json"
+    ],
+    "exit_code": 0,
+    "seconds": 40.42352247238159
+  },
+  {
+    "name": "probability-diagnosis",
+    "arguments": [
+      "-m",
+      "examples.ouro.diagnose_parity",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/probability-diagnosis.json"
+    ],
+    "exit_code": 0,
+    "seconds": 10.779456615447998
+  },
+  {
+    "name": "probability-layer-trace",
+    "arguments": [
+      "-m",
+      "examples.ouro.trace_numerics",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/probability-layer-trace.json"
+    ],
+    "exit_code": 0,
+    "seconds": 4.320756435394287
+  }
+]

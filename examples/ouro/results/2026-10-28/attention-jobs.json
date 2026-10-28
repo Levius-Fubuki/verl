@@ -1,0 +1,179 @@
+[
+  {
+    "name": "attention-0-base130",
+    "engine": "base130",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/attention_bench.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-0-base130.json"
+    ],
+    "exit_code": 0,
+    "seconds": 45.72320604324341
+  },
+  {
+    "name": "attention-1-pr130",
+    "engine": "pr130",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/attention_bench.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-1-pr130.json"
+    ],
+    "exit_code": 0,
+    "seconds": 44.528361558914185
+  },
+  {
+    "name": "attention-2-pr130",
+    "engine": "pr130",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/attention_bench.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-2-pr130.json"
+    ],
+    "exit_code": 0,
+    "seconds": 42.372528076171875
+  },
+  {
+    "name": "attention-3-base130",
+    "engine": "base130",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/attention_bench.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-3-base130.json"
+    ],
+    "exit_code": 0,
+    "seconds": 44.23015308380127
+  },
+  {
+    "name": "attention-4-base130",
+    "engine": "base130",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/attention_bench.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-4-base130.json"
+    ],
+    "exit_code": 0,
+    "seconds": 45.52832007408142
+  },
+  {
+    "name": "attention-5-pr130",
+    "engine": "pr130",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/attention_bench.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-5-pr130.json"
+    ],
+    "exit_code": 0,
+    "seconds": 42.87505578994751
+  },
+  {
+    "name": "attention-6-pr130",
+    "engine": "pr130",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/attention_bench.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-6-pr130.json"
+    ],
+    "exit_code": 0,
+    "seconds": 44.22844672203064
+  },
+  {
+    "name": "attention-7-base130",
+    "engine": "base130",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/attention_bench.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-7-base130.json"
+    ],
+    "exit_code": 0,
+    "seconds": 44.176353931427
+  },
+  {
+    "name": "attention-base130-ops",
+    "engine": "base130",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/attention_bench.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--profile",
+      "ops",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-base130-ops.json"
+    ],
+    "exit_code": 0,
+    "seconds": 11.7811598777771
+  },
+  {
+    "name": "attention-base130-full",
+    "engine": "base130",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/attention_bench.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--profile",
+      "full",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-base130-full.json"
+    ],
+    "exit_code": 0,
+    "seconds": 26.80270552635193
+  },
+  {
+    "name": "attention-pr130-ops",
+    "engine": "pr130",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/attention_bench.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--profile",
+      "ops",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-pr130-ops.json"
+    ],
+    "exit_code": 0,
+    "seconds": 11.981782913208008
+  },
+  {
+    "name": "attention-pr130-full",
+    "engine": "pr130",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/attention_bench.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--profile",
+      "full",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/attention-pr130-full.json"
+    ],
+    "exit_code": 0,
+    "seconds": 25.90190839767456
+  },
+  {
+    "name": "nplus2-pilot",
+    "engine": "pr78",
+    "arguments": [
+      "/root/autodl-tmp/rlt-oct28/scripts/nplus2_pilot.py",
+      "--model",
+      "/root/autodl-tmp/rlt-oct28/model",
+      "--output",
+      "/root/autodl-tmp/rlt-oct28/results/nplus2"
+    ],
+    "exit_code": 0,
+    "seconds": 38.76993227005005
+  }
+]

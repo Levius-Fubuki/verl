@@ -1,0 +1,700 @@
+{
+  "nplus2": {
+    "scope": "serial native online reference; no batched scheduler or Ray trainer acceptance",
+    "model_revision": "574fa66cb8bf5abdc979642d01cf2b79b16bfab1",
+    "model_sha256": "58872a72616c736595b8b7662079c5b12c5a162ec16eae94f21c348dfa9885af",
+    "train_prompt_groups": 48,
+    "validation_prompt_groups": 16,
+    "test_prompt_groups": 24,
+    "test_operands_a": [
+      9,
+      10,
+      11
+    ],
+    "train_validation_operands_a": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "label_history": "full-depth teacher KV; online uses its actual exited trajectory",
+    "timing": "unprofiled complete serial requests, includes KV allocation/prefill/decode; forced16 tokens, concurrency1",
+    "fit": {
+      "train_tokens": 768,
+      "validation_tokens": 256,
+      "validation_positives": 235,
+      "accuracy": 0.9453125,
+      "majority_accuracy": 0.91796875,
+      "fp": 1,
+      "fn": 13,
+      "label_hazard_threshold": 0.5,
+      "decision_threshold": 0.5
+    },
+    "summary": {
+      "full": {
+        "quality_correct": 24,
+        "quality_count": 24,
+        "mean_decode_input_depth": 4,
+        "request_seconds_median": 0.6757282558828592,
+        "aggregate_output_tokens_per_second": 23.61213888018075,
+        "seconds_by_repeat": [
+          16.247078325599432,
+          16.27856468781829
+        ],
+        "same_sequences_as_full": 24
+      },
+      "fixed3": {
+        "quality_correct": 24,
+        "quality_count": 24,
+        "mean_decode_input_depth": 3,
+        "request_seconds_median": 0.5205157697200775,
+        "aggregate_output_tokens_per_second": 30.69969760001738,
+        "seconds_by_repeat": [
+          12.492312870919704,
+          12.524220190942287
+        ],
+        "same_sequences_as_full": 1
+      },
+      "gate": {
+        "quality_correct": 24,
+        "quality_count": 24,
+        "mean_decode_input_depth": 3.1055555555555556,
+        "request_seconds_median": 0.5375346504151821,
+        "aggregate_output_tokens_per_second": 29.530293532999004,
+        "seconds_by_repeat": [
+          12.932405654340982,
+          13.074785880744457
+        ],
+        "same_sequences_as_full": 3
+      },
+      "nplus2": {
+        "quality_correct": 24,
+        "quality_count": 24,
+        "mean_decode_input_depth": 3.1805555555555554,
+        "request_seconds_median": 0.5472153052687645,
+        "aggregate_output_tokens_per_second": 28.90886300637318,
+        "seconds_by_repeat": [
+          13.28783168271184,
+          13.278415486216545
+        ],
+        "same_sequences_as_full": 4
+      }
+    },
+    "head_sha256": "d6c8a02af9bc0fb1daf8498990d88c84e1301bd703f978cd0062afc5d962c8c5",
+    "runtime_integrated_in_reference": true,
+    "batched_scheduler_integrated": false,
+    "quality_scope": "small disjoint-operand arithmetic task, not GSM8K or broad model quality"
+  },
+  "nplus2-ood": {
+    "head_unchanged_from_initial_experiment": true,
+    "decision_threshold": 0.5,
+    "label_threshold": 0.5,
+    "scope": "second harder held-out arithmetic group; serial concurrency1 only",
+    "train_validation_overlap": false,
+    "prompts": [
+      {
+        "group": "17:13:+",
+        "prompt": "Question: Calculate 17 + 13.\nAnswer:",
+        "answer": 30,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          33,
+          39,
+          1232,
+          216,
+          33,
+          35,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "17:17:-",
+        "prompt": "Question: Calculate 17 - 17.\nAnswer:",
+        "answer": 0,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          33,
+          39,
+          731,
+          216,
+          33,
+          39,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "17:23:-",
+        "prompt": "Question: Calculate 17 - 23.\nAnswer:",
+        "answer": -6,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          33,
+          39,
+          731,
+          216,
+          34,
+          35,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "17:29:-",
+        "prompt": "Question: Calculate 17 - 29.\nAnswer:",
+        "answer": -12,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          33,
+          39,
+          731,
+          216,
+          34,
+          41,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "17:31:+",
+        "prompt": "Question: Calculate 17 + 31.\nAnswer:",
+        "answer": 48,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          33,
+          39,
+          1232,
+          216,
+          35,
+          33,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "17:37:+",
+        "prompt": "Question: Calculate 17 + 37.\nAnswer:",
+        "answer": 54,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          33,
+          39,
+          1232,
+          216,
+          35,
+          39,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "17:41:-",
+        "prompt": "Question: Calculate 17 - 41.\nAnswer:",
+        "answer": -24,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          33,
+          39,
+          731,
+          216,
+          36,
+          33,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "17:47:-",
+        "prompt": "Question: Calculate 17 - 47.\nAnswer:",
+        "answer": -30,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          33,
+          39,
+          731,
+          216,
+          36,
+          39,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "29:13:+",
+        "prompt": "Question: Calculate 29 + 13.\nAnswer:",
+        "answer": 42,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          34,
+          41,
+          1232,
+          216,
+          33,
+          35,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "29:17:-",
+        "prompt": "Question: Calculate 29 - 17.\nAnswer:",
+        "answer": 12,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          34,
+          41,
+          731,
+          216,
+          33,
+          39,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "29:23:-",
+        "prompt": "Question: Calculate 29 - 23.\nAnswer:",
+        "answer": 6,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          34,
+          41,
+          731,
+          216,
+          34,
+          35,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "29:29:-",
+        "prompt": "Question: Calculate 29 - 29.\nAnswer:",
+        "answer": 0,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          34,
+          41,
+          731,
+          216,
+          34,
+          41,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "29:31:+",
+        "prompt": "Question: Calculate 29 + 31.\nAnswer:",
+        "answer": 60,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          34,
+          41,
+          1232,
+          216,
+          35,
+          33,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "29:37:+",
+        "prompt": "Question: Calculate 29 + 37.\nAnswer:",
+        "answer": 66,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          34,
+          41,
+          1232,
+          216,
+          35,
+          39,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "29:41:-",
+        "prompt": "Question: Calculate 29 - 41.\nAnswer:",
+        "answer": -12,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          34,
+          41,
+          731,
+          216,
+          36,
+          33,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "29:47:-",
+        "prompt": "Question: Calculate 29 - 47.\nAnswer:",
+        "answer": -18,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          34,
+          41,
+          731,
+          216,
+          36,
+          39,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "53:13:+",
+        "prompt": "Question: Calculate 53 + 13.\nAnswer:",
+        "answer": 66,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          37,
+          35,
+          1232,
+          216,
+          33,
+          35,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "53:17:-",
+        "prompt": "Question: Calculate 53 - 17.\nAnswer:",
+        "answer": 36,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          37,
+          35,
+          731,
+          216,
+          33,
+          39,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "53:23:-",
+        "prompt": "Question: Calculate 53 - 23.\nAnswer:",
+        "answer": 30,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          37,
+          35,
+          731,
+          216,
+          34,
+          35,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "53:29:-",
+        "prompt": "Question: Calculate 53 - 29.\nAnswer:",
+        "answer": 24,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          37,
+          35,
+          731,
+          216,
+          34,
+          41,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "53:31:+",
+        "prompt": "Question: Calculate 53 + 31.\nAnswer:",
+        "answer": 84,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          37,
+          35,
+          1232,
+          216,
+          35,
+          33,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "53:37:+",
+        "prompt": "Question: Calculate 53 + 37.\nAnswer:",
+        "answer": 90,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          37,
+          35,
+          1232,
+          216,
+          35,
+          39,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "53:41:-",
+        "prompt": "Question: Calculate 53 - 41.\nAnswer:",
+        "answer": 12,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          37,
+          35,
+          731,
+          216,
+          36,
+          33,
+          30,
+          198,
+          21350,
+          42
+        ]
+      },
+      {
+        "group": "53:47:-",
+        "prompt": "Question: Calculate 53 - 47.\nAnswer:",
+        "answer": 6,
+        "ids": [
+          17872,
+          42,
+          21866,
+          216,
+          37,
+          35,
+          731,
+          216,
+          36,
+          39,
+          30,
+          198,
+          21350,
+          42
+        ]
+      }
+    ],
+    "summary": {
+      "full": {
+        "quality_correct": 23,
+        "quality_count": 24,
+        "mean_decode_input_depth": 4,
+        "seconds_by_repeat": [
+          17.11212068796158,
+          17.026134446263313
+        ],
+        "tokens_per_second": 22.4967561165729,
+        "same_sequences_as_full": 24,
+        "regressions_vs_full": 0,
+        "improvements_vs_full": 0
+      },
+      "fixed3": {
+        "quality_correct": 24,
+        "quality_count": 24,
+        "mean_decode_input_depth": 3,
+        "seconds_by_repeat": [
+          13.028623592108488,
+          13.228455159813166
+        ],
+        "tokens_per_second": 29.24925530582084,
+        "same_sequences_as_full": 0,
+        "regressions_vs_full": 0,
+        "improvements_vs_full": 1
+      },
+      "gate": {
+        "quality_correct": 24,
+        "quality_count": 24,
+        "mean_decode_input_depth": 3.1527777777777777,
+        "seconds_by_repeat": [
+          14.16566951945424,
+          13.790698252618313
+        ],
+        "tokens_per_second": 27.471379911062893,
+        "same_sequences_as_full": 5,
+        "regressions_vs_full": 0,
+        "improvements_vs_full": 1
+      },
+      "nplus2": {
+        "quality_correct": 23,
+        "quality_count": 24,
+        "mean_decode_input_depth": 3.308333333333333,
+        "seconds_by_repeat": [
+          14.960832010954618,
+          14.457589119672775
+        ],
+        "tokens_per_second": 26.106091710014937,
+        "same_sequences_as_full": 6,
+        "regressions_vs_full": 0,
+        "improvements_vs_full": 0
+      }
+    },
+    "forced_positive_matches_fixed3": true,
+    "forced_negative_matches_full": true,
+    "independent_stage_trace_score_error": 0.0,
+    "timing": "unprofiled complete serial fixed16-token requests, includes KV allocation and prefill",
+    "peak_allocated_gib": 2.884060859680176,
+    "peak_reserved_gib": 3.130859375
+  },
+  "ray-report": {
+    "versions": [
+      1,
+      3,
+      4
+    ],
+    "exact_restart": true
+  },
+  "ray-agentloop-report": {
+    "versions": [
+      1,
+      3,
+      4
+    ],
+    "exact_restart": true
+  },
+  "single_turn_agentloop": true,
+  "profiles": {
+    "ops": {
+      "cuda_kernel_events": 36111,
+      "event_count": 260807
+    },
+    "full": {
+      "cuda_kernel_events": 36111,
+      "event_count": 537880
+    }
+  },
+  "observed_device_peak_mib_during_ray_and_ood": 4236,
+  "source_equivalence": {
+    "tested_sha256": "77e2392fde3b01a8e8b46d93a08ea6655e1a0d8608955f76e93e296f43201ff1",
+    "final_sha256": "0161a68e687ae30fef0dd3568fc33d3737d13a900f7499e92f1dbc2e822f1e1e",
+    "ast_identical": true,
+    "note": "Only formatting changed after initial GPU run; harder holdout and trace proof use final formatted source."
+  },
+  "single_gpu_jobs_complete": true
+}

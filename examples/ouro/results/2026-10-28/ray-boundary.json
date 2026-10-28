@@ -1,0 +1,7 @@
+{
+  "base_rollout_registered": true,
+  "ray_replica_registered": false,
+  "observed_error": "Unknown rollout mode: vllm_rlt. Available: ['vllm', 'sglang', 'trtllm']",
+  "ray_started": false,
+  "gpu_validation": false
+}

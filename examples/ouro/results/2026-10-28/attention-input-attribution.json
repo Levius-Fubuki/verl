@@ -1,0 +1,60 @@
+{
+  "replay_default": {
+    "q_proj_output": {
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    },
+    "k_proj_output": {
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    },
+    "v_proj_output": {
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    },
+    "o_proj_input": {
+      "max_abs": 0.00390625,
+      "mean_abs": 3.395150270080194e-05
+    },
+    "o_proj_output": {
+      "max_abs": 0.125,
+      "mean_abs": 0.00010551332525210455
+    }
+  },
+  "replay_math": {
+    "q_proj_output": {
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    },
+    "k_proj_output": {
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    },
+    "v_proj_output": {
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    },
+    "o_proj_input": {
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    },
+    "o_proj_output": {
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    }
+  },
+  "same_input_projection_controls": {
+    "native": {
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    },
+    "replay_default": {
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    },
+    "replay_math": {
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    }
+  }
+}

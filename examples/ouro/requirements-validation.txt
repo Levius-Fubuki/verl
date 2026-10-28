@@ -1,0 +1,7 @@
+# Reuse an existing CUDA-enabled torch 2.12.1 installation for this model slice.
+pytest==8.4.2
+ruff==0.13.2
+safetensors==0.6.2
+huggingface-hub==1.33.0
+transformers==5.12.1
+aiohttp==3.12.15

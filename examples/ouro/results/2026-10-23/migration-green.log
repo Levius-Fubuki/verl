@@ -1,0 +1,28 @@
+...........                                                              [100%]
+=============================== warnings summary ===============================
+examples/ouro/tests/test_migration.py::test_reads_current_scores_and_propagates_probability_contract
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/verl/verl/workers/engine/__init__.py:32: UserWarning: torchtitan engine is not available: ModuleNotFoundError("No module named 'torchtitan'")
+    warnings.warn(f"torchtitan engine is not available: {e!r}", stacklevel=1)
+
+examples/ouro/tests/test_migration.py::test_reads_current_scores_and_propagates_probability_contract
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/verl/verl/workers/engine/__init__.py:41: UserWarning: veomni engine is not available: ModuleNotFoundError("No module named 'veomni'")
+    warnings.warn(f"veomni engine is not available: {e!r}", stacklevel=1)
+
+examples/ouro/tests/test_migration.py::test_reads_current_scores_and_propagates_probability_contract
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/verl/verl/workers/engine/__init__.py:50: UserWarning: automodel engine is not available: ModuleNotFoundError("No module named 'nemo_automodel'")
+    warnings.warn(f"automodel engine is not available: {e!r}", stacklevel=1)
+
+examples/ouro/tests/test_migration.py::test_reads_current_scores_and_propagates_probability_contract
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/verl/verl/workers/engine/__init__.py:60: UserWarning: mindspeed engine is not available: ModuleNotFoundError("No module named 'megatron'")
+    warnings.warn(f"mindspeed engine is not available: {e!r}", stacklevel=1)
+
+examples/ouro/tests/test_migration.py::test_reads_current_scores_and_propagates_probability_contract
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/verl/verl/workers/engine/__init__.py:69: UserWarning: megatron engine is not available: ModuleNotFoundError("No module named 'megatron'")
+    warnings.warn(f"megatron engine is not available: {e!r}", stacklevel=1)
+
+examples/ouro/tests/test_migration.py::test_reads_current_scores_and_propagates_probability_contract
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/.venv-migration/lib/python3.12/site-packages/ray/util/state/util.py:55: DeprecationWarning: Ray state API is no longer experimental. Please import from `ray.util.state`. instead. Importing from `ray.experimental` will be deprecated in future releases.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+11 passed, 6 warnings in 6.80s

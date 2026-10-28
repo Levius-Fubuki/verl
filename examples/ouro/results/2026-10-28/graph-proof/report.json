@@ -1,0 +1,36 @@
+{
+  "ops": {
+    "cuda_graph_launch_events": 28,
+    "archives": [
+      "/root/autodl-tmp/rlt-oct28/results/graph-proof/ops/rank-00000-20261028T002512Z/cycle-00000.tar.gz"
+    ],
+    "weight_version": 1,
+    "token_ids": [
+      198,
+      4,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ]
+  },
+  "full": {
+    "cuda_graph_launch_events": 28,
+    "archives": [
+      "/root/autodl-tmp/rlt-oct28/results/graph-proof/full/rank-00000-20261028T002521Z/cycle-00000.tar.gz"
+    ],
+    "weight_version": 1,
+    "token_ids": [
+      198,
+      4,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ]
+  }
+}

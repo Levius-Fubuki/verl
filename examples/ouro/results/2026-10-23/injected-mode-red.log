@@ -1,0 +1,48 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+______ test_injected_backend_requires_explicit_raw_probability_mode[None] ______
+
+tmp_path = PosixPath('/private/var/folders/b9/qjrgjm550z51t4dqq_1hw3zm0000gn/T/pytest-of-levius/pytest-5962/test_injected_backend_requires0')
+mode = None
+
+    @pytest.mark.parametrize("mode", [None, "processed_logprobs"])
+    def test_injected_backend_requires_explicit_raw_probability_mode(tmp_path, mode):
+        from examples.ouro.rollout import OuroRollout
+
+        config, model = config_pair(tmp_path)
+        with pytest.raises(ValueError, match="backend_logprobs_mode"):
+>           OuroRollout(
+                config, model, None, backend=VersionedEndpoint(),
+                backend_logprobs_mode=mode, device="cpu",
+            )
+E           TypeError: OuroRollout.__init__() got an unexpected keyword argument 'backend_logprobs_mode'
+
+verl/examples/ouro/tests/test_migration.py:249: TypeError
+_ test_injected_backend_requires_explicit_raw_probability_mode[processed_logprobs] _
+
+tmp_path = PosixPath('/private/var/folders/b9/qjrgjm550z51t4dqq_1hw3zm0000gn/T/pytest-of-levius/pytest-5962/test_injected_backend_requires1')
+mode = 'processed_logprobs'
+
+    @pytest.mark.parametrize("mode", [None, "processed_logprobs"])
+    def test_injected_backend_requires_explicit_raw_probability_mode(tmp_path, mode):
+        from examples.ouro.rollout import OuroRollout
+
+        config, model = config_pair(tmp_path)
+        with pytest.raises(ValueError, match="backend_logprobs_mode"):
+>           OuroRollout(
+                config, model, None, backend=VersionedEndpoint(),
+                backend_logprobs_mode=mode, device="cpu",
+            )
+E           TypeError: OuroRollout.__init__() got an unexpected keyword argument 'backend_logprobs_mode'
+
+verl/examples/ouro/tests/test_migration.py:249: TypeError
+=============================== warnings summary ===============================
+examples/ouro/tests/test_migration.py::test_injected_backend_requires_explicit_raw_probability_mode[None]
+  /Users/levius/Desktop/Idea/projects/vllm-rlt/.venv-migration/lib/python3.12/site-packages/ray/util/state/util.py:55: DeprecationWarning: Ray state API is no longer experimental. Please import from `ray.util.state`. instead. Importing from `ray.experimental` will be deprecated in future releases.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED verl/examples/ouro/tests/test_migration.py::test_injected_backend_requires_explicit_raw_probability_mode[None]
+FAILED verl/examples/ouro/tests/test_migration.py::test_injected_backend_requires_explicit_raw_probability_mode[processed_logprobs]
+2 failed, 8 deselected, 1 warning in 2.14s

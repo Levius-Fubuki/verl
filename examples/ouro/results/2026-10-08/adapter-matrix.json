@@ -1,0 +1,246 @@
+{
+  "full": {
+    "weight_version": 1,
+    "max_abs_selected_logprob": 0.0,
+    "exit_depths": [
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ]
+    ],
+    "fresh_engine_equal": true,
+    "local_target_addresses_preserved": true,
+    "scope": "publication/fresh-engine equality for each mode, not eager-vs-mode runtime equivalence"
+  },
+  "early_exit": {
+    "weight_version": 1,
+    "max_abs_selected_logprob": 0.0,
+    "exit_depths": [
+      [
+        4,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        4,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    ],
+    "fresh_engine_equal": true,
+    "local_target_addresses_preserved": true,
+    "scope": "publication/fresh-engine equality for each mode, not eager-vs-mode runtime equivalence"
+  },
+  "prefix": {
+    "weight_version": 1,
+    "max_abs_selected_logprob": 0.0,
+    "exit_depths": [
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ]
+    ],
+    "fresh_engine_equal": true,
+    "local_target_addresses_preserved": true,
+    "scope": "publication/fresh-engine equality for each mode, not eager-vs-mode runtime equivalence"
+  },
+  "async": {
+    "weight_version": 1,
+    "max_abs_selected_logprob": 0.0,
+    "exit_depths": [
+      [
+        4,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      [
+        4,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ]
+    ],
+    "fresh_engine_equal": true,
+    "local_target_addresses_preserved": true,
+    "scope": "publication/fresh-engine equality for each mode, not eager-vs-mode runtime equivalence"
+  },
+  "graphs": {
+    "weight_version": 1,
+    "max_abs_selected_logprob": 0.0,
+    "exit_depths": [
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ]
+    ],
+    "fresh_engine_equal": true,
+    "local_target_addresses_preserved": true,
+    "scope": "publication/fresh-engine equality for each mode, not eager-vs-mode runtime equivalence",
+    "graph_replays": 56,
+    "graph_replays_after_publication": 28,
+    "existing_graph_replays_after_publication": 28,
+    "new_graph_shapes_after_publication": 0
+  },
+  "graphs_async": {
+    "weight_version": 1,
+    "max_abs_selected_logprob": 0.0,
+    "exit_depths": [
+      [
+        4,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      [
+        4,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ]
+    ],
+    "fresh_engine_equal": true,
+    "local_target_addresses_preserved": true,
+    "scope": "publication/fresh-engine equality for each mode, not eager-vs-mode runtime equivalence",
+    "graph_replays": 42,
+    "graph_replays_after_publication": 21,
+    "existing_graph_replays_after_publication": 21,
+    "new_graph_shapes_after_publication": 0
+  },
+  "speculative": {
+    "weight_version": 1,
+    "max_abs_selected_logprob": 0.0,
+    "exit_depths": [
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ]
+    ],
+    "fresh_engine_equal": true,
+    "local_target_addresses_preserved": true,
+    "scope": "publication/fresh-engine equality for each mode, not eager-vs-mode runtime equivalence"
+  },
+  "graphs_speculative": {
+    "weight_version": 1,
+    "max_abs_selected_logprob": 0.0,
+    "exit_depths": [
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ]
+    ],
+    "fresh_engine_equal": true,
+    "local_target_addresses_preserved": true,
+    "scope": "publication/fresh-engine equality for each mode, not eager-vs-mode runtime equivalence",
+    "graph_replays": 90,
+    "graph_replays_after_publication": 40,
+    "existing_graph_replays_after_publication": 38,
+    "new_graph_shapes_after_publication": 1
+  }
+}

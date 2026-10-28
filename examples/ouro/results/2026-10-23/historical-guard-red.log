@@ -1,0 +1,70 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+_ test_historical_gpu_driver_rejects_current_engine_before_execution[validate_adapter] _
+
+module = 'validate_adapter'
+tmp_path = PosixPath('/private/var/folders/b9/qjrgjm550z51t4dqq_1hw3zm0000gn/T/pytest-of-levius/pytest-5952/test_historical_gpu_driver_rej0')
+
+    @pytest.mark.skipif("logprobs" not in RequestOutput.__dataclass_fields__, reason="requires the current rollout-only engine")
+    @pytest.mark.parametrize("module", ["validate_adapter", "validate_runtime", "validate_worker"])
+    def test_historical_gpu_driver_rejects_current_engine_before_execution(module, tmp_path):
+        result = subprocess.run(
+            [sys.executable, "-m", f"examples.ouro.{module}", "--model", "/nonexistent/ouro",
+             "--output", str(tmp_path / "unused.json")],
+            env=dict(os.environ), capture_output=True, text=True, timeout=45,
+        )
+        assert result.returncode != 0
+>       assert "historical" in result.stderr.lower()
+E       assert 'historical' in 'traceback (most recent call last):\n  file "/users/levius/desktop/idea/projects/vllm-rlt/.venv-migration/lib/python3.... be in the form \'repo_name\' or \'namespace/repo_name\': \'/nonexistent/ouro\'. use `repo_type` argument if needed.\n'
+E        +  where 'traceback (most recent call last):\n  file "/users/levius/desktop/idea/projects/vllm-rlt/.venv-migration/lib/python3.... be in the form \'repo_name\' or \'namespace/repo_name\': \'/nonexistent/ouro\'. use `repo_type` argument if needed.\n' = <built-in method lower of str object at 0x10a354800>()
+E        +    where <built-in method lower of str object at 0x10a354800> = 'Traceback (most recent call last):\n  File "/Users/levius/Desktop/Idea/projects/vllm-rlt/.venv-migration/lib/python3.... be in the form \'repo_name\' or \'namespace/repo_name\': \'/nonexistent/ouro\'. Use `repo_type` argument if needed.\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "/Users/levius/Desktop/Idea/projects/vllm-rlt/.venv-migration/lib/python3.... be in the form \'repo_name\' or \'namespace/repo_name\': \'/nonexistent/ouro\'. Use `repo_type` argument if needed.\n' = CompletedProcess(args=['/Users/levius/Desktop/Idea/projects/vllm-rlt/.venv-migration/bin/python', '-m', 'examples.ouro...be in the form \'repo_name\' or \'namespace/repo_name\': \'/nonexistent/ouro\'. Use `repo_type` argument if needed.\n').stderr
+
+verl/examples/ouro/tests/test_historical.py:21: AssertionError
+_ test_historical_gpu_driver_rejects_current_engine_before_execution[validate_runtime] _
+
+module = 'validate_runtime'
+tmp_path = PosixPath('/private/var/folders/b9/qjrgjm550z51t4dqq_1hw3zm0000gn/T/pytest-of-levius/pytest-5952/test_historical_gpu_driver_rej1')
+
+    @pytest.mark.skipif("logprobs" not in RequestOutput.__dataclass_fields__, reason="requires the current rollout-only engine")
+    @pytest.mark.parametrize("module", ["validate_adapter", "validate_runtime", "validate_worker"])
+    def test_historical_gpu_driver_rejects_current_engine_before_execution(module, tmp_path):
+        result = subprocess.run(
+            [sys.executable, "-m", f"examples.ouro.{module}", "--model", "/nonexistent/ouro",
+             "--output", str(tmp_path / "unused.json")],
+            env=dict(os.environ), capture_output=True, text=True, timeout=45,
+        )
+        assert result.returncode != 0
+>       assert "historical" in result.stderr.lower()
+E       assert 'historical' in 'traceback (most recent call last):\n  file "<frozen runpy>", line 198, in _run_module_as_main\n  file "<frozen runpy>... be in the form \'repo_name\' or \'namespace/repo_name\': \'/nonexistent/ouro\'. use `repo_type` argument if needed.\n'
+E        +  where 'traceback (most recent call last):\n  file "<frozen runpy>", line 198, in _run_module_as_main\n  file "<frozen runpy>... be in the form \'repo_name\' or \'namespace/repo_name\': \'/nonexistent/ouro\'. use `repo_type` argument if needed.\n' = <built-in method lower of str object at 0x12c36e400>()
+E        +    where <built-in method lower of str object at 0x12c36e400> = 'Traceback (most recent call last):\n  File "<frozen runpy>", line 198, in _run_module_as_main\n  File "<frozen runpy>... be in the form \'repo_name\' or \'namespace/repo_name\': \'/nonexistent/ouro\'. Use `repo_type` argument if needed.\n'.lower
+E        +      where 'Traceback (most recent call last):\n  File "<frozen runpy>", line 198, in _run_module_as_main\n  File "<frozen runpy>... be in the form \'repo_name\' or \'namespace/repo_name\': \'/nonexistent/ouro\'. Use `repo_type` argument if needed.\n' = CompletedProcess(args=['/Users/levius/Desktop/Idea/projects/vllm-rlt/.venv-migration/bin/python', '-m', 'examples.ouro...be in the form \'repo_name\' or \'namespace/repo_name\': \'/nonexistent/ouro\'. Use `repo_type` argument if needed.\n').stderr
+
+verl/examples/ouro/tests/test_historical.py:21: AssertionError
+_ test_historical_gpu_driver_rejects_current_engine_before_execution[validate_worker] _
+
+module = 'validate_worker'
+tmp_path = PosixPath('/private/var/folders/b9/qjrgjm550z51t4dqq_1hw3zm0000gn/T/pytest-of-levius/pytest-5952/test_historical_gpu_driver_rej2')
+
+    @pytest.mark.skipif("logprobs" not in RequestOutput.__dataclass_fields__, reason="requires the current rollout-only engine")
+    @pytest.mark.parametrize("module", ["validate_adapter", "validate_runtime", "validate_worker"])
+    def test_historical_gpu_driver_rejects_current_engine_before_execution(module, tmp_path):
+        result = subprocess.run(
+            [sys.executable, "-m", f"examples.ouro.{module}", "--model", "/nonexistent/ouro",
+             "--output", str(tmp_path / "unused.json")],
+            env=dict(os.environ), capture_output=True, text=True, timeout=45,
+        )
+        assert result.returncode != 0
+>       assert "historical" in result.stderr.lower()
+E       assert 'historical' in "warning:2026-10-23 15:53:23,061:no supported accelerator detected. registered: ('nvidia', 'huawei', 'amd'). falling b...etdevice(device)\n    ^^^^^^^^^^^^^^^^^^^^^^^^\nattributeerror: module 'torch._c' has no attribute '_cuda_setdevice'\n"
+E        +  where "warning:2026-10-23 15:53:23,061:no supported accelerator detected. registered: ('nvidia', 'huawei', 'amd'). falling b...etdevice(device)\n    ^^^^^^^^^^^^^^^^^^^^^^^^\nattributeerror: module 'torch._c' has no attribute '_cuda_setdevice'\n" = <built-in method lower of str object at 0x10c4bfa00>()
+E        +    where <built-in method lower of str object at 0x10c4bfa00> = "WARNING:2026-10-23 15:53:23,061:No supported accelerator detected. Registered: ('nvidia', 'huawei', 'amd'). Falling b...etDevice(device)\n    ^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'torch._C' has no attribute '_cuda_setDevice'\n".lower
+E        +      where "WARNING:2026-10-23 15:53:23,061:No supported accelerator detected. Registered: ('nvidia', 'huawei', 'amd'). Falling b...etDevice(device)\n    ^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'torch._C' has no attribute '_cuda_setDevice'\n" = CompletedProcess(args=['/Users/levius/Desktop/Idea/projects/vllm-rlt/.venv-migration/bin/python', '-m', 'examples.ouro...ice(device)\n    ^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module \'torch._C\' has no attribute \'_cuda_setDevice\'\n').stderr
+
+verl/examples/ouro/tests/test_historical.py:21: AssertionError
+=========================== short test summary info ============================
+FAILED verl/examples/ouro/tests/test_historical.py::test_historical_gpu_driver_rejects_current_engine_before_execution[validate_adapter]
+FAILED verl/examples/ouro/tests/test_historical.py::test_historical_gpu_driver_rejects_current_engine_before_execution[validate_runtime]
+FAILED verl/examples/ouro/tests/test_historical.py::test_historical_gpu_driver_rejects_current_engine_before_execution[validate_worker]
+3 failed in 7.81s

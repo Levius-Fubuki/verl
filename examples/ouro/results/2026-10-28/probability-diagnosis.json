@@ -1,0 +1,128 @@
+{
+  "torch.float32/full/torch/math": {
+    "max_abs_logit": 2.47955322265625e-05,
+    "mean_abs_logit": 2.451141881465446e-06,
+    "max_abs_logprob": 2.288818359375e-05,
+    "max_abs_selected_logprob": 3.814697265625e-06,
+    "argmax_equal": true
+  },
+  "torch.float32/full/torch/default": {
+    "max_abs_logit": 0.000102996826171875,
+    "mean_abs_logit": 5.526209861272946e-06,
+    "max_abs_logprob": 0.00010585784912109375,
+    "max_abs_selected_logprob": 3.0517578125e-05,
+    "argmax_equal": true
+  },
+  "torch.float32/full/triton/math": {
+    "max_abs_logit": 2.47955322265625e-05,
+    "mean_abs_logit": 2.7199873784411466e-06,
+    "max_abs_logprob": 2.288818359375e-05,
+    "max_abs_selected_logprob": 1.1444091796875e-05,
+    "argmax_equal": true
+  },
+  "torch.float32/full/triton/default": {
+    "max_abs_logit": 9.381771087646484e-05,
+    "mean_abs_logit": 5.441591838462045e-06,
+    "max_abs_logprob": 9.72747802734375e-05,
+    "max_abs_selected_logprob": 2.288818359375e-05,
+    "argmax_equal": true
+  },
+  "torch.float32/full/batched_prefill/math": {
+    "max_abs_logit": 2.9802322387695312e-05,
+    "mean_abs_logit": 2.705022552618175e-06,
+    "max_abs_logprob": 3.0517578125e-05,
+    "max_abs_selected_logprob": 7.62939453125e-06,
+    "argmax_equal": true
+  },
+  "torch.float32/adaptive/torch/math": {
+    "max_abs_logit": 2.47955322265625e-05,
+    "mean_abs_logit": 1.961881025636103e-06,
+    "max_abs_logprob": 2.288818359375e-05,
+    "max_abs_selected_logprob": 1.9073486328125e-06,
+    "argmax_equal": true
+  },
+  "torch.float32/adaptive/torch/default": {
+    "max_abs_logit": 7.510185241699219e-05,
+    "mean_abs_logit": 4.677886408899212e-06,
+    "max_abs_logprob": 6.866455078125e-05,
+    "max_abs_selected_logprob": 9.5367431640625e-06,
+    "argmax_equal": true
+  },
+  "torch.float32/adaptive/triton/math": {
+    "max_abs_logit": 2.47955322265625e-05,
+    "mean_abs_logit": 1.8915450255008182e-06,
+    "max_abs_logprob": 2.288818359375e-05,
+    "max_abs_selected_logprob": 7.62939453125e-06,
+    "argmax_equal": true
+  },
+  "torch.float32/adaptive/triton/default": {
+    "max_abs_logit": 7.68899917602539e-05,
+    "mean_abs_logit": 4.5076276364852674e-06,
+    "max_abs_logprob": 7.05718994140625e-05,
+    "max_abs_selected_logprob": 7.62939453125e-06,
+    "argmax_equal": true
+  },
+  "torch.bfloat16/full/torch/math": {
+    "max_abs_logit": 0.375,
+    "mean_abs_logit": 0.04200347512960434,
+    "max_abs_logprob": 0.4715461730957031,
+    "max_abs_selected_logprob": 0.17929840087890625,
+    "argmax_equal": true
+  },
+  "torch.bfloat16/full/torch/default": {
+    "max_abs_logit": 0.390625,
+    "mean_abs_logit": 0.0458645224571228,
+    "max_abs_logprob": 0.6067142486572266,
+    "max_abs_selected_logprob": 0.23171615600585938,
+    "argmax_equal": true
+  },
+  "torch.bfloat16/full/triton/math": {
+    "max_abs_logit": 0.5,
+    "mean_abs_logit": 0.048420779407024384,
+    "max_abs_logprob": 0.7473030090332031,
+    "max_abs_selected_logprob": 0.20042800903320312,
+    "argmax_equal": false
+  },
+  "torch.bfloat16/full/triton/default": {
+    "max_abs_logit": 0.625,
+    "mean_abs_logit": 0.04959220811724663,
+    "max_abs_logprob": 0.65765380859375,
+    "max_abs_selected_logprob": 0.06731224060058594,
+    "argmax_equal": false
+  },
+  "torch.bfloat16/full/batched_prefill/math": {
+    "max_abs_logit": 0.40625,
+    "mean_abs_logit": 0.04033934324979782,
+    "max_abs_logprob": 0.5127182006835938,
+    "max_abs_selected_logprob": 0.1350727081298828,
+    "argmax_equal": true
+  },
+  "torch.bfloat16/adaptive/torch/math": {
+    "max_abs_logit": 0.375,
+    "mean_abs_logit": 0.02877596765756607,
+    "max_abs_logprob": 0.4715461730957031,
+    "max_abs_selected_logprob": 0.17929840087890625,
+    "argmax_equal": true
+  },
+  "torch.bfloat16/adaptive/torch/default": {
+    "max_abs_logit": 0.375,
+    "mean_abs_logit": 0.031147699803113937,
+    "max_abs_logprob": 0.6067142486572266,
+    "max_abs_selected_logprob": 0.23171615600585938,
+    "argmax_equal": true
+  },
+  "torch.bfloat16/adaptive/triton/math": {
+    "max_abs_logit": 0.4375,
+    "mean_abs_logit": 0.031808748841285706,
+    "max_abs_logprob": 0.7473030090332031,
+    "max_abs_selected_logprob": 0.20042800903320312,
+    "argmax_equal": true
+  },
+  "torch.bfloat16/adaptive/triton/default": {
+    "max_abs_logit": 0.380859375,
+    "mean_abs_logit": 0.032803770154714584,
+    "max_abs_logprob": 0.41496849060058594,
+    "max_abs_selected_logprob": 0.13558006286621094,
+    "argmax_equal": true
+  }
+}
