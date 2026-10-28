@@ -1,0 +1,14 @@
+ruff (legacy alias).............................................................Passed
+ruff format.....................................................................Passed
+mypy............................................................................Passed
+Generate and verify verl/trainer/config/_generated_*.yaml.......................Passed
+Check docs Last updated info....................................................Passed
+Check doc string coverage.......................................................Passed
+Check license...................................................................Passed
+Check device API usage..........................................................Passed
+Check DataProto usage...........................................................Passed
+Validate test structure.........................................................Passed
+Check naming conventions........................................................Passed
+Check example script naming convention..........................................Passed
+Check uv runs only on the GPU branch............................................Passed
+Compile all python files........................................................Passed

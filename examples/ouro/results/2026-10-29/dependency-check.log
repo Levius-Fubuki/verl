@@ -1,0 +1,9 @@
+Using Python 3.12.3 environment at: venv
+Checked 128 packages in 1ms
+Found 6 incompatibilities
+The package `tensordict` requires `torch`, but it's not installed
+The package `nixl-cu13` requires `torch`, but it's not installed
+The package `torchdata` requires `torch>=2`, but it's not installed
+The package `accelerate` requires `torch>=2.0.0`, but it's not installed
+The package `nixl` requires `nixl-cu12==1.4.1`, but it's not installed
+The package `peft` requires `torch>=1.13.0`, but it's not installed
