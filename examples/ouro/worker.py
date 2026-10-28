@@ -57,8 +57,8 @@ def rollout_to_tensordict(
         raw_mode = logprobs_mode == "raw_logprobs" or (contract == "prototype" and logprobs_mode is None)
         if not raw_mode or params.seed is None:
             raise ValueError("raw logprobs and the actual rollout seed are required")
-        if contract == "prototype" and params.logprobs_mode != "raw":
-            raise ValueError("historical prototype requires raw logprobs")
+        if contract in ("prototype", "publication_outputs") and params.logprobs_mode != "raw":
+            raise ValueError(f"{contract} requires raw logprobs")
         prompt, response = output.prompt_token_ids, output.token_ids
         selected = selected_logprobs(output, contract)
         if not response or selected is None:

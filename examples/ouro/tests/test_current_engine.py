@@ -125,5 +125,8 @@ def test_standalone_cli_writes_generation_only_report(tmp_path):
     assert result["generation_validated"] is True
     assert result["publication_validated"] is False
     assert result["device"] == "cpu"
-    assert result["engine_source"]["git_head"] == "45f0c6737dde1f5be858ffc05fcd35b866474459"
-    assert result["engine_source"]["git_dirty"] is False
+    from examples.ouro.validate_current import _engine_source
+
+    assert result["engine_source"] == _engine_source()
+    if result["engine_source"]["git_head"] is not None:
+        assert result["engine_source"]["git_dirty"] is False

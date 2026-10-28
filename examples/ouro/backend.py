@@ -14,17 +14,20 @@
 # SPDX-License-Identifier: Apache-2.0
 """Explicit engine contracts and a token batch driver using public methods only.
 
-``rollout_outputs`` is the current engine contract. ``prototype`` is reserved for
-intentional reproduction of the historical training prototype; it is never
-selected by inspecting an output or by retrying a failed call.
+``rollout_outputs`` is the #83 engine contract. ``publication_outputs`` explicitly
+selects #78's current publication implementation and its legacy score spelling.
+``prototype`` is reserved for historical reproduction. No profile is selected
+by inspecting an output or retrying a failed call.
 """
 
 from uuid import uuid4
 
 
 def _check_contract(contract):
-    if contract not in ("rollout_outputs", "prototype"):
-        raise ValueError(f"unknown backend contract {contract!r}; choose 'rollout_outputs' or 'prototype'")
+    if contract not in ("rollout_outputs", "prototype", "publication_outputs"):
+        raise ValueError(
+            f"unknown backend contract {contract!r}; choose 'rollout_outputs', 'prototype', or 'publication_outputs'"
+        )
 
 
 def selected_logprobs(output, contract="rollout_outputs"):

@@ -54,7 +54,8 @@ from verl.workers.utils.losses import ppo_loss
 from verl.workers.utils.padding import no_padding_2_padding
 
 MODEL_REVISION = "574fa66cb8bf5abdc979642d01cf2b79b16bfab1"
-ENGINE_REVISION = "45f0c6737dde1f5be858ffc05fcd35b866474459"
+ENGINE_REVISION = "c7abc6d1d1ed31aade4f543e1503877d3bebc7bc"
+PUBLICATION_REVISION = "e6fae1e990f39b2738d65556ad585124f262a6b1"
 PROTOTYPE_REVISION = "bdce2876e3f78ac7efaa6cbf5783c185da2e9d19"
 
 
@@ -131,7 +132,9 @@ def main():
     parser.add_argument("--checkpoint-dir")
     parser.add_argument("--checkpoint-at", type=int, default=2)
     parser.add_argument("--resume")
-    parser.add_argument("--engine-contract", choices=("rollout_outputs", "prototype"), default="rollout_outputs")
+    parser.add_argument(
+        "--engine-contract", choices=("rollout_outputs", "prototype", "publication_outputs"), default="rollout_outputs"
+    )
     args = parser.parse_args()
     # No CUDA/distributed initialization or model/export work for an engine
     # whose shared publication extension has not landed yet.
@@ -150,7 +153,11 @@ def main():
         **vars(args),
         "world_size": world,
         "model_revision": MODEL_REVISION,
-        "engine_revision": PROTOTYPE_REVISION if args.engine_contract == "prototype" else ENGINE_REVISION,
+        "engine_revision": {
+            "prototype": PROTOTYPE_REVISION,
+            "rollout_outputs": ENGINE_REVISION,
+            "publication_outputs": PUBLICATION_REVISION,
+        }[args.engine_contract],
     }
     report = {
         "config": config,

@@ -1,5 +1,9 @@
 # Shared engine interface migration — 2026-10-23
 
+The October 28 follow-up adds an explicit current-publication profile and GPU
+qualification on independently pinned heads. See [GPU_20261028.md](GPU_20261028.md).
+The source pins and results below describe the October 23 migration.
+
 This update migrates the framework-side consumers and validates CPU behavior.
 It does **not** complete Phase 2A acceptance against a combined new rollout and
 weight-publication implementation. The upstream integration order remains open

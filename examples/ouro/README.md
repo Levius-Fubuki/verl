@@ -12,20 +12,24 @@ checkpoint recovery, per-unit sharded export, and separate-device NIXL P/D
 publication. See [ROUND3.md](ROUND3.md) for measured results and raw evidence;
 [ROUND2.md](ROUND2.md) and [VALIDATION.md](VALIDATION.md) retain earlier evidence.
 
-## Current interface migration (2026-10-23)
+## Current interface qualification (2026-10-28)
 
-The adapter now defaults to the shared rollout-output contract: `logprobs`,
-engine-level `raw_logprobs`, and public request/step/abort generation for raw
-StageClient/PDEngine endpoints. See [MIGRATION.md](MIGRATION.md) for CPU evidence,
-exact pins and commands. The existing October 8 GPU results below are historical.
+The default `rollout_outputs` profile uses #83's `logprobs` and engine-level
+`raw_logprobs`. Its missing publication/version capability is rejected before
+worker or CUDA/FSDP initialization. `validate_current.py` qualifies its rollout
+paths independently of training.
 
-**Current #83 has no public weight publication or committed policy version.**
-Versioned `OuroRollout` and `train.py` reject that missing capability before
-starting a worker or initializing CUDA/FSDP. `validate_current.py` separately
-qualifies actual generation, seeds, trace replay, stop/abort and speculative
-selected scores; it does not claim a training update or real P/D validation.
-The shared publication interface must be integrated before a new full training
-or CUDA/P/D acceptance run. No upstream PRs were combined locally.
+The explicit `--engine-contract publication_outputs` profile now qualifies
+current #78's selected `log_probs`, request-level raw mode and real publication
+transactions. Three full-depth and three adaptive BF16/FSDP updates, fresh-process
+resume and ten publication modes passed on the pinned two-GPU setup. See
+[GPU_20261028.md](GPU_20261028.md) for sources, commands, numerical limitations,
+attention results and the offline N+2 pilot. The tested cards report 49,140 MiB
+each; this does not establish that ordinary 24 GB cards fit the same recipe.
+
+No upstream PRs were combined locally. Acceptance of the eventual shared API
+remains pending; [MIGRATION.md](MIGRATION.md) preserves the October 23 CPU
+migration. [RAY_NEXT.md](RAY_NEXT.md) describes the remaining production Ray work.
 
 `contract="prototype"` (CLI `--engine-contract prototype`) is only for deliberate
 reproduction against the pinned old contract. It is never auto-selected as a
