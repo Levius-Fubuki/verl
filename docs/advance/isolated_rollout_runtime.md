@@ -92,6 +92,9 @@ Each selected node is probed before model loading. Logs report the node,
 executable, environment prefix, PID and core/backend versions without dumping
 environment variables. Core version/source mismatches and missing backend or
 transport dependencies fail startup. `startup_timeout` bounds asynchronous
-preflight/server initialization; on failure, actors created by that replica are
-killed. Existing placement-group allocation and worker registration retain
-their normal Ray timeouts.
+preflight/server initialization. Cleanup kills known server/checkpoint actor
+handles and removes placement groups owned by the replica. Recovering a lost
+factory-created actor handle is best effort and checks its launch identity;
+an unresponsive runtime may still require Ray job/cluster teardown. Existing
+synchronous placement-group allocation and worker registration retain their
+normal Ray timeouts.
