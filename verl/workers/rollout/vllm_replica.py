@@ -14,7 +14,6 @@
 import asyncio
 import contextlib
 import logging
-import uuid
 from typing import Any
 
 import ray
@@ -26,7 +25,7 @@ from verl.utils.net_utils import is_valid_ipv6_address
 from verl.workers.config import HFModelConfig, RolloutConfig
 from verl.workers.rollout.replica import RolloutReplica
 from verl.workers.rollout.runtime import (
-    create_vllm_server,
+    VLLMServerLauncher,
     probe_rollout_runtime,
     resolve_rollout_runtime_env,
     runtime_identity,
@@ -54,6 +53,7 @@ class vLLMReplica(RolloutReplica):
         self.runtime_env = None
         self.runtime_expected = None
         self.runtime_reports = []
+        self._server_launchers = []
         if self.config.runtime.py_executable is None:
             from verl.workers.rollout.vllm_rollout.vllm_async_server import vLLMHttpServer
 
@@ -90,11 +90,12 @@ class vLLMReplica(RolloutReplica):
         try:
             await asyncio.wait_for(super().init_standalone(resource_pool), self.config.runtime.startup_timeout)
         except BaseException:
-            for actor in self.servers + self.workers:
+            for actor in self.servers + self.workers + self._server_launchers:
                 with contextlib.suppress(Exception):
                     ray.kill(actor, no_restart=True)
             self.servers.clear()
             self.workers.clear()
+            self._server_launchers.clear()
             if owns_pool and self.resource_pool is not None:
                 for pg in self.resource_pool.pgs or []:
                     ray.util.remove_placement_group(pg)
@@ -146,22 +147,25 @@ class vLLMReplica(RolloutReplica):
         actor_options["runtime_env"] = resolve_rollout_runtime_env(
             self.config.runtime, self.runtime_env, actor_options["runtime_env"]["env_vars"]
         )
-        owner_id = uuid.uuid4().hex
-        server_kwargs = {**server_kwargs, "runtime_owner_id": owner_id}
-        ref = create_vllm_server.options(
-            runtime_env=actor_options["runtime_env"], scheduling_strategy=actor_options["scheduling_strategy"]
-        ).remote(self.runtime_expected, actor_options, server_kwargs)
+        launcher = (
+            ray.remote(VLLMServerLauncher)
+            .options(
+                num_cpus=0,
+                lifetime="non_detached",
+                runtime_env=actor_options["runtime_env"],
+                scheduling_strategy=actor_options["scheduling_strategy"],
+            )
+            .remote(self.runtime_expected)
+        )
+        self._server_launchers.append(launcher)
         try:
-            return await ref
+            return await launcher.create.remote(actor_options, server_kwargs)
         except BaseException:
-            ray.cancel(ref, force=True)
-            # Cover a lost handle without killing a healthy actor that already
-            # owned this name (e.g. when factory creation failed on a collision).
+            # Killing the owner also covers creation that lost its return
+            # handle. No lookup by name can accidentally kill another launch.
             with contextlib.suppress(Exception):
-                actor = ray.get_actor(actor_options["name"])
-                actual_owner_id = await asyncio.wait_for(actor.get_runtime_owner_id.remote(), timeout=5.0)
-                if actual_owner_id == owner_id:
-                    ray.kill(actor, no_restart=True)
+                ray.kill(launcher, no_restart=True)
+            self._server_launchers.remove(launcher)
             raise
 
     async def launch_servers(self):

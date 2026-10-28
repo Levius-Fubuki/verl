@@ -118,7 +118,6 @@ class vLLMHttpServer:
         cuda_visible_devices: str,
         disaggregation_role: str = "null",
         disaggregation_kv_transfer_config: Optional[dict] = None,
-        runtime_owner_id: Optional[str] = None,
     ):
         """
         Args:
@@ -133,7 +132,6 @@ class vLLMHttpServer:
             disaggregation_role: PD role, or ``"null"`` for normal rollout.
             disaggregation_kv_transfer_config: vLLM KVTransferConfig dict for PD.
         """
-        self._runtime_owner_id = runtime_owner_id
         if disaggregation_role not in ("null", "prefill", "decode"):
             raise ValueError(f"disaggregation_role must be 'null'|'prefill'|'decode', got {disaggregation_role!r}")
         if disaggregation_role != "null" and disaggregation_kv_transfer_config is None:
@@ -255,10 +253,6 @@ class vLLMHttpServer:
         ``get_server_address``.
         """
         return self.config
-
-    def get_runtime_owner_id(self) -> Optional[str]:
-        """Identify the launch that owns this server for cancellation cleanup."""
-        return self._runtime_owner_id
 
     @property
     def lora_as_adapter(self) -> bool:

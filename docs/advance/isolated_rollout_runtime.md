@@ -70,9 +70,12 @@ larger models and TP launches require additional resources.
 
 The override covers the HTTP actors, their engine/worker subprocesses, and the
 rollout-side checkpoint workers. The replica controller does not import vLLM;
-the native server actor is created inside the selected runtime and its actor
-handle is returned to the controller. Existing async methods, placement and
-weight-update semantics are retained.
+the native server actor is created by a long-lived launcher actor inside the
+selected runtime and its handle is returned to the controller. The controller
+retains the launcher, so idle task-worker reclamation cannot terminate the
+server. Both launcher and server are explicitly non-detached: controller/job
+teardown terminates them through Ray ownership. Existing async methods,
+placement and weight-update semantics are retained.
 
 ## Precedence and failures
 
@@ -93,8 +96,8 @@ executable, environment prefix, PID and core/backend versions without dumping
 environment variables. Core version/source mismatches and missing backend or
 transport dependencies fail startup. `startup_timeout` bounds asynchronous
 preflight/server initialization. Cleanup kills known server/checkpoint actor
-handles and removes placement groups owned by the replica. Recovering a lost
-factory-created actor handle is best effort and checks its launch identity;
-an unresponsive runtime may still require Ray job/cluster teardown. Existing
-synchronous placement-group allocation and worker registration retain their
-normal Ray timeouts.
+handles and launchers, and removes placement groups owned by the replica. Killing
+a launcher also terminates a server whose return handle was lost, without
+looking up or killing a different actor that already owns the requested name.
+Existing synchronous placement-group allocation and worker registration retain
+their normal Ray timeouts.

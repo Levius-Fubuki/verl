@@ -13,6 +13,7 @@
 # limitations under the License.
 """Contracts for standalone vLLM interpreter isolation (no inference package required)."""
 
+import asyncio
 import os
 import subprocess
 import sys
@@ -207,18 +208,19 @@ async def test_startup_failure_cleans_up_only_replica_actors(monkeypatch):
     async def fail(self, pool):
         self.workers = ["checkpoint-worker"]
         self.servers = ["server"]
+        self._server_launchers = ["launcher"]
         raise RuntimeError("server startup failed")
 
     monkeypatch.setattr(RolloutReplica, "init_standalone", fail)
     with pytest.raises(RuntimeError, match="server startup failed"):
         await replica.init_standalone(SimpleNamespace())
-    assert killed == ["server", "checkpoint-worker"]
-    assert replica.workers == replica.servers == []
+    assert killed == ["server", "checkpoint-worker", "launcher"]
+    assert replica.workers == replica.servers == replica._server_launchers == []
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("same_launch", [False, True])
-async def test_factory_failure_preserves_existing_server_ownership(monkeypatch, same_launch):
+@pytest.mark.parametrize("error", [RuntimeError, asyncio.CancelledError])
+async def test_launcher_failure_or_cancellation_kills_only_its_owner(monkeypatch, error):
     from verl.workers.rollout import vllm_replica
 
     config = RolloutConfig(name="vllm", runtime={"py_executable": sys.executable})
@@ -227,33 +229,31 @@ async def test_factory_failure_preserves_existing_server_ownership(monkeypatch, 
     replica.runtime_expected = {}
     killed = []
 
-    class Factory:
+    async def fail(*args):
+        raise error("actor creation failed")
+
+    launcher = SimpleNamespace(create=SimpleNamespace(remote=fail))
+
+    class LauncherClass:
         def options(self, **kwargs):
+            assert kwargs["lifetime"] == "non_detached"
             return self
 
-        def remote(self, expected, options, server_kwargs):
-            self.owner_id = server_kwargs.get("runtime_owner_id")
+        def remote(self, expected):
+            return launcher
 
-            async def fail():
-                raise RuntimeError("actor creation failed")
+    def reject_name_lookup(name):
+        raise AssertionError("cleanup must not touch an existing named actor")
 
-            return fail()
-
-    factory = Factory()
-
-    async def owner_id():
-        return factory.owner_id if same_launch else "another-launch"
-
-    existing = SimpleNamespace(get_runtime_owner_id=SimpleNamespace(remote=owner_id))
-    monkeypatch.setattr(vllm_replica, "create_vllm_server", factory)
-    monkeypatch.setattr(vllm_replica.ray, "cancel", lambda *args, **kwargs: None)
-    monkeypatch.setattr(vllm_replica.ray, "get_actor", lambda name: existing)
+    monkeypatch.setattr(vllm_replica.ray, "remote", lambda cls: LauncherClass())
+    monkeypatch.setattr(vllm_replica.ray, "get_actor", reject_name_lookup)
     monkeypatch.setattr(vllm_replica.ray, "kill", lambda actor, **kwargs: killed.append(actor))
-    with pytest.raises(RuntimeError, match="actor creation failed"):
+    with pytest.raises(error, match="actor creation failed"):
         await replica._create_server(
             {"name": "vllm_server_0_0", "scheduling_strategy": "test", "runtime_env": {"env_vars": {}}}, {}
         )
-    assert killed == ([existing] if same_launch else [])
+    assert killed == [launcher]
+    assert replica._server_launchers == []
 
 
 def _trainer_config(**updates):
@@ -322,7 +322,7 @@ from verl.workers.config import RolloutConfig
 from verl.workers.rollout.runtime import resolve_rollout_runtime_env
 
 target = Path(sys.argv[1]) / 'rollout'
-venv.EnvBuilder(with_pip=False, system_site_packages=True).create(target)
+venv.EnvBuilder(with_pip=False, system_site_packages=True, symlinks=True).create(target)
 site = target / 'lib' / ('python' + '.'.join(map(str, sys.version_info[:2]))) / 'site-packages'
 (site / 'test_dependencies.pth').write_text(sysconfig.get_path('purelib') + '\n')
 (site / 'rollout_runtime_marker.py').write_text('VALUE = "rollout-only"\n')

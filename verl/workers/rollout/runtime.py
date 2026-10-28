@@ -98,14 +98,26 @@ def probe_rollout_runtime(expected: dict, checkpoint_backend: str, custom_backen
     return actual
 
 
-@ray.remote(num_cpus=0)
-def create_vllm_server(expected: dict, actor_options: dict, server_kwargs: dict):
-    """Construct the native server actor inside the selected interpreter.
+class VLLMServerLauncher:
+    """Own one native server for the lifetime of its rollout controller.
 
-    Returning its ActorHandle preserves the full async server interface without
-    importing vLLM on the controller or adding a generic RPC proxy.
+    Run this class as a non-detached Ray actor in the selected interpreter.
+    A task worker can be reclaimed after returning an actor handle, so it must
+    not own a long-running server. The controller retains this launcher's handle;
+    controller/job teardown then terminates the launcher and its server through
+    Ray ownership, without introducing detached actors or a generic RPC proxy.
     """
-    check_runtime_identity(runtime_identity(), expected)
-    from verl.workers.rollout.vllm_rollout.vllm_async_server import vLLMHttpServer
 
-    return ray.remote(vLLMHttpServer).options(**actor_options).remote(**server_kwargs)
+    def __init__(self, expected: dict):
+        check_runtime_identity(runtime_identity(), expected)
+        self.server = None
+
+    def create(self, actor_options: dict, server_kwargs: dict):
+        """Create and retain the native actor; callers use its handle directly."""
+        if self.server is not None:
+            raise RuntimeError("A rollout launcher can own only one server.")
+        from verl.workers.rollout.vllm_rollout.vllm_async_server import vLLMHttpServer
+
+        options = {**actor_options, "lifetime": "non_detached"}
+        self.server = ray.remote(vLLMHttpServer).options(**options).remote(**server_kwargs)
+        return self.server
